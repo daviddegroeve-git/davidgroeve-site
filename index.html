@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>David Sánchez de Groeve — Technology Executive & AI-Augmented Architect</title>
 <meta name="description" content="20+ years leading digital transformation, payments infrastructure and AI-augmented product architecture across the Middle East and Europe.">
+<meta property="og:title" content="David Sánchez de Groeve — Technology Executive & AI-Augmented Architect">
+<meta property="og:description" content="20+ years leading digital transformation, payments infrastructure and AI-augmented product architecture across the Middle East and Europe.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://davidgroeve.com">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#1B2432">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="stylesheet" href="styles.css">
 <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 </head>
@@ -13,6 +20,9 @@
 <header>
   <nav class="nav">
     <a class="name" href="index.html">David Sánchez de Groeve</a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
     <ul>
       <li><a href="index.html" class="active">Home</a></li>
       <li><a href="trajectory.html">Trajectory</a></li>
@@ -23,51 +33,103 @@
 </header>
 
 <section class="hero">
-  <div class="wrap">
-    <span class="eyebrow">Technology Executive · Riyadh, Saudi Arabia</span>
-    <h1>Twenty years building the infrastructure<br>the Gulf's digital economy runs on.</h1>
-    <p class="role">From national payment rails to an InsurTech built from scratch — David directs large-scale digital transformation, and increasingly, builds it himself with AI-augmented engineering.</p>
+  <!-- Video background — autoplay, muted, looped -->
+  <div class="hero-video-bg">
+    <video
+      id="heroVideo"
+      autoplay
+      muted
+      loop
+      playsinline
+      poster="assets/david-photo.jpg"
+    >
+      <!-- Place your AI-generated video here once ready -->
+      <source src="assets/DavidGroeveWorking.mp4" type="video/mp4">
+    </video>
+    <!-- Layered overlay: dark tint + gradient for text legibility -->
+    <div class="hero-overlay"></div>
+  </div>
 
-    <div class="toggle" role="tablist" aria-label="Perspective">
-      <button type="button" data-mode-btn="exec" class="active">Enterprise Leadership</button>
-      <button type="button" data-mode-btn="ai">AI Engineering</button>
+  <!-- Content on top of the video -->
+  <div class="wrap hero-content">
+    <div class="hero-inner">
+      <span class="eyebrow eyebrow-light">Technology Executive · Riyadh, Saudi Arabia</span>
+      <h1>Twenty years building the<br>infrastructure the Gulf's<br>digital economy runs on.</h1>
+      <p class="role">From national payment rails to an InsurTech built from scratch — David directs large-scale digital transformation, and increasingly, builds it himself with AI-augmented engineering.</p>
+
+      <div class="toggle toggle-dark" role="tablist" aria-label="Perspective">
+        <span class="toggle-pill"></span>
+        <button type="button" data-mode-btn="exec" class="active">Enterprise Leadership</button>
+        <button type="button" data-mode-btn="ai">AI Engineering</button>
+      </div>
     </div>
 
-    <div class="stat-row" data-panel="exec">
-      <div class="stat"><div class="num">15→130+</div><div class="label">Engineers scaled at BNP Paribas, 26 countries</div></div>
-      <div class="stat"><div class="num">35%+</div><div class="label">Reduction in major system incidents</div></div>
-      <div class="stat"><div class="num">Zero</div><div class="label">Downtime migrating mada to KAFD data center</div></div>
+    <!-- Stats strip anchored to bottom of hero -->
+    <div class="hero-stats-bar">
+      <div class="stat-row" data-panel="exec">
+        <div class="stat stat-light"><div class="num" data-count="130" data-prefix="15→" data-suffix="+" data-final="15→130+">15→130+</div><div class="label">Engineers scaled at BNP Paribas, 26 countries</div></div>
+        <div class="stat stat-light"><div class="num" data-count="35" data-suffix="%+" data-final="35%+">35%+</div><div class="label">Reduction in major system incidents</div></div>
+        <div class="stat stat-light"><div class="num" data-final="Zero">Zero</div><div class="label">Downtime migrating mada to KAFD data center</div></div>
+      </div>
+      <div class="stat-row" data-panel="ai" style="display:none">
+        <div class="stat stat-light"><div class="num" data-count="10" data-suffix="x" data-final="10x">10x</div><div class="label">Faster MVP delivery with AI-augmented toolchains</div></div>
+        <div class="stat stat-light"><div class="num" data-final="Full-stack">Full-stack</div><div class="label">React, Next.js, Node, Docker, Kubernetes</div></div>
+        <div class="stat stat-light"><div class="num" data-final="SAMA·CITC·NDPL">SAMA·CITC·NDPL</div><div class="label">Compliant architecture, built and shipped solo-led</div></div>
+      </div>
+      <p class="mode-line mode-line-light" data-panel="exec">Two decades directing technology operations, infrastructure migrations and vendor strategy inside strictly regulated banking and payments environments.</p>
+      <p class="mode-line mode-line-light" data-panel="ai" style="display:none">Now applying that same discipline hands-on — architecting and shipping production systems with generative AI toolchains embedded into the core workflow.</p>
     </div>
-    <div class="stat-row" data-panel="ai" style="display:none">
-      <div class="stat"><div class="num">10x</div><div class="label">Faster MVP delivery with AI-augmented toolchains</div></div>
-      <div class="stat"><div class="num">Full-stack</div><div class="label">React, Next.js, Node, Docker, Kubernetes</div></div>
-      <div class="stat"><div class="num">SAMA·CITC·NDPL</div><div class="label">Compliant architecture, built and shipped solo-led</div></div>
-    </div>
-    <p class="mode-line" data-panel="exec">Two decades directing technology operations, infrastructure migrations and vendor strategy inside strictly regulated banking and payments environments.</p>
-    <p class="mode-line" data-panel="ai" style="display:none">Now applying that same discipline hands-on — architecting and shipping production systems with generative AI toolchains embedded into the core workflow.</p>
   </div>
 </section>
 
-<section class="section reveal">
+
+<!-- ═══ LOGO STRIP ═══ -->
+<section class="logo-strip">
+  <div class="logo-strip-label">
+    <span>Experience across institutions</span>
+  </div>
+  <div class="logo-track-wrapper">
+    <div class="logo-track" id="logoTrack">
+      <!-- First set -->
+      <div class="logo-item"><img src="assets/logos/romaana.png" alt="Romaana"></div>
+      <div class="logo-item"><img src="assets/logos/saudipayments.png" alt="Saudi Payments"></div>
+      <div class="logo-item"><img src="assets/logos/mada-logo-png_seeklogo-325962.png" alt="mada"></div>
+      <div class="logo-item"><img src="assets/logos/BNP-Paribas-Logo-500x281.png" alt="BNP Paribas"></div>
+      <div class="logo-item"><img src="assets/logos/iata (2).png" alt="IATA"></div>
+      <div class="logo-item"><img src="assets/logos/natixis.png" alt="Natixis"></div>
+      <div class="logo-item"><img src="assets/logos/Santander_Logo.png" alt="Banco Santander"></div>
+      <!-- Duplicate set for seamless loop -->
+      <div class="logo-item"><img src="assets/logos/romaana.png" alt="Romaana"></div>
+      <div class="logo-item"><img src="assets/logos/saudipayments.png" alt="Saudi Payments"></div>
+      <div class="logo-item"><img src="assets/logos/mada-logo-png_seeklogo-325962.png" alt="mada"></div>
+      <div class="logo-item"><img src="assets/logos/BNP-Paribas-Logo-500x281.png" alt="BNP Paribas"></div>
+      <div class="logo-item"><img src="assets/logos/iata (2).png" alt="IATA"></div>
+      <div class="logo-item"><img src="assets/logos/natixis.png" alt="Natixis"></div>
+      <div class="logo-item"><img src="assets/logos/Santander_Logo.png" alt="Banco Santander"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
   <div class="wrap">
-    <h2>Recent chapters</h2>
-    <p class="lede">Three roles, one throughline: making critical systems more resilient, and moving faster while doing it.</p>
+    <h2 class="reveal">Recent chapters</h2>
+    <p class="lede reveal">Three roles, one throughline: making critical systems more resilient, and moving faster while doing it.</p>
     <div class="grid3">
-      <div class="card">
+      <div class="card reveal d1">
         <span class="eyebrow">2023 – 2026 · Riyadh</span>
         <h3>Rommaana</h3>
         <div class="org">Technical Director & Co-Founder</div>
         <p>Architected an InsurTech platform end-to-end and embedded AI-augmented development into the core engineering workflow.</p>
         <a href="trajectory.html">View trajectory →</a>
       </div>
-      <div class="card">
+      <div class="card reveal d2">
         <span class="eyebrow">2020 – 2023 · Riyadh</span>
         <h3>Saudi Payments</h3>
         <div class="org">Service Operation Manager, mada</div>
         <p>Directed the zero-downtime migration of Saudi Arabia's national payment rails into the KAFD data center.</p>
         <a href="trajectory.html">View trajectory →</a>
       </div>
-      <div class="card">
+      <div class="card reveal d3">
         <span class="eyebrow">2015 – 2020 · Madrid</span>
         <h3>BNP Paribas</h3>
         <div class="org">Head of Operations, 26 countries</div>
@@ -128,13 +190,34 @@
 </section>
 
 <footer>
-  <div class="wrap">
-    <span>Riyadh, Saudi Arabia</span>
-    <span><a href="mailto:director@davidgroeve.com">director@davidgroeve.com</a> · <a href="https://linkedin.com/in/davidsanchezdegroeve" target="_blank" rel="noopener">LinkedIn</a></span>
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <span class="footer-name">David Sánchez de Groeve</span>
+      <p class="footer-tagline">Building infrastructure the Gulf's digital economy runs on.</p>
+    </div>
+    <div class="footer-nav">
+      <span class="footer-heading">Navigate</span>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="trajectory.html">Trajectory</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-contact">
+      <span class="footer-heading">Connect</span>
+      <ul>
+        <li><a href="mailto:director@davidgroeve.com">director@davidgroeve.com</a></li>
+        <li><a href="https://linkedin.com/in/davidsanchezdegroeve" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li>Riyadh, Saudi Arabia</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© 2026 David Sánchez de Groeve</span>
   </div>
 </footer>
 
 <script src="script.js"></script>
-<script>setTimeout(function(){document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in-view');});},2500);</script>
 </body>
 </html>
