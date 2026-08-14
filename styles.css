@@ -210,6 +210,11 @@ header.scrolled {
   transform: translateY(-7px) rotate(-45deg);
 }
 
+/* Mobile nav overlay — hidden globally, shown only via JS on mobile */
+.mobile-nav-overlay {
+  display: none;
+}
+
 /* ═══════════════════════════════════════════
    HERO — VIDEO BACKGROUND
    ═══════════════════════════════════════════ */
@@ -326,10 +331,50 @@ header.scrolled {
 
 
 /* ═══════════════════════════════════════════
+   SCROLL INDICATOR
+   ═══════════════════════════════════════════ */
+.scroll-indicator {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 5;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: #FFFFFF;
+  animation: scroll-drop 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes scroll-drop {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}
+
+
+/* ═══════════════════════════════════════════
    TOGGLE SWITCH
    ═══════════════════════════════════════════ */
 .toggle {
-  display: inline-flex;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
   position: relative;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -1003,16 +1048,21 @@ footer a:hover { color: #D0D4DA; }
   justify-content: center;
   padding: 0 52px;
   flex-shrink: 0;
-  height: 56px;
+  height: 80px;
 }
 
 .logo-item img {
-  height: 40px;
+  height: 60px;
   width: auto;
-  max-width: 160px;
+  max-width: 220px;
   /* The key effect: desaturate + reduce opacity to match consultancy sites */
   filter: grayscale(100%) opacity(0.35) contrast(1.2);
   transition: filter 0.35s var(--ease);
+}
+
+.logo-item img[alt="IATA"],
+.logo-item img[alt="Natixis"] {
+  height: 40px;
 }
 
 .logo-item img:hover {
@@ -1032,6 +1082,10 @@ footer a:hover { color: #D0D4DA; }
 /* ═══════════════════════════════════════════
    RESPONSIVE — Tablet & Mobile
    ═══════════════════════════════════════════ */
+.mobile-menu-footer {
+  display: none !important;
+}
+
 @media (max-width: 760px) {
   .wrap { padding: 0 20px; }
 
@@ -1040,36 +1094,196 @@ footer a:hover { color: #D0D4DA; }
 
   .nav-toggle { display: flex; }
 
-  .nav ul {
+  /* Hide the desktop nav links on mobile */
+  .nav ul { display: none !important; }
+  /* Mobile overlay — lives outside header so it covers full screen */
+  .mobile-nav-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgb(244, 241, 235);
     display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
     flex-direction: column;
-    background: rgba(244, 241, 235, 0.97);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    padding: 12px 20px 20px;
-    gap: 2px;
-    border-bottom: 1px solid var(--line);
-    box-shadow: var(--shadow-md);
+    padding: 0;
+    overflow: hidden;
   }
 
-  .nav ul.open { display: flex; }
+  .mobile-nav-overlay.open {
+    display: flex;
+  }
 
-  .nav ul li { display: block; }
+  /* ── Header bar: Name + X ── */
+  .mobile-nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--line);
+  }
 
-  .nav a {
-    display: block;
-    padding: 12px 14px;
+  .mobile-nav-name {
+    font-family: 'IBM Plex Serif', serif;
     font-size: 15px;
-    border-radius: var(--radius);
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .mobile-nav-close {
+    background: none;
+    border: none;
+    padding: 6px;
+    cursor: pointer;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: background 0.18s;
+  }
+
+  .mobile-nav-close:hover {
+    background: rgba(0,0,0,0.06);
+  }
+
+  /* ── Centered nav section ── */
+  .mobile-nav-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    text-align: center;
+  }
+
+  .mobile-nav-list li { display: block; }
+
+  /* Item enter animation */
+  @keyframes navItemIn {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Item exit animation */
+  @keyframes navItemOut {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+  }
+
+  /* On open: stagger in */
+  .mobile-nav-overlay.open .mobile-nav-list li {
+    animation: navItemIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .mobile-nav-overlay.open .mobile-nav-list li:nth-child(1) { animation-delay: 0.05s; }
+  .mobile-nav-overlay.open .mobile-nav-list li:nth-child(2) { animation-delay: 0.12s; }
+  .mobile-nav-overlay.open .mobile-nav-list li:nth-child(3) { animation-delay: 0.19s; }
+  .mobile-nav-overlay.open .mobile-nav-list li:nth-child(4) { animation-delay: 0.26s; }
+
+  /* On closing: reverse stagger out */
+  .mobile-nav-overlay.closing .mobile-nav-list li {
+    animation: navItemOut 0.26s cubic-bezier(0.55, 0, 1, 0.45) both;
+  }
+  .mobile-nav-overlay.closing .mobile-nav-list li:nth-child(4) { animation-delay: 0.00s; }
+  .mobile-nav-overlay.closing .mobile-nav-list li:nth-child(3) { animation-delay: 0.06s; }
+  .mobile-nav-overlay.closing .mobile-nav-list li:nth-child(2) { animation-delay: 0.12s; }
+  .mobile-nav-overlay.closing .mobile-nav-list li:nth-child(1) { animation-delay: 0.18s; }
+
+  .mobile-nav-list a {
+    display: block;
+    padding: 18px 32px;
+    font-size: clamp(28px, 8vw, 38px);
+    font-weight: 500;
+    font-family: 'IBM Plex Serif', serif;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.2s, opacity 0.2s;
+  }
+
+  .mobile-nav-list a:hover {
+    opacity: 0.5;
+  }
+
+  .mobile-nav-list a.active {
+    color: var(--accent);
+  }
+
+  /* ── Footer ── */
+  .mobile-menu-footer {
+    display: flex !important;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .mobile-menu-subtitle {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    line-height: 1.6;
+  }
+
+  .menu-btn-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .mobile-menu-footer .btn {
+    display: inline-flex;
+    padding: 14px 24px;
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .mobile-menu-footer .btn:not(.primary) {
+    color: var(--ink);
+    border-color: var(--line);
+  }
+
+  .mobile-menu-footer .btn:not(.primary):hover {
+    background: rgba(0,0,0,0.05);
+    color: var(--ink);
+    border-color: var(--ink-soft);
+    box-shadow: none;
+  }
+
+  .mobile-menu-footer .btn.icon-btn {
+    width: auto;
+    padding: 14px 18px;
+    flex-shrink: 0;
   }
 
   /* Hero — Video Mobile */
   .hero { min-height: auto; }
-  .hero-content { min-height: auto; padding-top: 14vh; }
+  .hero-content { min-height: auto; padding-top: 35vh; }
+  .hero-inner .eyebrow { display: none; }
   .hero-inner h1 { font-size: clamp(30px, 8vw, 40px); margin: 10px 0 16px; }
   .hero-inner .role { font-size: 16px; }
   .hero-stats-bar { margin-top: 32px; padding: 24px 0 32px; }
@@ -1145,4 +1359,639 @@ footer a:hover { color: #D0D4DA; }
   .hero h1 { font-size: 26px; }
   .stat-row { flex-direction: column; gap: 16px; }
   .nav .name { font-size: 16px; }
+}
+
+/* ═══════════════════════════════════════════
+   BOOKING MODAL
+   ═══════════════════════════════════════════ */
+.booking-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(27, 36, 50, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease);
+}
+
+.booking-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.booking-modal {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(20px);
+  transition: transform 0.3s var(--ease);
+  overflow: hidden;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.booking-modal-overlay.active .booking-modal {
+  transform: translateY(0);
+}
+
+.booking-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255,255,255,0.5);
+}
+
+.booking-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.booking-close-btn {
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius);
+  transition: background 0.2s, color 0.2s;
+}
+
+.booking-close-btn:hover {
+  background: var(--line);
+  color: var(--ink);
+}
+
+.booking-modal-body {
+  padding: 24px 20px;
+  overflow-y: auto;
+}
+
+.booking-desc {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.booking-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.cal-day-header {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.cal-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.cal-day.disabled {
+  color: var(--ink-faint);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.cal-day.available {
+  background: #fff;
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.cal-day.available:hover {
+  border-color: var(--ink);
+}
+
+.cal-day.active {
+  background: var(--ink);
+  color: var(--surface);
+  border-color: var(--ink);
+}
+
+.booking-slots-container h4 {
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.booking-slots {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.time-slot {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  text-align: center;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.time-slot:hover {
+  border-color: var(--ink);
+}
+
+.time-slot.active {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+.booking-time-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.booking-form .form-group {
+  margin-bottom: 16px;
+}
+
+.booking-form label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.booking-form input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.booking-form input:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+
+/* ═══════════════════════════════════════════
+   RESUME ROWS
+   ═══════════════════════════════════════════ */
+.resume-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.resume-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--bg-alt);
+  transition: border-color var(--duration) var(--ease),
+              box-shadow var(--duration) var(--ease),
+              background var(--duration) var(--ease);
+}
+
+.resume-row:hover {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.resume-row-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.resume-row-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--accent-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-ink);
+}
+
+.resume-row-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.resume-row-info {
+  min-width: 0;
+}
+
+.resume-row-name {
+  display: block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color var(--duration) var(--ease);
+}
+
+.resume-row-name:hover {
+  color: var(--accent-ink);
+}
+
+.resume-row-meta {
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-top: 2px;
+  font-family: 'Inter', sans-serif;
+}
+
+.resume-download-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: background var(--duration) var(--ease),
+              border-color var(--duration) var(--ease),
+              color var(--duration) var(--ease),
+              transform var(--duration) var(--ease);
+}
+
+.resume-download-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.resume-download-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Share Dropdown ── */
+.share-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.resume-download-btn.resume-share-toggle {
+  cursor: pointer;
+  background: var(--surface);
+}
+.resume-download-btn.resume-share-toggle:hover {
+  background: var(--surface);
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.share-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 6px;
+  width: 170px;
+  background: #1B2432;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-5px);
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.share-dropdown.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.share-dropdown a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.share-dropdown a:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.share-dropdown a svg {
+  width: 15px;
+  height: 15px;
+  opacity: 0.8;
+}
+
+/* ═══════════════════════════════════════════
+   PDF VIEWER MODAL
+   ═══════════════════════════════════════════ */
+.pdf-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(15, 20, 30, 0.88);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 0;
+}
+
+.pdf-modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.pdf-modal-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  max-width: 960px;
+  background: #1a1f2a;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+  overflow: hidden;
+  transform: translateY(12px) scale(0.985);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pdf-modal-overlay.open .pdf-modal-shell {
+  transform: translateY(0) scale(1);
+}
+
+/* Toolbar */
+.pdf-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 52px;
+  background: #141820;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.pdf-toolbar-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.pdf-toolbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.pdf-ctrl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.pdf-ctrl-btn:hover {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+}
+
+.pdf-ctrl-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.pdf-zoom-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  min-width: 38px;
+  text-align: center;
+}
+
+.pdf-page-info {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  white-space: nowrap;
+  padding: 0 6px;
+}
+
+.pdf-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.1);
+  margin: 0 2px;
+}
+
+.pdf-close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.pdf-close-btn:hover {
+  background: rgba(220, 60, 60, 0.25);
+  color: #ff7070;
+}
+
+.pdf-close-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Viewport / canvas area */
+.pdf-viewport {
+  flex: 1;
+  overflow: auto;
+  background: #2a2f3d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 20px;
+  gap: 16px;
+  position: relative;
+  cursor: grab;
+}
+
+.pdf-viewport:active {
+  cursor: grabbing;
+}
+
+.pdf-page-wrapper {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.45);
+  border-radius: 2px;
+  overflow: hidden;
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.pdf-page-wrapper canvas {
+  display: block;
+  max-width: 100%;
+}
+
+.pdf-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: rgba(255,255,255,0.4);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+}
+
+.pdf-spinner {
+  width: 28px;
+  height: 28px;
+  border: 2px solid rgba(255,255,255,0.1);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: pdf-spin 0.7s linear infinite;
+}
+
+@keyframes pdf-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Download bar at bottom */
+.pdf-download-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px 16px;
+  background: #141820;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0;
+}
+
+.pdf-download-bar a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #1A1206;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: background 0.18s, transform 0.18s;
+}
+
+.pdf-download-bar a:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.pdf-download-bar a svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Responsive: full-screen on mobile */
+@media (max-width: 600px) {
+  .pdf-modal-shell {
+    border-radius: 0;
+    max-width: 100%;
+  }
+  .pdf-viewport {
+    padding: 12px 6px;
+  }
 }

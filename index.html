@@ -32,6 +32,43 @@
   </nav>
 </header>
 
+<!-- Mobile fullscreen nav overlay -->
+<div class="mobile-nav-overlay" id="mobileNavOverlay">
+  <!-- Top bar: name + close button -->
+  <div class="mobile-nav-header">
+    <span class="mobile-nav-name">David Sánchez de Groeve</span>
+    <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Centered nav links -->
+  <nav class="mobile-nav-center">
+    <ul class="mobile-nav-list">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="trajectory.html">Trajectory</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Footer -->
+  <div class="mobile-menu-footer">
+    <span class="mobile-menu-subtitle">Technology Executive &middot; Riyadh, Saudi Arabia</span>
+    <div class="menu-btn-row">
+      <button class="btn primary" id="bookMeetingBtn">Book a Meeting</button>
+      <a class="btn icon-btn" href="https://linkedin.com/in/davidsanchezdegroeve" target="_blank" aria-label="LinkedIn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+        </svg>
+      </a>
+    </div>
+    <a class="btn" href="tel:+966507913514">Call +966 50 791 3514</a>
+  </div>
+</div>
+
 <section class="hero">
   <!-- Video background — autoplay, muted, looped -->
   <div class="hero-video-bg">
@@ -78,6 +115,11 @@
       </div>
       <p class="mode-line mode-line-light" data-panel="exec">Two decades directing technology operations, infrastructure migrations and vendor strategy inside strictly regulated banking and payments environments.</p>
       <p class="mode-line mode-line-light" data-panel="ai" style="display:none">Now applying that same discipline hands-on — architecting and shipping production systems with generative AI toolchains embedded into the core workflow.</p>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
     </div>
   </div>
 </section>
@@ -180,10 +222,38 @@
 <section class="cta-band">
   <div class="wrap">
     <h2>Two ways to see the full picture</h2>
-    <p>An executive track record and a hands-on engineering one — same person, tailored for the room you're in.</p>
+    <p>An executive track record and a hands-on engineering one — same person, tailored for the room you’re in.</p>
+    <ul class="resume-list" style="max-width:560px; margin:24px 0 20px;">
+      <li class="resume-row" style="background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.1);">
+        <div class="resume-row-left">
+          <div class="resume-row-icon" style="background:rgba(160,125,58,0.15);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div class="resume-row-info">
+            <a class="resume-row-name" href="#" data-pdf="assets/David_Sanchez_de_Groeve_VP_Technology_Director_CV.pdf" data-label="Executive CV" style="color:rgba(255,255,255,0.85);">Executive CV</a>
+            <div class="resume-row-meta">VP Technology &amp; Director track</div>
+          </div>
+        </div>
+        <a class="resume-download-btn" href="assets/David_Sanchez_de_Groeve_VP_Technology_Director_CV.pdf" download aria-label="Download Executive CV" title="Download" style="background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.1); color:rgba(255,255,255,0.6);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </a>
+      </li>
+      <li class="resume-row" style="background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.1);">
+        <div class="resume-row-left">
+          <div class="resume-row-icon" style="background:rgba(160,125,58,0.15);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div class="resume-row-info">
+            <a class="resume-row-name" href="#" data-pdf="assets/David_Sanchez_de_Groeve_AI_Architect_CV.pdf" data-label="AI Architect CV" style="color:rgba(255,255,255,0.85);">AI Architect CV</a>
+            <div class="resume-row-meta">Hands-on engineering track</div>
+          </div>
+        </div>
+        <a class="resume-download-btn" href="assets/David_Sanchez_de_Groeve_AI_Architect_CV.pdf" download aria-label="Download AI Architect CV" title="Download" style="background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.1); color:rgba(255,255,255,0.6);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </a>
+      </li>
+    </ul>
     <div class="btn-row">
-      <a class="btn primary" href="assets/David_Sanchez_de_Groeve_VP_Technology_Director_CV.pdf">Download Executive CV</a>
-      <a class="btn" href="assets/David_Sanchez_de_Groeve_AI_Architect_CV.pdf">Download AI Architect CV</a>
       <a class="btn" href="projects.html">View Projects →</a>
     </div>
   </div>
@@ -217,6 +287,107 @@
     <span>© 2026 David Sánchez de Groeve</span>
   </div>
 </footer>
+
+<!-- Booking Modal Overlay -->
+<div id="bookingModal" class="booking-modal-overlay">
+  <div class="booking-modal">
+    <div class="booking-modal-header">
+      <h3>Book a Meeting</h3>
+      <button class="booking-close-btn" aria-label="Close" id="closeBookingBtn">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    
+    <div class="booking-modal-body" id="bookingStep1">
+      <p class="booking-desc">Select a date from my availability below. Times shown in your local timezone.</p>
+      <div class="booking-calendar" id="bookingCalendar">
+        <!-- Calendar days will be generated here by JS -->
+      </div>
+      <div class="booking-slots-container" id="bookingSlotsContainer" style="display:none;">
+        <h4 id="selectedDateLabel">Select a time</h4>
+        <div class="booking-slots" id="bookingSlots">
+          <!-- Slots generated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <div class="booking-modal-body" id="bookingStep2" style="display:none;">
+      <h4 class="booking-time-label" id="bookingTimeLabel">...</h4>
+      <form id="bookingForm" class="booking-form">
+        <div class="form-group">
+          <label for="bookingName">Name</label>
+          <input type="text" id="bookingName" required placeholder="Jane Doe">
+        </div>
+        <div class="form-group">
+          <label for="bookingEmail">Email</label>
+          <input type="email" id="bookingEmail" required placeholder="jane@example.com">
+        </div>
+        <div class="form-group">
+          <label for="bookingTopic">Topic</label>
+          <input type="text" id="bookingTopic" required placeholder="e.g. AI Architecture Consultation">
+        </div>
+        <button type="submit" class="btn primary btn-block" style="width:100%">Confirm Meeting</button>
+        <button type="button" class="btn btn-block" id="bookingBackBtn" style="margin-top:8px; width:100%">Back</button>
+      </form>
+    </div>
+    
+    <div class="booking-modal-body" id="bookingStep3" style="display:none; text-align:center; padding: 32px 0;">
+      <div class="booking-success">
+        <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:var(--accent); margin-bottom: 16px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <h3>Meeting Confirmed</h3>
+        <p style="color:var(--ink-soft); margin-top: 8px;">A calendar invitation has been sent to your email.</p>
+        <button class="btn btn-block" id="bookingDoneBtn" style="margin-top:24px; width:100%">Done</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PDF Viewer Modal -->
+<div class="pdf-modal-overlay" id="pdfModalOverlay" role="dialog" aria-modal="true" aria-label="PDF Viewer">
+  <div class="pdf-modal-shell">
+    <div class="pdf-toolbar">
+      <span class="pdf-toolbar-title" id="pdfModalTitle">Loading…</span>
+      <div class="pdf-toolbar-controls">
+        <span class="pdf-page-info" id="pdfPageInfo">— / —</span>
+        <div class="pdf-divider"></div>
+        <button class="pdf-ctrl-btn" id="pdfPrevPage" title="Previous page" aria-label="Previous page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="pdf-ctrl-btn" id="pdfNextPage" title="Next page" aria-label="Next page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="pdf-divider"></div>
+        <button class="pdf-ctrl-btn" id="pdfZoomOut" title="Zoom out" aria-label="Zoom out">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </button>
+        <span class="pdf-zoom-label" id="pdfZoomLabel">100%</span>
+        <button class="pdf-ctrl-btn" id="pdfZoomIn" title="Zoom in" aria-label="Zoom in">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </button>
+        <button class="pdf-ctrl-btn" id="pdfZoomFit" title="Fit to width" aria-label="Fit to width">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        </button>
+        <div class="pdf-divider"></div>
+        <button class="pdf-close-btn" id="pdfModalClose" title="Close" aria-label="Close PDF viewer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="pdf-viewport" id="pdfViewport">
+      <div class="pdf-loading" id="pdfLoading">
+        <div class="pdf-spinner"></div>
+        <span>Loading PDF…</span>
+      </div>
+    </div>
+    <div class="pdf-download-bar">
+      <a id="pdfDownloadBtn" href="#" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download PDF
+      </a>
+    </div>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>

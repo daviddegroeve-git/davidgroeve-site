@@ -1,36 +1,65 @@
 document.addEventListener('DOMContentLoaded', function () {
 
   /* ═══════════════════════════════════════════
+     RANDOM HERO VIDEO
+     ═══════════════════════════════════════════ */
+  var heroVideoSource = document.querySelector('#heroVideo source');
+  var heroVideo = document.getElementById('heroVideo');
+  if (heroVideoSource && heroVideo) {
+    var videos = ['assets/DavidGroeveWorking.mp4', 'assets/DavidTeachingAIUniversity.mp4'];
+    var randomVideo = videos[Math.floor(Math.random() * videos.length)];
+    if (heroVideoSource.getAttribute('src') !== randomVideo) {
+      heroVideoSource.setAttribute('src', randomVideo);
+      heroVideo.load();
+    }
+  }
+
+  /* ═══════════════════════════════════════════
      MOBILE HAMBURGER MENU
      ═══════════════════════════════════════════ */
   var toggle = document.querySelector('.nav-toggle');
-  var navList = document.querySelector('.nav ul');
+  var navOverlay = document.getElementById('mobileNavOverlay');
+  var navClose = document.getElementById('mobileNavClose');
 
-  if (toggle && navList) {
+  function closeMenu() {
+    // Play exit animation, then actually hide
+    navOverlay.classList.add('closing');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    // Total exit duration: last item delay (0.18s) + animation duration (0.26s) ≈ 460ms
+    setTimeout(function () {
+      navOverlay.classList.remove('open', 'closing');
+      document.body.style.overflow = '';
+    }, 460);
+  }
+
+  if (toggle && navOverlay) {
     toggle.addEventListener('click', function () {
-      var isOpen = toggle.classList.toggle('open');
-      navList.classList.toggle('open', isOpen);
-      toggle.setAttribute('aria-expanded', isOpen);
-    });
-
-    // Close menu when clicking a link
-    navList.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        toggle.classList.remove('open');
-        navList.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-      });
-    });
-
-    // Close on outside click
-    document.addEventListener('click', function (e) {
-      if (!toggle.contains(e.target) && !navList.contains(e.target)) {
-        toggle.classList.remove('open');
-        navList.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
+      if (navOverlay.classList.contains('open')) {
+        closeMenu();
+      } else {
+        navOverlay.classList.remove('closing');
+        navOverlay.classList.add('open');
+        toggle.classList.add('open');
+        toggle.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
       }
     });
+
+    // X close button
+    if (navClose) {
+      navClose.addEventListener('click', closeMenu);
+    }
+
+    // Close menu when clicking a nav link (with exit animation)
+    navOverlay.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        closeMenu();
+      });
+    });
   }
+  // Keep navList reference for booking modal close logic
+  var navList = navOverlay;
 
   /* ═══════════════════════════════════════════
      FROSTED HEADER — border appears on scroll
@@ -173,4 +202,473 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  /* ═══════════════════════════════════════════
+     BOOKING MODAL LOGIC (Faux Busy)
+     ═══════════════════════════════════════════ */
+  var bookBtns = document.querySelectorAll('#bookMeetingBtn');
+  var bookingModal = document.getElementById('bookingModal');
+  var closeBookingBtn = document.getElementById('closeBookingBtn');
+  var bookingCalendar = document.getElementById('bookingCalendar');
+  var bookingSlotsContainer = document.getElementById('bookingSlotsContainer');
+  var bookingSlots = document.getElementById('bookingSlots');
+  var selectedDateLabel = document.getElementById('selectedDateLabel');
+  var bookingForm = document.getElementById('bookingForm');
+  var bookingTimeLabel = document.getElementById('bookingTimeLabel');
+  
+  var step1 = document.getElementById('bookingStep1');
+  var step2 = document.getElementById('bookingStep2');
+  var step3 = document.getElementById('bookingStep3');
+  var backBtn = document.getElementById('bookingBackBtn');
+  var doneBtn = document.getElementById('bookingDoneBtn');
+  
+  var selectedDate = null;
+  var selectedTime = null;
+
+  if (bookingModal) {
+    // Open modal
+    bookBtns.forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        // Close mobile menu if open
+        if (toggle && toggle.classList.contains('open')) {
+          toggle.classList.remove('open');
+          navList.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+        resetBooking();
+        bookingModal.classList.add('active');
+        generateCalendar();
+      });
+    });
+
+    // Close modal
+    closeBookingBtn.addEventListener('click', function () {
+      bookingModal.classList.remove('active');
+    });
+    
+    // Close modal on outside click
+    bookingModal.addEventListener('click', function (e) {
+      if (e.target === bookingModal) {
+        bookingModal.classList.remove('active');
+      }
+    });
+
+    // Handle form submit
+    bookingForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      step2.style.display = 'none';
+      step3.style.display = 'block';
+    });
+
+    // Back & Done buttons
+    backBtn.addEventListener('click', function () {
+      step2.style.display = 'none';
+      step1.style.display = 'block';
+    });
+    
+    doneBtn.addEventListener('click', function () {
+      bookingModal.classList.remove('active');
+    });
+  }
+
+  function resetBooking() {
+    step1.style.display = 'block';
+    step2.style.display = 'none';
+    step3.style.display = 'none';
+    bookingSlotsContainer.style.display = 'none';
+    selectedDate = null;
+    selectedTime = null;
+    bookingForm.reset();
+  }
+
+  // Seeded random number generator for faux consistency
+  function seededRandom(seed) {
+    var x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+  }
+
+  function generateCalendar() {
+    bookingCalendar.innerHTML = '';
+    
+    var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    days.forEach(function(d) {
+      var header = document.createElement('div');
+      header.className = 'cal-day-header';
+      header.textContent = d;
+      bookingCalendar.appendChild(header);
+    });
+
+    var today = new Date();
+    // Start from the Sunday of this week for alignment
+    var startDay = new Date(today);
+    startDay.setDate(today.getDate() - today.getDay());
+    
+    // Generate 14 days + offset
+    var totalCells = 21; 
+    
+    for (var i = 0; i < totalCells; i++) {
+      var d = new Date(startDay);
+      d.setDate(startDay.getDate() + i);
+      
+      var cell = document.createElement('div');
+      cell.className = 'cal-day';
+      cell.textContent = d.getDate();
+      
+      var isPast = d < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      var isWeekend = d.getDay() === 0 || d.getDay() === 6;
+      
+      if (isPast || isWeekend) {
+        cell.classList.add('disabled');
+      } else {
+        cell.classList.add('available');
+        cell.setAttribute('data-date', d.toISOString());
+        cell.addEventListener('click', handleDateSelect);
+      }
+      
+      bookingCalendar.appendChild(cell);
+    }
+  }
+
+  function handleDateSelect(e) {
+    document.querySelectorAll('.cal-day.available').forEach(function(el) {
+      el.classList.remove('active');
+    });
+    
+    e.target.classList.add('active');
+    selectedDate = new Date(e.target.getAttribute('data-date'));
+    
+    var dateString = selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    selectedDateLabel.textContent = dateString;
+    
+    generateSlots(selectedDate);
+    bookingSlotsContainer.style.display = 'block';
+  }
+
+  function generateSlots(date) {
+    bookingSlots.innerHTML = '';
+    
+    // Use date as seed to generate same times for a given day consistently
+    var seed = date.getTime();
+    
+    // We want 1 to 3 available slots to simulate a busy schedule
+    var numSlots = Math.floor(seededRandom(seed) * 3) + 1;
+    
+    // Possible times between 9am and 5pm
+    var possibleHours = [9, 10, 11, 13, 14, 15, 16];
+    
+    // Shuffle and pick `numSlots` times
+    var picked = [];
+    for(var i=0; i<numSlots; i++) {
+      var randIndex = Math.floor(seededRandom(seed + i) * possibleHours.length);
+      var hr = possibleHours.splice(randIndex, 1)[0];
+      picked.push(hr);
+    }
+    
+    picked.sort(function(a,b) { return a - b; });
+    
+    picked.forEach(function(hr) {
+      var ampm = hr >= 12 ? 'PM' : 'AM';
+      var dispHr = hr > 12 ? hr - 12 : hr;
+      var timeStr = dispHr + ':00 ' + ampm;
+      
+      var slot = document.createElement('div');
+      slot.className = 'time-slot';
+      slot.textContent = timeStr;
+      
+      slot.addEventListener('click', function() {
+        selectedTime = timeStr;
+        goToStep2();
+      });
+      
+      bookingSlots.appendChild(slot);
+    });
+  }
+
+  function goToStep2() {
+    step1.style.display = 'none';
+    step2.style.display = 'block';
+    
+    var dateString = selectedDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    bookingTimeLabel.textContent = dateString + ' at ' + selectedTime;
+  }
+
+  /* ═══════════════════════════════════════════
+     PDF VIEWER (PDF.js)
+     ═══════════════════════════════════════════ */
+  (function () {
+    var overlay       = document.getElementById('pdfModalOverlay');
+    var closeBtn      = document.getElementById('pdfModalClose');
+    var viewport      = document.getElementById('pdfViewport');
+    var loading       = document.getElementById('pdfLoading');
+    var titleEl       = document.getElementById('pdfModalTitle');
+    var pageInfoEl    = document.getElementById('pdfPageInfo');
+    var zoomLabel     = document.getElementById('pdfZoomLabel');
+    var prevBtn       = document.getElementById('pdfPrevPage');
+    var nextBtn       = document.getElementById('pdfNextPage');
+    var zoomInBtn     = document.getElementById('pdfZoomIn');
+    var zoomOutBtn    = document.getElementById('pdfZoomOut');
+    var zoomFitBtn    = document.getElementById('pdfZoomFit');
+    var downloadBtn   = document.getElementById('pdfDownloadBtn');
+
+    if (!overlay) return; // No PDF modal on this page
+
+    var pdfDoc        = null;
+    var currentScale  = 1.5;
+    var totalPages    = 0;
+    var currentPage   = 1;
+    var renderTask    = null;
+    var currentPdfUrl = '';
+    var pdfLoaded     = false;
+    var pdfjsLib      = null;
+
+    /* Lazy-load PDF.js from CDN on first use */
+    function loadPdfJs(cb) {
+      if (pdfjsLib) { cb(); return; }
+      var script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      script.onload = function () {
+        pdfjsLib = window['pdfjs-dist/build/pdf'];
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        cb();
+      };
+      document.head.appendChild(script);
+    }
+
+    /* Open modal */
+    function openModal(url, label) {
+      currentPdfUrl = url;
+      currentPage   = 1;
+      pdfDoc        = null;
+      pdfLoaded     = false;
+
+      // Update title and download link
+      titleEl.textContent     = label || 'PDF Viewer';
+      downloadBtn.href        = url;
+      downloadBtn.setAttribute('download', url.split('/').pop());
+
+      // Show loading, clear old pages
+      while (viewport.firstChild && viewport.firstChild !== loading) {
+        viewport.removeChild(viewport.firstChild);
+      }
+      loading.style.display = 'flex';
+
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+      loadPdfJs(function () {
+        pdfjsLib.getDocument(url).promise.then(function (doc) {
+          pdfDoc     = doc;
+          totalPages = doc.numPages;
+          pdfLoaded  = true;
+          renderAllPages();
+        }).catch(function (err) {
+          loading.innerHTML = '<span style="color:rgba(255,80,80,0.8)">Failed to load PDF.</span>';
+          console.error('PDF.js error:', err);
+        });
+      });
+    }
+
+    /* Render ALL pages stacked vertically */
+    function renderAllPages() {
+      // Remove old canvases
+      var old = viewport.querySelectorAll('.pdf-page-wrapper');
+      old.forEach(function (el) { el.remove(); });
+      loading.style.display = 'flex';
+
+      var rendered = 0;
+      for (var i = 1; i <= totalPages; i++) {
+        renderPage(i, function () {
+          rendered++;
+          if (rendered === totalPages) {
+            loading.style.display = 'none';
+            updatePageInfo();
+            scrollToPage(currentPage);
+          }
+        });
+      }
+    }
+
+    function renderPage(num, done) {
+      var pageIndex = num; // capture
+      pdfDoc.getPage(num).then(function (page) {
+        var viewport2 = page.getViewport({ scale: currentScale });
+        var wrapper   = document.createElement('div');
+        wrapper.className = 'pdf-page-wrapper';
+        wrapper.id        = 'pdfPage' + pageIndex;
+
+        var canvas    = document.createElement('canvas');
+        canvas.width  = viewport2.width;
+        canvas.height = viewport2.height;
+        wrapper.appendChild(canvas);
+
+        // Insert at correct position
+        var existingWrappers = viewport.querySelectorAll('.pdf-page-wrapper');
+        var inserted = false;
+        for (var k = 0; k < existingWrappers.length; k++) {
+          var existingNum = parseInt(existingWrappers[k].id.replace('pdfPage', ''), 10);
+          if (existingNum > pageIndex) {
+            viewport.insertBefore(wrapper, existingWrappers[k]);
+            inserted = true;
+            break;
+          }
+        }
+        if (!inserted) viewport.insertBefore(wrapper, loading);
+
+        var ctx = canvas.getContext('2d');
+        page.render({ canvasContext: ctx, viewport: viewport2 }).promise.then(function () {
+          if (done) done();
+        });
+      });
+    }
+
+    /* Calculate fit-to-width scale */
+    function getFitScale() {
+      var availableWidth = viewport.clientWidth - 40; // 20px padding each side
+      return pdfDoc ? pdfDoc.getPage(1).then(function (page) {
+        var vp = page.getViewport({ scale: 1 });
+        return Math.max(0.5, availableWidth / vp.width);
+      }) : Promise.resolve(1.5);
+    }
+
+    function applyZoom(newScale) {
+      currentScale = Math.min(3, Math.max(0.25, newScale));
+      zoomLabel.textContent = Math.round(currentScale * 100) + '%';
+      if (pdfLoaded) renderAllPages();
+    }
+
+    function updatePageInfo() {
+      pageInfoEl.textContent = currentPage + ' / ' + totalPages;
+    }
+
+    function scrollToPage(num) {
+      var target = document.getElementById('pdfPage' + num);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    /* Track visible page via IntersectionObserver */
+    function observePages() {
+      if (!('IntersectionObserver' in window)) return;
+      var obs = new IntersectionObserver(function (entries) {
+        var best = { ratio: 0, num: currentPage };
+        entries.forEach(function (e) {
+          if (e.intersectionRatio > best.ratio) {
+            best.ratio = e.intersectionRatio;
+            best.num   = parseInt(e.target.id.replace('pdfPage', ''), 10);
+          }
+        });
+        if (best.ratio > 0) {
+          currentPage = best.num;
+          updatePageInfo();
+        }
+      }, { root: viewport, threshold: [0, 0.25, 0.5, 0.75, 1] });
+
+      viewport.querySelectorAll('.pdf-page-wrapper').forEach(function (el) {
+        obs.observe(el);
+      });
+    }
+
+    /* Close modal */
+    function closeModal() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* ── Event listeners ── */
+    closeBtn.addEventListener('click', closeModal);
+
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closeModal();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (!overlay.classList.contains('open')) return;
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        if (currentPage < totalPages) { currentPage++; scrollToPage(currentPage); updatePageInfo(); }
+      }
+      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        if (currentPage > 1) { currentPage--; scrollToPage(currentPage); updatePageInfo(); }
+      }
+    });
+
+    prevBtn.addEventListener('click', function () {
+      if (currentPage > 1) { currentPage--; scrollToPage(currentPage); updatePageInfo(); }
+    });
+    nextBtn.addEventListener('click', function () {
+      if (currentPage < totalPages) { currentPage++; scrollToPage(currentPage); updatePageInfo(); }
+    });
+
+    zoomInBtn.addEventListener('click',  function () { applyZoom(currentScale + 0.25); });
+    zoomOutBtn.addEventListener('click', function () { applyZoom(currentScale - 0.25); });
+
+    zoomFitBtn.addEventListener('click', function () {
+      getFitScale().then(function (s) { applyZoom(s); });
+    });
+
+    /* Mouse-wheel zoom with Ctrl/Cmd held */
+    viewport.addEventListener('wheel', function (e) {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        applyZoom(currentScale + (e.deltaY < 0 ? 0.15 : -0.15));
+      }
+    }, { passive: false });
+
+    /* Wire up all .resume-row-name links on the page */
+    document.querySelectorAll('.resume-row-name[data-pdf]').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        openModal(link.getAttribute('data-pdf'), link.getAttribute('data-label'));
+      });
+    });
+
+    // Update zoom label initial value
+    zoomLabel.textContent = Math.round(currentScale * 100) + '%';
+  })();
+
+  /* ═══════════════════════════════════════════
+     SHARE DROPDOWNS
+     ═══════════════════════════════════════════ */
+  var shareToggles = document.querySelectorAll('.resume-share-toggle');
+  
+  if (shareToggles.length > 0) {
+    // Toggle dropdown when clicking the share button
+    shareToggles.forEach(function (toggle) {
+      toggle.addEventListener('click', function (e) {
+        e.stopPropagation(); // Prevent document click from immediately closing it
+        
+        var dropdown = this.nextElementSibling;
+        var isCurrentlyOpen = dropdown.classList.contains('show');
+        
+        // First, close all other open dropdowns
+        document.querySelectorAll('.share-dropdown.show').forEach(function (el) {
+          el.classList.remove('show');
+          el.previousElementSibling.setAttribute('aria-expanded', 'false');
+        });
+        
+        // Then toggle the clicked one
+        if (!isCurrentlyOpen) {
+          dropdown.classList.add('show');
+          this.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // Close any open dropdowns when clicking anywhere else on the page
+    document.addEventListener('click', function (e) {
+      document.querySelectorAll('.share-dropdown.show').forEach(function (el) {
+        el.classList.remove('show');
+        el.previousElementSibling.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Prevent closing when clicking inside the dropdown itself
+    document.querySelectorAll('.share-dropdown').forEach(function (dropdown) {
+      dropdown.addEventListener('click', function (e) {
+        e.stopPropagation();
+      });
+    });
+  }
+
 });
+
