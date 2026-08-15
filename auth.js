@@ -3,99 +3,98 @@ const SUPABASE_KEY = 'sb_publishable_T7GC3hfaUA0DAul1E6o2Ww_aUYc15_6';
 
 document.addEventListener('DOMContentLoaded', () => {
   const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  const authForm = document.getElementById('authForm');
-  const authSubmitBtn = document.getElementById('authSubmitBtn');
-  const authTitle = document.getElementById('authTitle');
-  const authSwitchLink = document.getElementById('authSwitchLink');
-  const authSwitchText = document.getElementById('authSwitchText');
   const authError = document.getElementById('authError');
-  const emailInput = document.getElementById('email');
-  const passwordInput = document.getElementById('password');
 
-  let isLogin = true;
+  // ── Sign-in form ──
+  const signinForm      = document.getElementById('signinForm');
+  const signinSubmitBtn = document.getElementById('signinSubmitBtn');
 
-  if (authSwitchLink) {
-    authSwitchLink.addEventListener('click', () => {
-      isLogin = !isLogin;
-      authTitle.textContent = isLogin ? 'Sign In' : 'Create Account';
-      authSubmitBtn.textContent = isLogin ? 'Sign In' : 'Sign Up';
-      authSwitchText.textContent = isLogin ? "Don't have an account? " : 'Already have an account? ';
-      authSwitchLink.textContent = isLogin ? 'Sign Up' : 'Sign In';
-      if (authError) authError.style.display = 'none';
-      if (emailInput) emailInput.value = '';
-      if (passwordInput) passwordInput.value = '';
-    });
-  }
-
-  if (authForm) {
-    authForm.addEventListener('submit', async (e) => {
+  if (signinForm) {
+    signinForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (authError) authError.style.display = 'none';
-      authSubmitBtn.disabled = true;
+      if (signinSubmitBtn) signinSubmitBtn.disabled = true;
 
-      const email = emailInput.value;
-      const password = passwordInput.value;
+      const email    = document.getElementById('signinEmail').value;
+      const password = document.getElementById('signinPassword').value;
 
       try {
-        if (isLogin) {
-          const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-          });
-          if (error) throw error;
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
 
-          const user = data.user;
-          const isAdmin = user?.user_metadata?.role === 'admin' || 
-                          user?.email?.toLowerCase().includes('admin') || 
-                          user?.email?.toLowerCase().includes('director@davidgroeve.com') ||
-                          user?.email?.toLowerCase().includes('davidgroeve.com');
+        const user    = data.user;
+        const isAdmin = user?.user_metadata?.role === 'admin' ||
+                        user?.email?.toLowerCase().includes('admin') ||
+                        user?.email?.toLowerCase().includes('director@davidgroeve.com') ||
+                        user?.email?.toLowerCase().includes('davidgroeve.com');
 
-          if (isAdmin) {
-            window.location.href = 'admin-panel.html';
-          } else {
-            const portalSelect = document.getElementById('portalSelect');
-            const activeChip = document.querySelector('.role-chip.active');
-            const targetPortal = portalSelect?.value || activeChip?.getAttribute('data-portal') || 'customer-portal.html';
-            window.location.href = targetPortal;
-          }
+        if (isAdmin) {
+          window.location.href = 'admin-panel.html';
         } else {
-          const { data, error } = await supabase.auth.signUp({
-            email,
-            password,
-          });
-          if (error) throw error;
-          if (authError) {
-            authError.style.display = 'block';
-            authError.style.color = 'green';
-            authError.innerHTML = 'Account created successfully!<br>You can now log in.';
-          }
-          if (data.session) {
-             const user = data.user;
-             const isAdmin = user?.user_metadata?.role === 'admin' || 
-                             user?.email?.toLowerCase().includes('admin') || 
-                             user?.email?.toLowerCase().includes('director@davidgroeve.com');
-
-             if (isAdmin) {
-               window.location.href = 'admin-panel.html';
-             } else {
-               const portalSelect = document.getElementById('portalSelect');
-               const activeChip = document.querySelector('.role-chip.active');
-               const targetPortal = portalSelect?.value || activeChip?.getAttribute('data-portal') || 'customer-portal.html';
-               window.location.href = targetPortal;
-             }
-          }
+          // Route to the portal the user selected in the sign-in dropdown
+          const portalSelect  = document.getElementById('portalSelect');
+          const targetPortal  = portalSelect?.value || 'customer-portal.html';
+          window.location.href = targetPortal;
         }
-      } catch (error) {
+      } catch (err) {
         if (authError) {
           authError.style.display = 'block';
-          authError.style.color = '#e53e3e';
-          authError.textContent = error.message;
+          authError.style.color   = '#ffb4ab';
+          authError.textContent   = err.message;
         }
       } finally {
-        authSubmitBtn.disabled = false;
+        if (signinSubmitBtn) signinSubmitBtn.disabled = false;
       }
     });
   }
+
+  // ── Multi-step sign-up (dispatched by login.html inline script) ──
+  document.addEventListener('doSignup', async (e) => {
+    const { email, password, accountType, portal } = e.detail;
+    const submitBtn = document.getElementById('signupSubmitBtn');
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            role:   accountType,   // e.g. 'student' | 'customer' | 'recruiter'
+            portal: portal         // e.g. 'student-portal.html'
+          }
+        }
+      });
+      if (error) throw error;
+
+      if (authError) {
+        authError.style.display = 'block';
+        authError.style.color   = '#86efac';
+        authError.innerHTML     = 'Account created! Check your email to confirm, then sign in.';
+      }
+
+      // If Supabase auto-confirms (e.g. email confirmation disabled), redirect immediately
+      if (data.session) {
+        const user    = data.user;
+        const isAdmin = user?.user_metadata?.role === 'admin' ||
+                        user?.email?.toLowerCase().includes('admin') ||
+                        user?.email?.toLowerCase().includes('director@davidgroeve.com');
+        setTimeout(() => {
+          window.location.href = isAdmin ? 'admin-panel.html' : (portal || 'customer-portal.html');
+        }, 1500);
+      }
+    } catch (err) {
+      if (authError) {
+        authError.style.display = 'block';
+        authError.style.color   = '#ffb4ab';
+        authError.textContent   = err.message;
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Create Account <span class="material-symbols-outlined text-base">check</span>';
+      }
+    }
+  });
 
   // Forgot Password Form Handling
   const forgotForm = document.getElementById('forgotForm');

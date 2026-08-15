@@ -4,6 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login — Executive Portal | David Sánchez de Groeve</title>
+  <meta name="description" content="Secure authentication gateway for the David Sánchez de Groeve executive platform.">
   <meta name="theme-color" content="#0F172A">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -54,11 +55,6 @@
       box-shadow: none;
       border-bottom-color: #eac076;
     }
-    .role-chip.active {
-      background-color: rgba(234, 192, 118, 0.15);
-      border-color: #eac076;
-      color: #eac076;
-    }
     .auth-error {
       color: #ffb4ab;
       font-size: 14px;
@@ -66,6 +62,107 @@
       margin-bottom: 1rem;
       display: none;
     }
+
+    /* Multi-step signup */
+    .signup-step { display: none; }
+    .signup-step.active { display: block; }
+
+    /* Step indicator dots */
+    .step-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #45474c;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .step-dot.done  { background: #eac076; }
+    .step-dot.active { background: #eac076; transform: scale(1.4); }
+
+    /* Account type cards */
+    .account-type-card {
+      border: 1px solid #45474c;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.25s, background 0.25s, transform 0.2s;
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      position: relative;
+    }
+    .account-type-card:hover {
+      border-color: rgba(234,192,118,0.5);
+      background: rgba(234,192,118,0.04);
+      transform: translateY(-1px);
+    }
+    .account-type-card.selected {
+      border-color: #eac076;
+      background: rgba(234,192,118,0.10);
+    }
+    .account-type-card .card-check {
+      position: absolute; top: 10px; right: 12px;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid #45474c;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.25s, background 0.25s;
+      flex-shrink: 0;
+    }
+    .account-type-card.selected .card-check {
+      border-color: #eac076;
+      background: #eac076;
+    }
+    .account-type-card.selected .card-check::after {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #020617;
+    }
+
+    /* Password strength */
+    #pwStrengthBar {
+      height: 4px;
+      border-radius: 2px;
+      background: #45474c;
+      overflow: hidden;
+    }
+    #pwStrengthFill {
+      height: 100%;
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.4s ease, background-color 0.4s ease;
+    }
+    .pw-rule {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace;
+      color: #c5c6cc;
+      transition: color 0.25s;
+    }
+    .pw-rule .rule-icon {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 1.5px solid #45474c;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 9px;
+      transition: border-color 0.25s, background 0.25s;
+      color: transparent;
+    }
+    .pw-rule.met { color: #86efac; }
+    .pw-rule.met .rule-icon {
+      border-color: #86efac;
+      background: rgba(134,239,172,0.15);
+      color: #86efac;
+    }
+
+    /* Step slide animation */
+    @keyframes stepIn {
+      from { opacity: 0; transform: translateX(18px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .signup-step.active { animation: stepIn 0.3s ease forwards; }
   </style>
 </head>
 <body class="bg-deep-midnight text-on-surface min-h-screen flex flex-col justify-between login-bg font-body-md relative antialiased">
@@ -85,7 +182,7 @@
   <!-- Decorative line -->
   <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-secondary to-transparent opacity-40 pointer-events-none"></div>
 
-  <!-- Main Login Card -->
+  <!-- Main Card -->
   <main class="w-full max-w-md mx-auto px-4 py-8 relative z-10 my-auto">
     <!-- Header / Brand -->
     <div class="text-center mb-8">
@@ -93,17 +190,25 @@
       <h2 class="font-data-mono text-xs text-secondary tracking-widest uppercase font-semibold">Executive Gateway</h2>
     </div>
 
-    <!-- Login Card -->
+    <!-- Auth Card -->
     <div class="bg-slate-surface border-t border-tertiary/30 rounded-lg shadow-2xl p-8 md:p-10 relative overflow-hidden">
       <!-- Blueprint decorative lines -->
       <div class="absolute top-0 right-0 w-16 h-16 border-l border-b border-tertiary/10 opacity-50 pointer-events-none"></div>
       <div class="absolute bottom-0 left-0 w-16 h-16 border-r border-t border-tertiary/10 opacity-50 pointer-events-none"></div>
 
-      <div class="mb-6 relative z-10">
-        <h3 id="authTitle" class="font-headline-md text-2xl text-on-surface mb-4">Sign In</h3>
+      <div class="relative z-10">
+        <!-- Title row -->
+        <div class="flex items-center justify-between mb-4">
+          <h3 id="authTitle" class="font-headline-md text-2xl text-on-surface">Sign In</h3>
+          <div id="stepIndicator" class="flex items-center gap-2 hidden">
+            <div class="step-dot active" id="dot1"></div>
+            <div class="step-dot" id="dot2"></div>
+            <div class="step-dot" id="dot3"></div>
+          </div>
+        </div>
 
-        <!-- Portal Selector Dropdown -->
-        <div class="relative mb-6">
+        <!-- Portal selector (sign-in only) -->
+        <div id="portalSelectorWrap" class="relative mb-6">
           <label class="font-data-mono text-xs text-on-surface-variant block mb-1.5" for="portalSelect">Portal Destination</label>
           <div class="relative flex items-center">
             <span id="portalIcon" class="material-symbols-outlined text-secondary mr-3 text-xl pointer-events-none">folder_shared</span>
@@ -115,73 +220,423 @@
             <span class="material-symbols-outlined absolute right-0 text-on-surface-variant pointer-events-none text-lg">expand_more</span>
           </div>
         </div>
+
+        <!-- Error / success message -->
+        <div id="authError" class="auth-error"></div>
+
+        <!-- SIGN-IN FORM -->
+        <form id="signinForm" class="space-y-6">
+          <div class="relative">
+            <label class="font-data-mono text-xs text-on-surface-variant block mb-1" for="signinEmail">Identity [Email]</label>
+            <div class="flex items-end">
+              <span class="material-symbols-outlined text-on-surface-variant mr-3 pb-2 text-xl">person</span>
+              <input class="minimal-input w-full text-on-surface focus:ring-0 focus:outline-none py-2 text-sm"
+                     id="signinEmail" name="email" placeholder="user@domain.com"
+                     autocomplete="username" required type="email"/>
+            </div>
+          </div>
+
+          <div class="relative">
+            <div class="flex justify-between items-baseline mb-1">
+              <label class="font-data-mono text-xs text-on-surface-variant" for="signinPassword">Credentials [Password]</label>
+              <a href="forgot-password.html" class="font-data-mono text-xs text-secondary hover:underline transition-colors">Forgot?</a>
+            </div>
+            <div class="flex items-end">
+              <span class="material-symbols-outlined text-on-surface-variant mr-3 pb-2 text-xl">key</span>
+              <input class="minimal-input w-full text-on-surface focus:ring-0 focus:outline-none py-2 text-sm"
+                     id="signinPassword" name="password" placeholder="••••••••"
+                     autocomplete="current-password" required type="password"/>
+            </div>
+          </div>
+
+          <div class="pt-4">
+            <button id="signinSubmitBtn" class="w-full bg-secondary text-ink-black font-data-mono text-xs uppercase tracking-widest font-bold py-3.5 hover:bg-secondary-fixed transition-colors flex items-center justify-center gap-2 group" type="submit">
+              Sign In
+              <span class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </button>
+          </div>
+
+          <div class="text-center pt-2 text-xs font-data-mono text-on-surface-variant">
+            <span>Don't have an account? </span>
+            <a id="switchToSignup" class="text-secondary hover:underline cursor-pointer font-semibold">Sign Up</a>
+          </div>
+        </form>
+
+        <!-- MULTI-STEP SIGN-UP FLOW -->
+        <div id="signupFlow" class="hidden">
+
+          <!-- STEP 1 — Email -->
+          <div class="signup-step active" id="signupStep1">
+            <p class="font-data-mono text-[10px] text-secondary uppercase tracking-widest mb-5">Step 1 of 3 &mdash; Identity</p>
+            <div class="mb-4">
+              <label class="font-data-mono text-xs text-on-surface-variant block mb-1" for="signupEmail">Email Address</label>
+              <p class="text-xs text-on-surface-variant/70 mb-3 leading-relaxed">
+                Enter the email address you will use to access this platform. A valid email is required to verify your identity and receive platform notifications.
+              </p>
+              <div class="flex items-end">
+                <span class="material-symbols-outlined text-on-surface-variant mr-3 pb-2 text-xl">alternate_email</span>
+                <input class="minimal-input w-full text-on-surface focus:ring-0 focus:outline-none py-2 text-sm"
+                       id="signupEmail" name="signupEmail" placeholder="user@domain.com"
+                       autocomplete="email" type="email"/>
+              </div>
+              <p id="emailError" class="font-data-mono text-[10px] text-red-400 mt-2 hidden">Please enter a valid email address.</p>
+            </div>
+            <button id="step1Next" class="w-full mt-6 bg-secondary text-ink-black font-data-mono text-xs uppercase tracking-widest font-bold py-3.5 hover:bg-secondary-fixed transition-colors flex items-center justify-center gap-2 group" type="button">
+              Continue
+              <span class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </button>
+          </div>
+
+          <!-- STEP 2 — Account Type -->
+          <div class="signup-step" id="signupStep2">
+            <p class="font-data-mono text-[10px] text-secondary uppercase tracking-widest mb-5">Step 2 of 3 &mdash; Account Type</p>
+            <p class="text-xs text-on-surface-variant/70 mb-4 leading-relaxed">
+              Select the type of account that matches your role on this platform. This determines which portal you will have access to and the features available to you.
+            </p>
+            <div class="space-y-3" role="radiogroup" aria-label="Account type">
+
+              <div class="account-type-card" id="typeStudent" data-type="student" data-portal="student-portal.html" role="radio" aria-checked="false" tabindex="0">
+                <span class="material-symbols-outlined text-secondary text-2xl mt-0.5">school</span>
+                <div class="flex-1 min-w-0">
+                  <p class="font-headline-md text-sm text-on-surface font-semibold mb-0.5">Student</p>
+                  <p class="text-[11px] text-on-surface-variant leading-snug">Access coursework, project reviews, and academic resources through the student portal.</p>
+                </div>
+                <div class="card-check"></div>
+              </div>
+
+              <div class="account-type-card" id="typeCustomer" data-type="customer" data-portal="customer-portal.html" role="radio" aria-checked="false" tabindex="0">
+                <span class="material-symbols-outlined text-secondary text-2xl mt-0.5">folder_shared</span>
+                <div class="flex-1 min-w-0">
+                  <p class="font-headline-md text-sm text-on-surface font-semibold mb-0.5">Customer</p>
+                  <p class="text-[11px] text-on-surface-variant leading-snug">Manage ongoing engagements, deliverables, and communications through the customer portal.</p>
+                </div>
+                <div class="card-check"></div>
+              </div>
+
+              <div class="account-type-card" id="typeRecruiter" data-type="recruiter" data-portal="recruiter-portal.html" role="radio" aria-checked="false" tabindex="0">
+                <span class="material-symbols-outlined text-secondary text-2xl mt-0.5">badge</span>
+                <div class="flex-1 min-w-0">
+                  <p class="font-headline-md text-sm text-on-surface font-semibold mb-0.5">Recruiter</p>
+                  <p class="text-[11px] text-on-surface-variant leading-snug">Access professional background, skill assessments, and hiring documentation through the recruiter portal.</p>
+                </div>
+                <div class="card-check"></div>
+              </div>
+            </div>
+            <p id="typeError" class="font-data-mono text-[10px] text-red-400 mt-2 hidden">Please select an account type to continue.</p>
+            <div class="flex gap-3 mt-6">
+              <button id="step2Back" class="flex-none px-5 py-3.5 border border-outline-variant text-on-surface-variant font-data-mono text-xs uppercase tracking-widest hover:border-secondary hover:text-secondary transition-colors flex items-center gap-2 group" type="button">
+                <span class="material-symbols-outlined text-base group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                Back
+              </button>
+              <button id="step2Next" class="flex-1 bg-secondary text-ink-black font-data-mono text-xs uppercase tracking-widest font-bold py-3.5 hover:bg-secondary-fixed transition-colors flex items-center justify-center gap-2 group" type="button">
+                Continue
+                <span class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 3 — Password -->
+          <div class="signup-step" id="signupStep3">
+            <p class="font-data-mono text-[10px] text-secondary uppercase tracking-widest mb-5">Step 3 of 3 &mdash; Credentials</p>
+            <p class="text-xs text-on-surface-variant/70 mb-4 leading-relaxed">
+              Create a strong, unique password to secure your account. Your password must satisfy all requirements below before you can proceed.
+            </p>
+
+            <div class="mb-4">
+              <label class="font-data-mono text-xs text-on-surface-variant block mb-1" for="signupPassword">Password</label>
+              <div class="flex items-end">
+                <span class="material-symbols-outlined text-on-surface-variant mr-3 pb-2 text-xl">key</span>
+                <input class="minimal-input w-full text-on-surface focus:ring-0 focus:outline-none py-2 text-sm"
+                       id="signupPassword" name="signupPassword" placeholder="••••••••"
+                       autocomplete="new-password" type="password"/>
+              </div>
+            </div>
+
+            <!-- Strength bar -->
+            <div class="mb-3">
+              <div class="flex justify-between items-center mb-1.5">
+                <span class="font-data-mono text-[10px] text-on-surface-variant uppercase tracking-wider">Password Strength</span>
+                <span id="pwStrengthLabel" class="font-data-mono text-[10px] text-on-surface-variant">&mdash;</span>
+              </div>
+              <div id="pwStrengthBar">
+                <div id="pwStrengthFill"></div>
+              </div>
+            </div>
+
+            <!-- Rules checklist -->
+            <div class="space-y-1.5 mb-5" aria-live="polite">
+              <div class="pw-rule" id="rule-length">
+                <div class="rule-icon">&#10003;</div>
+                <span>At least 8 characters</span>
+              </div>
+              <div class="pw-rule" id="rule-lower">
+                <div class="rule-icon">&#10003;</div>
+                <span>At least one lowercase letter</span>
+              </div>
+              <div class="pw-rule" id="rule-upper">
+                <div class="rule-icon">&#10003;</div>
+                <span>At least one uppercase letter</span>
+              </div>
+              <div class="pw-rule" id="rule-number">
+                <div class="rule-icon">&#10003;</div>
+                <span>At least one number</span>
+              </div>
+              <div class="pw-rule" id="rule-symbol">
+                <div class="rule-icon">&#10003;</div>
+                <span>At least one special character (!@#$&hellip;)</span>
+              </div>
+            </div>
+
+            <!-- Confirm password -->
+            <div class="mb-2">
+              <label class="font-data-mono text-xs text-on-surface-variant block mb-1" for="signupConfirm">Confirm Password</label>
+              <div class="flex items-end">
+                <span class="material-symbols-outlined text-on-surface-variant mr-3 pb-2 text-xl">lock</span>
+                <input class="minimal-input w-full text-on-surface focus:ring-0 focus:outline-none py-2 text-sm"
+                       id="signupConfirm" name="signupConfirm" placeholder="••••••••"
+                       autocomplete="new-password" type="password"/>
+              </div>
+              <p id="confirmPasswordMatch" class="font-data-mono text-[10px] mt-1 min-h-[14px]"></p>
+            </div>
+
+            <div class="flex gap-3 mt-6">
+              <button id="step3Back" class="flex-none px-5 py-3.5 border border-outline-variant text-on-surface-variant font-data-mono text-xs uppercase tracking-widest hover:border-secondary hover:text-secondary transition-colors flex items-center gap-2 group" type="button">
+                <span class="material-symbols-outlined text-base group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                Back
+              </button>
+              <button id="signupSubmitBtn" class="flex-1 bg-secondary text-ink-black font-data-mono text-xs uppercase tracking-widest font-bold py-3.5 hover:bg-secondary-fixed transition-colors flex items-center justify-center gap-2 group" type="button">
+                Create Account
+                <span class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">check</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Switch back -->
+          <div class="text-center pt-5 text-xs font-data-mono text-on-surface-variant">
+            <span>Already have an account? </span>
+            <a id="switchToSignin" class="text-secondary hover:underline cursor-pointer font-semibold">Sign In</a>
+          </div>
+        </div><!-- /signupFlow -->
+
       </div>
-
-      <div id="authError" class="auth-error"></div>
-
-      <form id="authForm" class="space-y-6 relative z-10">
-        <!-- Email Field -->
-        <div class="relative">
-          <label class="font-data-mono text-xs text-on-surface-variant block mb-1" for="email">Identity [Email]</label>
-          <div class="flex items-end">
-            <span class="material-symbols-outlined text-on-surface-variant mr-3 pb-2 text-xl">person</span>
-            <input class="minimal-input w-full text-on-surface focus:ring-0 focus:outline-none py-2 text-sm" id="email" name="email" placeholder="user@domain.com" autocomplete="username" required type="email"/>
-          </div>
-        </div>
-
-        <!-- Password Field -->
-        <div class="relative">
-          <div class="flex justify-between items-baseline mb-1">
-            <label class="font-data-mono text-xs text-on-surface-variant" for="password">Credentials [Password]</label>
-            <a href="forgot-password.html" class="font-data-mono text-xs text-secondary hover:underline transition-colors">Forgot?</a>
-          </div>
-          <div class="flex items-end">
-            <span class="material-symbols-outlined text-on-surface-variant mr-3 pb-2 text-xl">key</span>
-            <input class="minimal-input w-full text-on-surface focus:ring-0 focus:outline-none py-2 text-sm" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required type="password"/>
-          </div>
-        </div>
-
-        <!-- Submit Button -->
-        <div class="pt-4">
-          <button id="authSubmitBtn" class="w-full bg-secondary text-ink-black font-data-mono text-xs uppercase tracking-widest font-bold py-3.5 hover:bg-secondary-fixed transition-colors flex items-center justify-center gap-2 group" type="submit">
-            Sign In
-            <span class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
-          </button>
-        </div>
-
-        <!-- Toggle Auth Mode -->
-        <div class="text-center pt-2 text-xs font-data-mono text-on-surface-variant">
-          <span id="authSwitchText">Don't have an account? </span>
-          <a id="authSwitchLink" class="text-secondary hover:underline cursor-pointer font-semibold">Sign Up</a>
-        </div>
-      </form>
     </div>
 
-    <!-- Subtle Footer -->
     <div class="text-center mt-8 opacity-60 font-data-mono text-[10px] uppercase tracking-wider text-on-surface-variant">
-      <p>Connection Secure • Encrypted Executive Environment</p>
+      <p>Connection Secure &bull; Encrypted Executive Environment</p>
     </div>
   </main>
 
   <footer class="p-6 text-center text-xs text-on-surface-variant/70 font-data-mono flex items-center justify-center gap-3">
     <a href="privacy-policy.html" class="hover:text-secondary transition-colors">Privacy Policy</a>
-    <span>•</span>
+    <span>&bull;</span>
     <a href="terms-of-use.html" class="hover:text-secondary transition-colors">Terms &amp; Conditions of Use</a>
   </footer>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      /* Portal icon sync */
       const portalSelect = document.getElementById('portalSelect');
-      const portalIcon = document.getElementById('portalIcon');
+      const portalIcon   = document.getElementById('portalIcon');
       if (portalSelect && portalIcon) {
         portalSelect.addEventListener('change', () => {
-          const selectedOption = portalSelect.options[portalSelect.selectedIndex];
-          const icon = selectedOption.getAttribute('data-icon') || 'folder_shared';
+          const icon = portalSelect.options[portalSelect.selectedIndex].getAttribute('data-icon') || 'folder_shared';
           portalIcon.textContent = icon;
         });
       }
+
+      /* UI refs */
+      const signinForm    = document.getElementById('signinForm');
+      const signupFlow    = document.getElementById('signupFlow');
+      const portalWrap    = document.getElementById('portalSelectorWrap');
+      const authTitle     = document.getElementById('authTitle');
+      const stepIndicator = document.getElementById('stepIndicator');
+      const authError     = document.getElementById('authError');
+
+      /* ── Mode toggles ── */
+      function showSignin() {
+        signupFlow.classList.add('hidden');
+        signinForm.classList.remove('hidden');
+        portalWrap.classList.remove('hidden');
+        authTitle.textContent = 'Sign In';
+        stepIndicator.classList.add('hidden');
+        authError.style.display = 'none';
+        resetSignup();
+      }
+
+      function showSignup() {
+        signinForm.classList.add('hidden');
+        signupFlow.classList.remove('hidden');
+        portalWrap.classList.add('hidden');
+        authTitle.textContent = 'Create Account';
+        stepIndicator.classList.remove('hidden');
+        authError.style.display = 'none';
+        goToStep(1);
+      }
+
+      document.getElementById('switchToSignup').addEventListener('click', showSignup);
+      document.getElementById('switchToSignin').addEventListener('click', showSignin);
+
+      /* ── Steps ── */
+      const dots = [
+        document.getElementById('dot1'),
+        document.getElementById('dot2'),
+        document.getElementById('dot3')
+      ];
+
+      function goToStep(n) {
+        document.querySelectorAll('.signup-step').forEach(s => s.classList.remove('active'));
+        document.getElementById('signupStep' + n).classList.add('active');
+        dots.forEach((d, i) => {
+          d.classList.remove('active', 'done');
+          if (i + 1 < n)  d.classList.add('done');
+          if (i + 1 === n) d.classList.add('active');
+        });
+      }
+
+      function resetSignup() {
+        const signupEmailEl = document.getElementById('signupEmail');
+        const signupPassEl  = document.getElementById('signupPassword');
+        const signupCfmEl   = document.getElementById('signupConfirm');
+        if (signupEmailEl) signupEmailEl.value = '';
+        if (signupPassEl)  signupPassEl.value  = '';
+        if (signupCfmEl)   signupCfmEl.value   = '';
+        document.querySelectorAll('.account-type-card').forEach(c => {
+          c.classList.remove('selected');
+          c.setAttribute('aria-checked', 'false');
+        });
+        selectedAccountType = null;
+        selectedPortal = null;
+        updateStrengthUI('');
+        const cfmMatch = document.getElementById('confirmPasswordMatch');
+        if (cfmMatch) cfmMatch.textContent = '';
+        goToStep(1);
+      }
+
+      /* ── Step 1: Email validation ── */
+      document.getElementById('step1Next').addEventListener('click', () => {
+        const email = document.getElementById('signupEmail').value.trim();
+        const err   = document.getElementById('emailError');
+        const rx    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!rx.test(email)) { err.classList.remove('hidden'); return; }
+        err.classList.add('hidden');
+        goToStep(2);
+      });
+
+      /* Allow Enter key on email field */
+      document.getElementById('signupEmail').addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); document.getElementById('step1Next').click(); }
+      });
+
+      /* ── Step 2: Account type selection ── */
+      let selectedAccountType = null;
+      let selectedPortal = null;
+
+      document.querySelectorAll('.account-type-card').forEach(card => {
+        function selectCard() {
+          document.querySelectorAll('.account-type-card').forEach(c => {
+            c.classList.remove('selected');
+            c.setAttribute('aria-checked', 'false');
+          });
+          card.classList.add('selected');
+          card.setAttribute('aria-checked', 'true');
+          selectedAccountType = card.dataset.type;
+          selectedPortal      = card.dataset.portal;
+          document.getElementById('typeError').classList.add('hidden');
+        }
+        card.addEventListener('click', selectCard);
+        card.addEventListener('keydown', e => {
+          if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); selectCard(); }
+        });
+      });
+
+      document.getElementById('step2Back').addEventListener('click', () => goToStep(1));
+      document.getElementById('step2Next').addEventListener('click', () => {
+        if (!selectedAccountType) { document.getElementById('typeError').classList.remove('hidden'); return; }
+        goToStep(3);
+      });
+
+      /* ── Step 3: Password strength ── */
+      const rules = {
+        length: { el: document.getElementById('rule-length'), fn: p => p.length >= 8 },
+        lower:  { el: document.getElementById('rule-lower'),  fn: p => /[a-z]/.test(p) },
+        upper:  { el: document.getElementById('rule-upper'),  fn: p => /[A-Z]/.test(p) },
+        number: { el: document.getElementById('rule-number'), fn: p => /\d/.test(p) },
+        symbol: { el: document.getElementById('rule-symbol'), fn: p => /[^A-Za-z0-9]/.test(p) }
+      };
+
+      const strengthColors = ['#ef4444','#f97316','#eac076','#86efac','#22c55e'];
+      const strengthLabels = ['Very Weak','Weak','Fair','Strong','Very Strong'];
+
+      function updateStrengthUI(pw) {
+        let score = 0;
+        Object.values(rules).forEach(r => {
+          const met = r.fn(pw);
+          r.el.classList.toggle('met', met);
+          if (met) score++;
+        });
+        const pct  = pw.length === 0 ? 0 : Math.round((score / 5) * 100);
+        const fill = document.getElementById('pwStrengthFill');
+        const lbl  = document.getElementById('pwStrengthLabel');
+        fill.style.width = pct + '%';
+        fill.style.backgroundColor = pw.length === 0 ? 'transparent' : (strengthColors[score - 1] || strengthColors[0]);
+        lbl.textContent  = pw.length === 0 ? '\u2014' : (strengthLabels[score - 1] || 'Very Weak') + ' \u00b7 ' + pct + '%';
+        lbl.style.color  = pw.length === 0 ? '#c5c6cc' : (strengthColors[score - 1] || strengthColors[0]);
+      }
+
+      document.getElementById('signupPassword').addEventListener('input', function () {
+        updateStrengthUI(this.value);
+        checkConfirmMatch();
+      });
+
+      function checkConfirmMatch() {
+        const pw  = document.getElementById('signupPassword').value;
+        const cfm = document.getElementById('signupConfirm').value;
+        const el  = document.getElementById('confirmPasswordMatch');
+        if (!cfm) { el.textContent = ''; return; }
+        if (pw === cfm) {
+          el.textContent = '\u2713 Passwords match';
+          el.style.color = '#86efac';
+        } else {
+          el.textContent = '\u2717 Passwords do not match';
+          el.style.color = '#f87171';
+        }
+      }
+
+      document.getElementById('signupConfirm').addEventListener('input', checkConfirmMatch);
+      document.getElementById('step3Back').addEventListener('click', () => goToStep(2));
+
+      /* ── Submit signup via custom event (handled by auth.js) ── */
+      document.getElementById('signupSubmitBtn').addEventListener('click', () => {
+        const pw  = document.getElementById('signupPassword').value;
+        const cfm = document.getElementById('signupConfirm').value;
+
+        const allMet = Object.values(rules).every(r => r.fn(pw));
+        if (!allMet) {
+          authError.style.display = 'block';
+          authError.style.color   = '#ffb4ab';
+          authError.textContent   = 'Please ensure your password meets all requirements.';
+          return;
+        }
+        if (pw !== cfm) {
+          authError.style.display = 'block';
+          authError.style.color   = '#ffb4ab';
+          authError.textContent   = 'Passwords do not match. Please verify and try again.';
+          return;
+        }
+
+        authError.style.display = 'none';
+        const btn = document.getElementById('signupSubmitBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="material-symbols-outlined text-base" style="animation:spin 1s linear infinite">autorenew</span>';
+
+        const email = document.getElementById('signupEmail').value.trim();
+        document.dispatchEvent(new CustomEvent('doSignup', {
+          detail: { email, password: pw, accountType: selectedAccountType, portal: selectedPortal }
+        }));
+      });
     });
   </script>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="auth.js"></script>
 </body>
