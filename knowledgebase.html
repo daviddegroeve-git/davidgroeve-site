@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Knowledge Base | Executive Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "deep-midnight": "#0F172A",
+          "surface-container-low": "#1a1c1c",
+          "surface-container": "#1e2020",
+          "surface-container-high": "#282a2b",
+          "surface-container-highest": "#333535",
+          "slate-surface": "#1E293B",
+          "on-surface": "#e2e2e2",
+          "on-surface-variant": "#c5c6cc",
+          "outline": "#8f9096",
+          "outline-variant": "#45474c",
+          "tertiary": "#b7c8e1",
+          "tertiary-container": "#142438",
+          "secondary": "#eac076",
+          "primary": "#bec7da",
+          "primary-container": "#1b2432",
+          "ink-black": "#020617",
+        },
+        fontFamily: {
+          "display-lg": ["Fraunces"],
+          "headline-md": ["Fraunces"],
+          "body-md": ["Inter"],
+          "body-lg": ["Inter"],
+          "label-caps": ["Inter"],
+          "data-mono": ["IBM Plex Mono"],
+        },
+        fontSize: {
+          "display-lg": ["48px", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "600" }],
+          "headline-md": ["32px", { lineHeight: "1.3", fontWeight: "500" }],
+          "body-lg": ["18px", { lineHeight: "1.6", fontWeight: "400" }],
+          "body-md": ["16px", { lineHeight: "1.5", fontWeight: "400" }],
+          "label-caps": ["12px", { lineHeight: "1", letterSpacing: "0.1em", fontWeight: "700" }],
+          "data-mono": ["14px", { lineHeight: "1.4", fontWeight: "500" }],
+        }
+      }
+    }
+  }
+</script>
+<style>
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in-up { animation: fade-in-up 0.6s ease forwards; }
+  .kb-card:hover .kb-icon { transform: scale(1.1); color: #eac076; }
+  .kb-icon { transition: transform 0.2s ease, color 0.2s ease; }
+</style>
+</head>
+<body class="bg-deep-midnight text-on-surface font-body-md antialiased min-h-screen relative overflow-x-hidden">
+
+  <!-- Ambient glow -->
+  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(circle at 20% 20%, rgba(183,200,225,0.04) 0%, transparent 50%);"></div>
+
+  <!-- Top bar -->
+  <header class="sticky top-0 z-50 bg-deep-midnight/80 backdrop-blur-md border-b border-outline-variant/30 px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <a href="javascript:history.back()" class="flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors group">
+        <span class="material-symbols-outlined text-lg group-hover:-translate-x-1 transition-transform">arrow_back</span>
+        <span class="font-label-caps text-label-caps">Back to Portal</span>
+      </a>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-secondary">help</span>
+      <span class="font-headline-md text-lg text-on-surface" style="font-family: Fraunces, serif;">Knowledge Base</span>
+    </div>
+    <div class="hidden sm:flex items-center gap-2 bg-surface-container border border-outline-variant/30 rounded px-3 py-1.5">
+      <span class="material-symbols-outlined text-outline text-sm">search</span>
+      <input type="text" id="search-input" placeholder="Search articles..." class="bg-transparent text-on-surface text-sm outline-none w-40 placeholder-outline font-body-md" />
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6 py-12">
+
+    <!-- Hero -->
+    <div class="fade-in-up mb-16 text-center">
+      <p class="font-label-caps text-label-caps text-secondary mb-3 tracking-widest">EXECUTIVE PORTAL SUPPORT</p>
+      <h1 class="font-display-lg text-[36px] md:text-[48px] text-on-surface mb-4" style="font-family: Fraunces, serif; font-weight: 600; letter-spacing: -0.02em;">
+        How can we help?
+      </h1>
+      <p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mx-auto">
+        Find answers, guides, and documentation for the Executive Portal platform.
+      </p>
+    </div>
+
+    <!-- Category Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" id="categories-grid">
+
+      <!-- Getting Started -->
+      <div class="kb-card bg-slate-surface border-t border-tertiary p-6 rounded cursor-pointer group hover:shadow-lg transition-all duration-200" data-category="getting-started">
+        <div class="flex items-start gap-4 mb-4">
+          <div class="w-10 h-10 rounded bg-primary-container flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary kb-icon">rocket_launch</span>
+          </div>
+          <div>
+            <h3 class="font-headline-md text-[18px] text-on-surface mb-1" style="font-family: Fraunces, serif;">Getting Started</h3>
+            <p class="font-body-md text-sm text-on-surface-variant">Set up your account, access your portal, and navigate the platform.</p>
+          </div>
+        </div>
+        <ul class="space-y-2 border-t border-outline-variant/20 pt-4">
+          <li class="kb-article flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors cursor-pointer text-sm font-body-md" data-article="login">
+            <span class="material-symbols-outlined text-xs">chevron_right</span> How to log in to your portal
+          </li>
+          <li class="kb-article flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors cursor-pointer text-sm font-body-md" data-article="roles">
+            <span class="material-symbols-outlined text-xs">chevron_right</span> Understanding user roles
+          </li>
+          <li class="kb-article flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors cursor-pointer text-sm font-body-md" data-article="navigation">
+            <span class="material-symbols-outlined text-xs">chevron_right</span> Navigating the dashboard
+          </li>
+        </ul>
+      </div>
+
+      <!-- Account & Security -->
+      <div class="kb-card bg-slate-surface border-t border-tertiary p-6 rounded cursor-pointer group hover:shadow-lg transition-all duration-200" data-category="account">
+        <div class="flex items-start gap-4 mb-4">
+          <div class="w-10 h-10 rounded bg-primary-container flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary kb-icon">shield</span>
+          </div>
+          <div>
+            <h3 class="font-headline-md text-[18px] text-on-surface mb-1" style="font-family: Fraunces, serif;">Account & Security</h3>
+            <p class="font-body-md text-sm text-on-surface-variant">Manage your credentials, reset passwords, and secure your session.</p>
+          </div>
+        </div>
+        <ul class="space-y-2 border-t border-outline-variant/20 pt-4">
+          <li class="kb-article flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors cursor-pointer text-sm font-body-md" data-article="reset-password">
+            <span class="material-symbols-outlined text-xs">chevron_right</span> How to reset your password
+          </li>
+          <li class="kb-article flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors cursor-pointer text-sm font-body-md" data-article="session">
+            <span class="material-symbols-outlined text-xs">chevron_right</span> Session management & security
+          </li>
+          <li class="kb-article flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors cursor-pointer text-sm font-body-md" data-article="profile">
+            <span class="material-symbols-outlined text-xs">chevron_right</span> Updating your profile
+          </li>
+        </ul>
+      </div>
+
+      <!-- Documents -->
+      <div class="kb-card bg-slate-surface border-t border-tertiary p-6 rounded cursor-pointer group hover:shadow-lg transition-all duration-200" data-category="documents">
+        <div class="flex items-start gap-4 mb-4">
+          <div class="w-10 h-10 rounded bg-primary-container flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary kb-icon">folder_open</span>
+          </div>
+          <div>
+            <h3 class="font-headline-md text-[18px] text-on-surface mb-1" style="font-family: Fraunces, serif;">Documents Vault</h3>
+            <p class="font-body-md text-sm text-on-surface-variant">Access, download, and manage your secure executive documents.</p>
+          </div>
+        </div>
+        <ul class="space-y-2 border-t border-outline-variant/20 pt-4">
+          <li class="kb-article flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors cursor-pointer text-sm font-body-md" data-article="access-docs">
+            <span class="material-symbols-outlined text-xs">chevron_right</span> Accessing the Documents Vault
+          </li>
+          <li class="kb-article flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors cursor-pointer text-sm font-body-md" data-article="download">
+            <span class="material-symbols-outlined text-xs">chevron_right</span> Downloading executive assets
+          </li>
+          <li class="kb-article flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors cursor-pointer text-sm font-body-md" data-article="certificates">
+            <span class="material-symbols-outlined text-xs">chevron_right</span> Viewing your certificates
+          </li>
+        </ul>
+      </div>
+
+      <!-- AI Lab -->
+      <div class="kb-card bg-slate-surface border-t border-tertiary p-6 rounded cursor-pointer group hover:shadow-lg transition-all duration-200" data-category="ai-lab">
+        <div class="flex items-start gap-4 mb-4">
+          <div class="w-10 h-10 rounded bg-primary-container flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary kb-icon">precision_manufacturing</span>
+          </div>
+          <div>
+            <h3 class="font-headline-md text-[18px] text-on-surface mb-1" style="font-family: Fraunces, serif;">AI Lab</h3>
+            <p class="font-body-md text-sm text-on-surface-variant">Guide to the AI sandbox environments and LLM practice tools.</p>
+          </div>
+        </div>
+        <ul class="space-y-2 border-t border-outline-variant/20 pt-4">
+          <li class="kb-article flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors cursor-pointer text-sm font-body-md" data-article="ai-access">
+            <span class="material-symbols-outlined text-xs">chevron_right</span> AI Lab access requirements
+          </li>
+          <li class="kb-article flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors cursor-pointer text-sm font-body-md" data-article="ai-sessions">
+            <span class="material-symbols-outlined text-xs">chevron_right</span> Running practice sessions
+          </li>
+          <li class="kb-article flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors cursor-pointer text-sm font-body-md" data-article="ai-models">
+            <span class="material-symbols-outlined text-xs">chevron_right</span> Available LLM models
+          </li>
+        </ul>
+      </div>
+
+      <!-- Education -->
+      <div class="kb-card bg-slate-surface border-t border-tertiary p-6 rounded cursor-pointer group hover:shadow-lg transition-all duration-200" data-category="education">
+        <div class="flex items-start gap-4 mb-4">
+          <div class="w-10 h-10 rounded bg-primary-container flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary kb-icon">school</span>
+          </div>
+          <div>
+            <h3 class="font-headline-md text-[18px] text-on-surface mb-1" style="font-family: Fraunces, serif;">Education Hub</h3>
+            <p class="font-body-md text-sm text-on-surface-variant">Training modules, learning paths, and certification tracking.</p>
+          </div>
+        </div>
+        <ul class="space-y-2 border-t border-outline-variant/20 pt-4">
+          <li class="kb-article flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors cursor-pointer text-sm font-body-md" data-article="modules">
+            <span class="material-symbols-outlined text-xs">chevron_right</span> Navigating training modules
+          </li>
+          <li class="kb-article flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors cursor-pointer text-sm font-body-md" data-article="progress">
+            <span class="material-symbols-outlined text-xs">chevron_right</span> Tracking your progress
+          </li>
+          <li class="kb-article flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors cursor-pointer text-sm font-body-md" data-article="certifications">
+            <span class="material-symbols-outlined text-xs">chevron_right</span> Earning certifications
+          </li>
+        </ul>
+      </div>
+
+      <!-- Contact Support -->
+      <div class="kb-card bg-surface-container border border-secondary/20 p-6 rounded cursor-pointer group hover:border-secondary/40 hover:shadow-lg transition-all duration-200">
+        <div class="flex items-start gap-4 mb-4">
+          <div class="w-10 h-10 rounded bg-secondary/10 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-secondary kb-icon">mail</span>
+          </div>
+          <div>
+            <h3 class="font-headline-md text-[18px] text-on-surface mb-1" style="font-family: Fraunces, serif;">Contact Support</h3>
+            <p class="font-body-md text-sm text-on-surface-variant">Can't find what you need? Reach the executive support team directly.</p>
+          </div>
+        </div>
+        <div class="border-t border-outline-variant/20 pt-4">
+          <a href="mailto:support@davidgroeve.com" class="inline-flex items-center gap-2 text-secondary font-data-mono text-data-mono text-sm hover:text-secondary/80 transition-colors group-inner">
+            support@davidgroeve.com
+            <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          </a>
+          <p class="text-on-surface-variant text-xs font-data-mono mt-2">Response within 24 hours · Mon–Fri</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Article Modal -->
+    <div id="article-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6">
+      <div class="absolute inset-0 bg-deep-midnight/80 backdrop-blur-sm" id="modal-backdrop"></div>
+      <div class="relative bg-slate-surface border border-outline-variant/30 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto p-8 shadow-2xl">
+        <button id="close-modal" class="absolute top-4 right-4 text-on-surface-variant hover:text-secondary transition-colors">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+        <div id="article-content"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Article content map
+    const articles = {
+      login: {
+        title: "How to Log In to Your Portal",
+        content: `
+          <p class="text-on-surface-variant mb-4">Each user role has a dedicated portal accessible after authentication.</p>
+          <ol class="space-y-3 text-on-surface">
+            <li class="flex gap-3"><span class="text-secondary font-data-mono font-bold flex-shrink-0">01.</span><span>Navigate to <code class="bg-surface-container px-1 rounded text-secondary font-data-mono text-sm">login.html</code> on the platform.</span></li>
+            <li class="flex gap-3"><span class="text-secondary font-data-mono font-bold flex-shrink-0">02.</span><span>Enter your registered email address and password in the Sign In form.</span></li>
+            <li class="flex gap-3"><span class="text-secondary font-data-mono font-bold flex-shrink-0">03.</span><span>Select your account type from the dropdown (Customer, Student, or Recruiter).</span></li>
+            <li class="flex gap-3"><span class="text-secondary font-data-mono font-bold flex-shrink-0">04.</span><span>Click <strong>Sign In</strong>. You will be automatically redirected to your designated portal.</span></li>
+          </ol>
+          <div class="mt-6 bg-primary-container/50 border border-primary/20 rounded p-4 text-sm text-on-surface-variant">
+            <strong class="text-tertiary">Note:</strong> Admin accounts are automatically detected by email domain and redirected to the Admin Command Center.
+          </div>
+        `
+      },
+      roles: {
+        title: "Understanding User Roles",
+        content: `
+          <p class="text-on-surface-variant mb-6">The platform has four distinct roles, each with a tailored experience.</p>
+          <div class="space-y-4">
+            <div class="border border-outline-variant/30 rounded p-4"><span class="font-label-caps text-secondary text-xs uppercase">Customer</span><p class="text-on-surface mt-2 text-sm">Access active project updates, financial overviews, legal agreements, and executive communications.</p></div>
+            <div class="border border-outline-variant/30 rounded p-4"><span class="font-label-caps text-tertiary text-xs uppercase">Student</span><p class="text-on-surface mt-2 text-sm">Track training progress, access learning modules, view certifications, and interface with the AI Lab.</p></div>
+            <div class="border border-outline-variant/30 rounded p-4"><span class="font-label-caps text-on-surface text-xs uppercase">Recruiter</span><p class="text-on-surface mt-2 text-sm">Access curated executive assets — CV, cover letters, pitch decks — and strategic impact metrics.</p></div>
+            <div class="border border-outline-variant/30 rounded p-4"><span class="font-label-caps text-error text-xs uppercase" style="color:#ffb4ab">Admin</span><p class="text-on-surface mt-2 text-sm">Full platform oversight — user management, metrics, content control, and system configuration.</p></div>
+          </div>
+        `
+      },
+      navigation: {
+        title: "Navigating the Dashboard",
+        content: `
+          <p class="text-on-surface-variant mb-4">Each portal uses a sidebar navigation to switch between sections without page reloads.</p>
+          <ul class="space-y-3 text-on-surface text-sm">
+            <li class="flex gap-3"><span class="text-secondary font-data-mono">→</span><span><strong>Dashboard</strong> — Your main overview with live metrics and recent activity.</span></li>
+            <li class="flex gap-3"><span class="text-secondary font-data-mono">→</span><span><strong>Documents</strong> — Secure file vault with all your associated documents and certificates.</span></li>
+            <li class="flex gap-3"><span class="text-secondary font-data-mono">→</span><span><strong>AI Lab</strong> — Sandbox environment for LLM practice sessions (provisioned separately).</span></li>
+            <li class="flex gap-3"><span class="text-secondary font-data-mono">→</span><span><strong>Education</strong> — Training modules and learning path management.</span></li>
+            <li class="flex gap-3"><span class="text-secondary font-data-mono">→</span><span><strong>Settings</strong> — Your profile details including name, email, and role.</span></li>
+          </ul>
+        `
+      },
+      "reset-password": {
+        title: "How to Reset Your Password",
+        content: `
+          <ol class="space-y-3 text-on-surface text-sm">
+            <li class="flex gap-3"><span class="text-secondary font-data-mono font-bold flex-shrink-0">01.</span><span>On the login page, click <strong>"Forgot Password?"</strong> below the sign-in form.</span></li>
+            <li class="flex gap-3"><span class="text-secondary font-data-mono font-bold flex-shrink-0">02.</span><span>Enter your registered email address and click <strong>Send Reset Link</strong>.</span></li>
+            <li class="flex gap-3"><span class="text-secondary font-data-mono font-bold flex-shrink-0">03.</span><span>Check your inbox for an email from Supabase with a secure reset link.</span></li>
+            <li class="flex gap-3"><span class="text-secondary font-data-mono font-bold flex-shrink-0">04.</span><span>Click the link to open the <code class="bg-surface-container px-1 rounded text-secondary font-data-mono">reset-password.html</code> page and enter your new password.</span></li>
+          </ol>
+          <p class="mt-4 text-on-surface-variant text-xs font-data-mono">Reset links expire after 1 hour for security.</p>
+        `
+      },
+    };
+
+    // Default article for undefined keys
+    function getArticle(key) {
+      return articles[key] || {
+        title: "Article Coming Soon",
+        content: '<p class="text-on-surface-variant">This article is being prepared by the support team. Please reach out to <a class="text-secondary" href="mailto:support@davidgroeve.com">support@davidgroeve.com</a> for immediate assistance.</p>'
+      };
+    }
+
+    // Modal handling
+    const modal = document.getElementById('article-modal');
+    const articleContent = document.getElementById('article-content');
+    const closeModal = document.getElementById('close-modal');
+    const modalBackdrop = document.getElementById('modal-backdrop');
+
+    function openArticle(key) {
+      const article = getArticle(key);
+      articleContent.innerHTML = `
+        <h2 class="font-headline-md text-[24px] text-on-surface mb-6" style="font-family: Fraunces, serif;">${article.title}</h2>
+        ${article.content}
+      `;
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModalFn() {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    closeModal.addEventListener('click', closeModalFn);
+    modalBackdrop.addEventListener('click', closeModalFn);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModalFn(); });
+
+    document.querySelectorAll('.kb-article').forEach(item => {
+      item.addEventListener('click', () => openArticle(item.getAttribute('data-article')));
+    });
+
+    // Search
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const q = e.target.value.toLowerCase();
+        document.querySelectorAll('.kb-article').forEach(item => {
+          const visible = item.textContent.toLowerCase().includes(q);
+          item.style.display = visible ? '' : 'none';
+        });
+        document.querySelectorAll('.kb-card').forEach(card => {
+          const hasVisible = [...card.querySelectorAll('.kb-article')].some(a => a.style.display !== 'none');
+          card.style.opacity = (q && !hasVisible) ? '0.3' : '1';
+        });
+      });
+    }
+  </script>
+</body>
+</html>

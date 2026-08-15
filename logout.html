@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Signed Out | Executive Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "deep-midnight": "#0F172A",
+          "surface-container-low": "#1a1c1c",
+          "surface-container": "#1e2020",
+          "surface-container-high": "#282a2b",
+          "slate-surface": "#1E293B",
+          "on-surface": "#e2e2e2",
+          "on-surface-variant": "#c5c6cc",
+          "outline-variant": "#45474c",
+          "tertiary": "#b7c8e1",
+          "tertiary-container": "#142438",
+          "secondary": "#eac076",
+          "primary": "#bec7da",
+          "ink-black": "#020617",
+        },
+        fontFamily: {
+          "display-lg": ["Fraunces"],
+          "headline-md": ["Fraunces"],
+          "body-md": ["Inter"],
+          "body-lg": ["Inter"],
+          "label-caps": ["Inter"],
+          "data-mono": ["IBM Plex Mono"],
+        },
+        fontSize: {
+          "display-lg": ["48px", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "600" }],
+          "headline-md": ["32px", { lineHeight: "1.3", fontWeight: "500" }],
+          "body-lg": ["18px", { lineHeight: "1.6", fontWeight: "400" }],
+          "body-md": ["16px", { lineHeight: "1.5", fontWeight: "400" }],
+          "label-caps": ["12px", { lineHeight: "1", letterSpacing: "0.1em", fontWeight: "700" }],
+          "data-mono": ["14px", { lineHeight: "1.4", fontWeight: "500" }],
+        }
+      }
+    }
+  }
+</script>
+<style>
+  @keyframes countdown-ring {
+    from { stroke-dashoffset: 283; }
+    to   { stroke-dashoffset: 0; }
+  }
+  .countdown-ring {
+    animation: countdown-ring 10s linear forwards;
+    stroke-dasharray: 283;
+    stroke-dashoffset: 283;
+    transform: rotate(-90deg);
+    transform-origin: center;
+  }
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in-up { animation: fade-in-up 0.8s ease forwards; }
+  .fade-in-up-delay { animation: fade-in-up 0.8s ease 0.3s both; }
+  .fade-in-up-delay-2 { animation: fade-in-up 0.8s ease 0.6s both; }
+</style>
+</head>
+<body class="bg-deep-midnight text-on-surface font-body-md antialiased min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+
+  <!-- Ambient glow -->
+  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(circle at 50% 40%, rgba(234,192,118,0.06) 0%, transparent 60%);"></div>
+  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(circle at 80% 80%, rgba(183,200,225,0.04) 0%, transparent 50%);"></div>
+
+  <!-- Decorative grid lines -->
+  <div class="absolute inset-0 pointer-events-none opacity-5" style="background-image: linear-gradient(rgba(183,200,225,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(183,200,225,0.3) 1px, transparent 1px); background-size: 80px 80px;"></div>
+
+  <div class="relative z-10 text-center px-6 max-w-lg w-full">
+
+    <!-- Logo mark -->
+    <div class="fade-in-up flex justify-center mb-10">
+      <div class="w-16 h-16 rounded-full border border-outline-variant bg-surface-container flex items-center justify-center">
+        <span class="material-symbols-outlined text-tertiary text-3xl">lock</span>
+      </div>
+    </div>
+
+    <!-- Countdown Ring -->
+    <div class="fade-in-up flex justify-center mb-8">
+      <div class="relative w-32 h-32">
+        <svg class="w-full h-full" viewBox="0 0 100 100">
+          <!-- Background ring -->
+          <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(183,200,225,0.1)" stroke-width="3"/>
+          <!-- Countdown ring -->
+          <circle id="countdown-ring" class="countdown-ring" cx="50" cy="50" r="45" fill="none" stroke="#eac076" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <!-- Counter number -->
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+          <span id="counter" class="font-data-mono text-secondary text-4xl font-bold leading-none">10</span>
+          <span class="font-label-caps text-label-caps text-on-surface-variant text-[9px] mt-1">SEC</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Text content -->
+    <div class="fade-in-up-delay mb-8">
+      <p class="font-label-caps text-label-caps text-secondary mb-3 tracking-widest">SESSION TERMINATED</p>
+      <h1 class="font-display-lg text-[36px] md:text-[48px] leading-tight text-on-surface mb-4" style="font-family: Fraunces, serif; font-weight: 600; letter-spacing: -0.02em;">
+        Signed Out<br/><span class="text-tertiary">Successfully</span>
+      </h1>
+      <p class="font-body-lg text-body-lg text-on-surface-variant max-w-sm mx-auto">
+        Your session has been securely terminated. You will be redirected to <span class="text-secondary font-medium">davidgroeve.com</span> in <span id="counter-inline" class="font-data-mono text-secondary">10</span> seconds.
+      </p>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="fade-in-up-delay-2 flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="https://davidgroeve.com" class="inline-flex items-center justify-center gap-2 bg-secondary text-ink-black font-label-caps text-label-caps py-3 px-8 uppercase tracking-wider hover:bg-secondary/90 transition-all duration-200 group">
+        <span class="material-symbols-outlined text-sm group-hover:-translate-x-0.5 transition-transform">home</span>
+        Go Now
+      </a>
+      <a href="login.html" class="inline-flex items-center justify-center gap-2 border border-outline-variant text-on-surface-variant font-label-caps text-label-caps py-3 px-8 uppercase tracking-wider hover:border-secondary hover:text-secondary transition-all duration-200 group">
+        <span class="material-symbols-outlined text-sm">login</span>
+        Sign In Again
+      </a>
+    </div>
+
+    <!-- Footer note -->
+    <p class="mt-12 font-data-mono text-data-mono text-on-surface-variant text-xs opacity-40">
+      © 2024 David Sánchez de Groeve &nbsp;·&nbsp; PORTAL v2.4
+    </p>
+  </div>
+
+  <script>
+    let seconds = 10;
+    const counterEl = document.getElementById('counter');
+    const counterInlineEl = document.getElementById('counter-inline');
+
+    const timer = setInterval(() => {
+      seconds--;
+      if (counterEl) counterEl.textContent = seconds;
+      if (counterInlineEl) counterInlineEl.textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(timer);
+        window.location.href = 'https://davidgroeve.com';
+      }
+    }, 1000);
+  </script>
+</body>
+</html>

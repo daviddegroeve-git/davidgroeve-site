@@ -1,68 +1,397 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Portal - David Groeve</title>
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    .portal-header {
-      padding: 40px 0 20px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logout-btn {
-      cursor: pointer;
-      font-size: 14px;
-      color: var(--ink-faint);
-    }
-    .logout-btn:hover {
-      color: var(--ink);
-    }
-  </style>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Executive Portal - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-primary": "#565f6f",
+                      "on-primary-fixed": "#131c2a",
+                      "outline": "#8f9096",
+                      "tertiary-container": "#142438",
+                      "error": "#ffb4ab",
+                      "surface": "#121414",
+                      "on-secondary-container": "#dbb26a",
+                      "tertiary": "#b7c8e1",
+                      "on-error-container": "#ffdad6",
+                      "surface-variant": "#333535",
+                      "on-surface": "#e2e2e2",
+                      "on-secondary-fixed-variant": "#5e4201",
+                      "surface-container-lowest": "#0c0f0f",
+                      "primary-container": "#1b2432",
+                      "on-background": "#e2e2e2",
+                      "primary-fixed": "#dae3f6",
+                      "on-surface-variant": "#c5c6cc",
+                      "background": "#121414",
+                      "primary": "#bec7da",
+                      "ink-black": "#020617",
+                      "on-tertiary": "#213145",
+                      "surface-tint": "#bec7da",
+                      "amber-accent": "#D97706",
+                      "inverse-on-surface": "#2f3131",
+                      "on-tertiary-fixed-variant": "#38485d",
+                      "secondary": "#eac076",
+                      "surface-container-low": "#1a1c1c",
+                      "surface-container": "#1e2020",
+                      "secondary-fixed-dim": "#eac076",
+                      "tertiary-fixed-dim": "#b7c8e1",
+                      "slate-surface": "#1E293B",
+                      "on-tertiary-container": "#7b8ca3",
+                      "primary-fixed-dim": "#bec7da",
+                      "on-primary-container": "#828b9d",
+                      "surface-bright": "#37393a",
+                      "deep-midnight": "#0F172A",
+                      "on-secondary-fixed": "#271900",
+                      "surface-container-high": "#282a2b",
+                      "outline-variant": "#45474c",
+                      "on-primary-fixed-variant": "#3e4757",
+                      "on-secondary": "#412d00",
+                      "inverse-surface": "#e2e2e2",
+                      "tertiary-fixed": "#d3e4fe",
+                      "on-tertiary-fixed": "#0b1c30",
+                      "surface-dim": "#121414",
+                      "secondary-container": "#604403",
+                      "error-container": "#93000a",
+                      "on-error": "#690005",
+                      "surface-container-highest": "#333535",
+                      "secondary-fixed": "#ffdea7",
+                      "on-primary": "#28313f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "container-max": "1280px",
+                      "section-gap": "80px",
+                      "base": "8px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "data-mono": [
+                              "IBM Plex Mono"
+                      ],
+                      "headline-md": [
+                              "Fraunces"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Fraunces"
+                      ],
+                      "display-lg-mobile": [
+                              "Fraunces"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "data-mono": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;600&amp;family=IBM+Plex+Mono:wght@500&amp;family=Inter:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: theme('colors.deep-midnight');
+            color: theme('colors.on-surface');
+        }
+        
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 300,
+          'GRAD' 0,
+          'opsz' 24
+        }
+        
+        .material-symbols-outlined.filled {
+          font-variation-settings:
+          'FILL' 1,
+          'wght' 300,
+          'GRAD' 0,
+          'opsz' 24
+        }
+        
+        /* Ambient shadow utility */
+        .shadow-ambient {
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+    </style>
 </head>
-<body>
+<body class="bg-deep-midnight text-on-surface font-body-md antialiased flex flex-col md:flex-row min-h-screen">
+<!-- SideNavBar -->
+<nav class="hidden md:flex h-screen w-64 fixed left-0 top-0 bg-surface-container-low flex-col py-base border-r border-outline-variant z-40">
+<!-- Brand/Header -->
+<div class="px-gutter pb-6 pt-4 border-b border-outline-variant/30 mb-4">
+<div class="flex items-center gap-3">
+<img alt="David Sánchez de Groeve Profile" class="w-10 h-10 rounded-full object-cover border border-outline-variant/50" data-alt="A sophisticated, high-contrast monochrome portrait of a tech executive in a minimalist corporate setting, side lit to emphasize features. The styling is modern, clean, and professional, reflecting an industrial-luxe aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt2aiAvMXdsIcQo0AnAsVTBb2KF978NxjN80mtQOwlNrFIEnstZ0B8L5NnSz6xFNXGMzCONdgLnRw1jDCKhXC5c8ov34EPkfNu449vc4A22LlLt_UrLa_O6UJ-0Jf2DQye6XnfJwhFqc9gt4GPIFARCc9DlL-WpAhNtf3NLf4M1EfEsRSQCsZ_6ez0e_T_NWLFJGdEfBaFxbBmwfoQtWB3VP9vNpiGkOLj8A7xwu0xk2AU7Mz_6jpB"/>
+<div>
+<h1 class="font-headline-md text-[18px] text-on-surface leading-tight font-bold">Executive Portal</h1>
+<p class="font-data-mono text-[12px] text-on-surface-variant">Technology Strategy</p>
+</div>
+</div>
+</div>
+<!-- Main Nav Links -->
+<div class="flex-1 px-4 space-y-1 overflow-y-auto">
+<!-- Active State Navigation Item -->
+<a class="flex items-center gap-3 px-4 py-3 rounded text-secondary bg-tertiary-container/30 border-r-2 border-secondary group translate-x-1 duration-150 nav-link" href="#" data-target="dashboard">
+<span class="material-symbols-outlined group-hover:text-secondary transition-all">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+<!-- Inactive State Navigation Items -->
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest transition-colors group nav-link" href="#" data-target="documents">
+<span class="material-symbols-outlined group-hover:text-secondary transition-all">description</span>
+<span class="font-label-caps text-label-caps">Documents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest transition-colors group nav-link" href="#" data-target="ai-lab">
+<span class="material-symbols-outlined group-hover:text-secondary transition-all">precision_manufacturing</span>
+<span class="font-label-caps text-label-caps">AI Lab</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest transition-colors group nav-link" href="#" data-target="education">
+<span class="material-symbols-outlined group-hover:text-secondary transition-all">school</span>
+<span class="font-label-caps text-label-caps">Education</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest transition-colors group nav-link" href="#" data-target="settings">
+<span class="material-symbols-outlined group-hover:text-secondary transition-all">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+</div>
+<!-- CTA -->
+<div class="px-4 py-4">
+<button class="w-full bg-secondary text-ink-black font-label-caps text-label-caps py-3 rounded-none uppercase font-bold transition-opacity hover:opacity-90">
+                 New Project
+             </button>
+</div>
+<!-- Footer Links -->
+<div class="px-4 pt-4 pb-2 border-t border-outline-variant/30 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-caps text-[10px]" href="#" data-action="support">
+<span class="material-symbols-outlined text-[16px]">help</span>
+                Support
+            </a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-caps text-[10px]" href="#" data-action="logout">
+<span class="material-symbols-outlined text-[16px]">logout</span>
+                Logout
+            </a>
+</div>
+</nav>
+<!-- Mobile Top Bar (Fallback for small screens) -->
+<div class="md:hidden flex items-center justify-between px-margin-mobile py-4 bg-surface-container-low border-b border-outline-variant/30 sticky top-0 z-40 w-full">
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface text-xl">Executive Portal</h1>
+<span class="material-symbols-outlined text-secondary">menu</span>
+</div>
+<!-- Main Content Area -->
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter py-8 md:py-12 relative z-10">
 
-  <header>
-    <div class="nav">
-      <a href="index.html" class="name">David Groeve</a>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-      </ul>
-    </div>
+<style>
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+</style>
+
+<div id="dashboard" class="tab-content active">
+<!-- Page Header -->
+<header class="mb-10 mt-4">
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">Overview</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-2xl">Monitor training progress, manage documentation, and interface with the AI Lab environment.</p>
+</header>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- AI Lab Widget (Spans 8 cols on desktop) -->
+<section class="md:col-span-8 bg-slate-surface border-t border-tertiary/30 rounded-DEFAULT p-6 shadow-ambient relative overflow-hidden flex flex-col">
+<div class="flex justify-between items-start mb-6 z-10">
+<div>
+<h3 class="font-headline-md text-[24px] text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">precision_manufacturing</span>
+                            AI Lab
+                        </h3>
+<p class="font-body-md text-[14px] text-on-surface-variant mt-1">Active LLM Practice Session</p>
+</div>
+<span class="font-data-mono text-data-mono text-tertiary bg-tertiary-container/50 px-3 py-1 rounded-sm">Env: Prod-A</span>
+</div>
+<div class="flex-1 bg-deep-midnight/50 border border-outline-variant/20 rounded-sm p-4 mb-6 z-10 flex flex-col justify-end min-h-[200px]">
+<div class="space-y-4">
+<div class="flex gap-3">
+<div class="w-6 h-6 rounded-full bg-secondary/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-[14px]">smart_toy</span>
+</div>
+<div class="bg-surface-container p-3 rounded-sm text-on-surface font-body-md text-[14px] border border-outline-variant/10">
+                                 System ready. Formulate your strategic query to begin the scenario analysis.
+                             </div>
+</div>
+</div>
+</div>
+<div class="mt-auto z-10">
+<button class="flex items-center gap-2 text-secondary font-data-mono text-[14px] hover:text-on-secondary-container transition-colors group">
+                        Start Practice Session 
+                        <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Qualifications Widget (Spans 4 cols on desktop) -->
+<section class="md:col-span-4 bg-slate-surface border-t border-tertiary/30 rounded-DEFAULT p-6 shadow-ambient flex flex-col">
+<div class="mb-6">
+<h3 class="font-headline-md text-[20px] text-on-surface">Qualifications</h3>
+<p class="font-body-md text-[12px] text-on-surface-variant mt-1">Recent assessments</p>
+</div>
+<div class="space-y-4 flex-1" id="qualifications-container">
+</div>
+</div>
+</div> <!-- End dashboard tab -->
+
+<div id="documents" class="tab-content">
+  <header class="mb-12">
+    <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-4">Documents Vault</h2>
+    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Secure access to all project files, legal agreements, and technical architecture diagrams.</p>
   </header>
+  <div class="bg-surface-container-low border border-outline-variant/20 p-6 rounded" id="all-documents-container">
+    <p class="text-on-surface-variant">Loading documents...</p>
+  </div>
+</div>
 
-  <div class="wrap">
-    <div class="portal-header">
+<div id="ai-lab" class="tab-content">
+  <header class="mb-12">
+    <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-4">AI Lab</h2>
+    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Experiment with customized LLM models and proprietary generative workflows.</p>
+  </header>
+  <div class="bg-slate-surface border-t border-tertiary p-12 text-center shadow-ambient rounded">
+    <span class="material-symbols-outlined text-6xl text-tertiary mb-4">precision_manufacturing</span>
+    <h3 class="text-2xl text-on-surface font-headline-md mb-2">Environment Initializing</h3>
+    <p class="text-on-surface-variant font-body-md max-w-md mx-auto">Your dedicated sandbox environment is currently being provisioned. Please check back later.</p>
+  </div>
+</div>
+
+<div id="education" class="tab-content">
+  <header class="mb-12">
+    <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-4">Education Hub</h2>
+    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Access premium executive training and strategic learning paths.</p>
+  </header>
+  <div class="bg-slate-surface border-t border-tertiary p-12 text-center shadow-ambient rounded">
+    <span class="material-symbols-outlined text-6xl text-tertiary mb-4">school</span>
+    <h3 class="text-2xl text-on-surface font-headline-md mb-2">Curriculum Locked</h3>
+    <p class="text-on-surface-variant font-body-md max-w-md mx-auto">No active corporate training modules assigned to your organization at this time.</p>
+  </div>
+</div>
+
+<div id="settings" class="tab-content">
+  <header class="mb-12">
+    <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-4">Account Settings</h2>
+    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Manage your executive profile and security preferences.</p>
+  </header>
+  <div class="bg-surface-container-low border border-outline-variant/20 p-6 rounded max-w-2xl">
+    <div class="space-y-6">
       <div>
-        <span class="eyebrow">Student Hub</span>
-        <h2>Student Portal</h2>
+        <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">Full Name</label>
+        <input type="text" id="settings-name" class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface" disabled />
       </div>
-      <a id="logoutBtn" class="logout-btn">Log Out</a>
-    </div>
-    
-    <div class="section">
-      <h3>Your Learning Journey</h3>
-      <p class="lede">Access LLM practice sessions, view your qualifications, invoices, and download certificates.</p>
-      <!-- Student specific content will go here -->
+      <div>
+        <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">Email Address</label>
+        <input type="email" id="settings-email" class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface" disabled />
+      </div>
+      <div>
+        <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">Role</label>
+        <input type="text" id="settings-role" class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface capitalize" disabled />
+      </div>
     </div>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="auth.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) window.location.href = 'login.html';
-      
-      document.getElementById('logoutBtn').addEventListener('click', async () => {
-        await supabase.auth.signOut();
-        window.location.href = 'login.html';
-      });
-    });
-  </script>
-</body>
-</html>
+</div>
+<div class="mt-4 pt-2">
+<button class="w-full border border-outline-variant/50 text-on-surface font-label-caps text-[10px] py-2 uppercase hover:bg-surface-container-high transition-colors">
+                        View All Transcripts
+                    </button>
+</div>
+</section>
+<!-- Documents Widget (Spans full width below) -->
+<section class="md:col-span-12 bg-slate-surface border-t border-tertiary/30 rounded-DEFAULT p-6 shadow-ambient mt-section-gap">
+<div class="flex justify-between items-end mb-6 border-b border-outline-variant/20 pb-4">
+<div>
+<h3 class="font-headline-md text-[24px] text-on-surface">Documents</h3>
+<p class="font-body-md text-[14px] text-on-surface-variant mt-1">Invoices and Certificates</p>
+</div>
+<button class="flex items-center gap-2 text-on-surface-variant font-data-mono text-[12px] hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[16px]">filter_list</span> Filter
+                    </button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4" id="documents-container">
+<!-- View All Area -->
+<div class="border border-dashed border-outline-variant/40 p-4 rounded-sm flex items-center justify-center hover:bg-surface-container-low transition-colors cursor-pointer">
+<span class="font-data-mono text-[12px] text-on-surface-variant">View Registry →</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+<script src="student.js"></script>
+</body></html>

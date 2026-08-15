@@ -1,68 +1,401 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Customer Portal - David Groeve</title>
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    .portal-header {
-      padding: 40px 0 20px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logout-btn {
-      cursor: pointer;
-      font-size: 14px;
-      color: var(--ink-faint);
-    }
-    .logout-btn:hover {
-      color: var(--ink);
-    }
-  </style>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Customer Portal Dashboard - Executive Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&amp;family=Inter:wght@400;500;700&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#1a1c1c",
+                        "outline": "#8f9096",
+                        "on-tertiary-container": "#7b8ca3",
+                        "error-container": "#93000a",
+                        "inverse-on-surface": "#2f3131",
+                        "secondary-container": "#604403",
+                        "slate-surface": "#1E293B",
+                        "secondary-fixed": "#ffdea7",
+                        "primary-fixed-dim": "#bec7da",
+                        "surface-bright": "#37393a",
+                        "primary": "#bec7da",
+                        "surface-container-high": "#282a2b",
+                        "deep-midnight": "#0F172A",
+                        "background": "#121414",
+                        "ink-black": "#020617",
+                        "tertiary-container": "#142438",
+                        "outline-variant": "#45474c",
+                        "tertiary-fixed-dim": "#b7c8e1",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#eac076",
+                        "on-secondary-container": "#dbb26a",
+                        "surface-container-lowest": "#0c0f0f",
+                        "surface-tint": "#bec7da",
+                        "on-primary-fixed-variant": "#3e4757",
+                        "on-error": "#690005",
+                        "on-primary": "#28313f",
+                        "on-tertiary-fixed-variant": "#38485d",
+                        "on-tertiary-fixed": "#0b1c30",
+                        "tertiary": "#b7c8e1",
+                        "primary-fixed": "#dae3f6",
+                        "on-primary-container": "#828b9d",
+                        "surface-variant": "#333535",
+                        "inverse-primary": "#565f6f",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed": "#271900",
+                        "tertiary-fixed": "#d3e4fe",
+                        "surface-container": "#1e2020",
+                        "on-surface": "#e2e2e2",
+                        "surface-dim": "#121414",
+                        "on-tertiary": "#213145",
+                        "on-secondary": "#412d00",
+                        "primary-container": "#1b2432",
+                        "on-secondary-fixed-variant": "#5e4201",
+                        "surface": "#121414",
+                        "surface-container-highest": "#333535",
+                        "on-surface-variant": "#c5c6cc",
+                        "on-background": "#e2e2e2",
+                        "amber-accent": "#D97706",
+                        "on-primary-fixed": "#131c2a",
+                        "inverse-surface": "#e2e2e2",
+                        "secondary": "#eac076"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "base": "8px",
+                        "section-gap": "80px",
+                        "margin-mobile": "16px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "display-lg": ["Fraunces"],
+                        "data-mono": ["IBM Plex Mono"],
+                        "headline-md": ["Fraunces"],
+                        "body-lg": ["Inter"],
+                        "display-lg-mobile": ["Fraunces"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "data-mono": ["14px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "headline-md": ["32px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
 </head>
-<body>
+<body class="bg-deep-midnight text-on-surface font-body-md antialiased h-screen overflow-hidden flex">
+<!-- SideNavBar from JSON (Admin Layout Anchor) -->
+<nav class="hidden md:flex bg-surface-container-low border-r border-outline-variant flat h-screen w-64 fixed left-0 top-0 flex-col py-base z-40 transition-transform duration-300">
+<div class="px-gutter mb-8 mt-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-tertiary">
+<img alt="David Sánchez de Groeve Profile" class="w-full h-full object-cover" data-alt="A professional headshot portrait of a sophisticated technology executive in a dark, moody corporate office environment. Subtle blue and amber rim lighting highlights their features against a deep slate background. The image exudes authority, precision, and modern strategic leadership." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3YE-7PkMsKVv0nyIqqcWL_zEs9MI4EyAIu5iqMwFyLPDlKA1Trkm611gc_lCpQ8JkERpo9rpRIZu9JQQcmNqi8LAm6qb0A8NUq9kv6GY1Os5XT8P0M-mYBQbaKCHd2zxnM7MM3JzTnLv0r4WKxUwRVAUrCnQrlzbTd8Ps9jrTda0pRB4bZmfPacmUS6Ap3TXMhCjgh0_eI-ae2pCJ7mXYTp1ON-jrNZPOmj-GQxTCyYieLoT0rA0VlidWtLZezCW_Iumdd52r-HE"/>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface text-lg">Executive Portal</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-1">Technology Strategy</p>
+</div>
+</div>
+</div>
+<div class="px-gutter mb-6">
+<button class="w-full bg-secondary text-ink-black font-label-caps text-label-caps py-3 px-4 flex items-center justify-center gap-2 uppercase tracking-wider hover:bg-secondary-fixed transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+                New Project
+             </button>
+</div>
+<div class="flex-1 overflow-y-auto px-4 space-y-1">
+<!-- Active State Navigation Item -->
+<a class="flex items-center gap-3 px-4 py-3 rounded text-secondary bg-tertiary-container/30 border-r-2 border-secondary group translate-x-1 duration-150 nav-link" href="#" data-target="dashboard">
+<span class="material-symbols-outlined group-hover:text-secondary transition-all">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+<!-- Inactive State Navigation Items -->
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest transition-colors group nav-link" href="#" data-target="documents">
+<span class="material-symbols-outlined group-hover:text-secondary transition-all">description</span>
+<span class="font-label-caps text-label-caps">Documents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest transition-colors group nav-link" href="#" data-target="ai-lab">
+<span class="material-symbols-outlined group-hover:text-secondary transition-all">precision_manufacturing</span>
+<span class="font-label-caps text-label-caps">AI Lab</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest transition-colors group nav-link" href="#" data-target="education">
+<span class="material-symbols-outlined group-hover:text-secondary transition-all">school</span>
+<span class="font-label-caps text-label-caps">Education</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest transition-colors group nav-link" href="#" data-target="settings">
+<span class="material-symbols-outlined group-hover:text-secondary transition-all">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+</div>
+<div class="px-4 mt-auto border-t border-outline-variant/30 pt-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 rounded text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest transition-colors group" href="#" data-action="support">
+<span class="material-symbols-outlined text-sm group-hover:text-secondary transition-all">help</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest transition-colors group" href="#" data-action="logout">
+<span class="material-symbols-outlined text-sm group-hover:text-secondary transition-all">logout</span>
+<span class="font-label-caps text-label-caps">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 h-screen overflow-y-auto bg-deep-midnight relative">
+<!-- Ambient Background Effect -->
+<div class="absolute inset-0 pointer-events-none opacity-20" style="background: radial-gradient(circle at 80% 20%, rgba(234, 192, 118, 0.1) 0%, transparent 40%);"></div>
+<!-- Top Header Mobile Only -->
+<div class="md:hidden sticky top-0 bg-deep-midnight/80 backdrop-blur-md z-30 border-b border-outline-variant/30 px-margin-mobile py-4 flex items-center justify-between">
+<h1 class="font-headline-md text-headline-md text-on-surface text-xl">Executive Portal</h1>
+<button class="text-on-surface-variant hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter py-8 md:py-12 relative z-10">
 
-  <header>
-    <div class="nav">
-      <a href="index.html" class="name">David Groeve</a>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-      </ul>
-    </div>
+<style>
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+</style>
+
+<div id="dashboard" class="tab-content active">
+<!-- Page Header -->
+<header class="mb-12">
+<p class="font-data-mono text-data-mono text-secondary mb-2 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary inline-block"></span>
+                    STATUS: SECURE CONNECTION
+                </p>
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-4">Client Workspace</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                    Welcome back, Acme Corp. Here is the latest strategic overview of your active technology initiatives and executive engagements.
+                </p>
+</header>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+<!-- Main Column (Projects & Communications) -->
+<div class="lg:col-span-8 space-y-8">
+<!-- Active Projects Bento Section -->
+<section>
+<div class="flex items-center justify-between mb-6 border-b border-outline-variant/30 pb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface text-2xl">Active Initiatives</h3>
+<button class="text-on-surface-variant hover:text-secondary transition-colors font-data-mono text-data-mono flex items-center gap-1 group">
+                                VIEW_ALL <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="projects-container">
+<!-- Project Card 1 -->
+<div class="bg-slate-surface border-t border-tertiary p-6 shadow-sm hover:shadow-lg transition-all duration-300 relative group overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">cloud_sync</span>
+</div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<span class="bg-white/10 text-on-surface font-label-caps text-label-caps px-2 py-1 rounded">AUDIT</span>
+<span class="font-data-mono text-data-mono text-secondary">ID: 4892-CA</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-on-surface text-xl mb-2 relative z-10">Cloud Infrastructure Audit</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 relative z-10 line-clamp-2">
+                                    Comprehensive review of AWS architecture focusing on security compliance and cost optimization strategies.
+                                </p>
+<div class="space-y-2 relative z-10">
+<div class="flex justify-between font-data-mono text-data-mono text-xs text-on-surface-variant">
+<span>PROGRESS</span>
+<span class="text-secondary">65%</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 65%;"></div>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant/20 flex justify-between items-center relative z-10">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">calendar_today</span>
+<span class="font-data-mono text-data-mono text-xs text-on-surface-variant">NEXT: Q3 Review (Oct 15)</span>
+</div>
+<button class="text-secondary hover:text-white transition-colors">
+<span class="material-symbols-outlined">arrow_outward</span>
+</button>
+</div>
+</div>
+<!-- Project Card 2 -->
+<div class="bg-slate-surface border-t border-tertiary p-6 shadow-sm hover:shadow-lg transition-all duration-300 relative group overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">psychology</span>
+</div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<span class="bg-white/10 text-on-surface font-label-caps text-label-caps px-2 py-1 rounded">STRATEGY</span>
+<span class="font-data-mono text-data-mono text-secondary">ID: 8821-AI</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-on-surface text-xl mb-2 relative z-10">AI Strategy Roadmap</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 relative z-10 line-clamp-2">
+                                    Development of enterprise-wide generative AI adoption frameworks and risk mitigation protocols.
+                                </p>
+<div class="space-y-2 relative z-10">
+<div class="flex justify-between font-data-mono text-data-mono text-xs text-on-surface-variant">
+<span>PROGRESS</span>
+<span class="text-secondary">20%</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 20%;"></div>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant/20 flex justify-between items-center relative z-10">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">calendar_today</span>
+<span class="font-data-mono text-data-mono text-xs text-on-surface-variant">NEXT: Stakeholder Workshop</span>
+</div>
+<button class="text-secondary hover:text-white transition-colors">
+<span class="material-symbols-outlined">arrow_outward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Communication Feed -->
+<section>
+<div class="flex items-center justify-between mb-6 border-b border-outline-variant/30 pb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface text-2xl">Executive Updates</h3>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/20 p-6">
+<div class="space-y-6" id="communications-container">
+<!-- Feed Item 1 -->
+<div class="flex gap-4 group">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-secondary mt-2"></div>
+<div class="w-px h-full bg-outline-variant/30 group-last:hidden my-1"></div>
+</div>
+<div class="pb-2">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-label-caps text-label-caps text-secondary">SYSTEM UPDATE</span>
+<span class="font-data-mono text-data-mono text-xs text-on-surface-variant">• 2 hours ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mb-2">Preliminary findings for the Phase 1 Security Audit have been uploaded to the Secure Vault.</p>
+<button class="font-data-mono text-data-mono text-xs text-tertiary flex items-center gap-1 hover:text-white transition-colors">
+                                            ACCESS_VAULT <span class="material-symbols-outlined text-xs">lock_open</span>
+</button>
+</div>
+</div>
+<!-- Feed Item 2 -->
+<div class="flex gap-4 group">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-outline-variant mt-2"></div>
+<div class="w-px h-full bg-outline-variant/30 group-last:hidden my-1"></div>
+</div>
+<div class="pb-2">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant">MEETING LOG</span>
+<span class="font-data-mono text-data-mono text-xs text-on-surface-variant">• Yesterday</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mb-2">Strategy alignment session completed. Action items have been distributed to respective technical leads.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Secondary Column (Financials & Documents) -->
+<div class="lg:col-span-4 space-y-8">
+<!-- Financial Overview -->
+<section class="bg-surface-container-low border border-outline-variant/20 p-6 flex flex-col h-full max-h-[400px]">
+<h3 class="font-headline-md text-headline-md text-on-surface text-xl mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">account_balance_wallet</span>
+                            Financial Overview
+                        </h3>
+<div class="space-y-4 flex-1" id="invoices-container">
+<button class="w-full mt-6 bg-transparent border border-outline-variant text-on-surface font-label-caps text-label-caps py-3 px-4 uppercase tracking-wider hover:border-secondary hover:text-secondary transition-colors">
+                            View All Invoices
+                        </button>
+</section>
+<!-- Service Agreements (Blueprinting Style) -->
+<section>
+<h3 class="font-headline-md text-headline-md text-on-surface text-xl mb-4">Legal &amp; Agreements</h3>
+<div class="space-y-3" id="documents-container">
+</div>
+</section>
+</div>
+</div>
+</div>
+</div> <!-- End dashboard tab -->
+
+<div id="documents" class="tab-content">
+  <header class="mb-12">
+    <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-4">Documents Vault</h2>
+    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Secure access to all project files, legal agreements, and technical architecture diagrams.</p>
   </header>
+  <div class="bg-surface-container-low border border-outline-variant/20 p-6 rounded" id="all-documents-container">
+    <p class="text-on-surface-variant">Loading documents...</p>
+  </div>
+</div>
 
-  <div class="wrap">
-    <div class="portal-header">
+<div id="ai-lab" class="tab-content">
+  <header class="mb-12">
+    <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-4">AI Lab</h2>
+    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Experiment with customized LLM models and proprietary generative workflows.</p>
+  </header>
+  <div class="bg-slate-surface border-t border-tertiary p-12 text-center shadow-ambient rounded">
+    <span class="material-symbols-outlined text-6xl text-tertiary mb-4">precision_manufacturing</span>
+    <h3 class="text-2xl text-on-surface font-headline-md mb-2">Environment Initializing</h3>
+    <p class="text-on-surface-variant font-body-md max-w-md mx-auto">Your dedicated sandbox environment is currently being provisioned. Please check back later.</p>
+  </div>
+</div>
+
+<div id="education" class="tab-content">
+  <header class="mb-12">
+    <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-4">Education Hub</h2>
+    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Access premium executive training and strategic learning paths.</p>
+  </header>
+  <div class="bg-slate-surface border-t border-tertiary p-12 text-center shadow-ambient rounded">
+    <span class="material-symbols-outlined text-6xl text-tertiary mb-4">school</span>
+    <h3 class="text-2xl text-on-surface font-headline-md mb-2">Curriculum Locked</h3>
+    <p class="text-on-surface-variant font-body-md max-w-md mx-auto">No active corporate training modules assigned to your organization at this time.</p>
+  </div>
+</div>
+
+<div id="settings" class="tab-content">
+  <header class="mb-12">
+    <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-4">Account Settings</h2>
+    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Manage your executive profile and security preferences.</p>
+  </header>
+  <div class="bg-surface-container-low border border-outline-variant/20 p-6 rounded max-w-2xl">
+    <div class="space-y-6">
       <div>
-        <span class="eyebrow">Customer Access</span>
-        <h2>Customer Portal</h2>
+        <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">Full Name</label>
+        <input type="text" id="settings-name" class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface" disabled />
       </div>
-      <a id="logoutBtn" class="logout-btn">Log Out</a>
-    </div>
-    
-    <div class="section">
-      <h3>Your Documents</h3>
-      <p class="lede">Access your invoices, project manuals, and signed NDAs.</p>
-      <!-- Customer specific content will go here -->
+      <div>
+        <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">Email Address</label>
+        <input type="email" id="settings-email" class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface" disabled />
+      </div>
+      <div>
+        <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">Role</label>
+        <input type="text" id="settings-role" class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface capitalize" disabled />
+      </div>
     </div>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="auth.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) window.location.href = 'login.html';
-      
-      document.getElementById('logoutBtn').addEventListener('click', async () => {
-        await supabase.auth.signOut();
-        window.location.href = 'login.html';
-      });
-    });
-  </script>
-</body>
-</html>
+</div>
+<!-- Footer space -->
+<div class="mt-section-gap pt-8 border-t border-outline-variant/20 flex justify-between items-center text-on-surface-variant font-data-mono text-data-mono text-xs">
+<p>© 2024 David Sánchez de Groeve. Secure Portal.</p>
+<p>SYS.VER_2.4.1</p>
+</div>
+</div>
+</main>
+<script src="customer.js"></script>
+</body></html>

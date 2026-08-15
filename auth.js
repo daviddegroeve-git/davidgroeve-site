@@ -185,3 +185,46 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// Global logout function
+window.logout = async function() {
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  await supabase.auth.signOut();
+  window.location.href = 'logout.html';
+};
+
+// Global support function
+window.openSupport = function() {
+  window.open('knowledgebase.html', '_blank');
+};
+
+// Global auth guard
+window.requireAuth = async function(allowedRoles = []) {
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  if (!session) {
+    window.location.href = 'login.html';
+    return null;
+  }
+  
+  const user = session.user;
+  let userRole = user.user_metadata?.role;
+  
+  // Admin override check
+  if (userRole === 'admin' || user.email.toLowerCase().includes('admin') || user.email.toLowerCase().includes('director@davidgroeve.com')) {
+    userRole = 'admin';
+  }
+  
+  if (allowedRoles.length > 0 && !allowedRoles.includes(userRole)) {
+    // Redirect to their default portal if they try to access an unauthorized one
+    if (userRole === 'admin') window.location.href = 'admin-panel.html';
+    else if (userRole === 'customer') window.location.href = 'customer-portal.html';
+    else if (userRole === 'student') window.location.href = 'student-portal.html';
+    else if (userRole === 'recruiter') window.location.href = 'recruiter-portal.html';
+    else window.location.href = 'login.html';
+    return null;
+  }
+  
+  return { supabase, user, userRole };
+};
