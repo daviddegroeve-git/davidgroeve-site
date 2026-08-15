@@ -484,3 +484,62 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+/* ═══════════════════════════════════════════
+   PORTAL LOGIN → DASHBOARD (if signed in)
+   ═══════════════════════════════════════════ */
+(function () {
+  var SUPABASE_URL = 'https://gbagcctlymqfefyjhqzu.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_T7GC3hfaUA0DAul1E6o2Ww_aUYc15_6';
+
+  function getDashboardUrl(user) {
+    if (!user) return null;
+    var email = (user.email || '').toLowerCase();
+    var role  = (user.user_metadata && user.user_metadata.role) || '';
+    if (role === 'admin' || email.includes('admin') || email.includes('davidgroeve.com')) {
+      return 'admin-panel.html';
+    }
+    if (role === 'student')   return 'student-portal.html';
+    if (role === 'recruiter') return 'recruiter-portal.html';
+    return 'customer-portal.html';
+  }
+
+  function applyAuthNav(user) {
+    if (!user) return; // not logged in – keep "Portal Login" as-is
+
+    var dashUrl = getDashboardUrl(user);
+
+    // Desktop nav CTA
+    document.querySelectorAll('a.nav-cta').forEach(function (el) {
+      el.href        = dashUrl;
+      el.textContent = 'My Dashboard';
+    });
+
+    // Mobile overlay CTA
+    var mobileBtn = document.getElementById('mobilePortalBtn');
+    if (mobileBtn) {
+      mobileBtn.href        = dashUrl;
+      mobileBtn.textContent = 'My Dashboard';
+    }
+  }
+
+  // Wait for Supabase SDK to be ready, then check session
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.supabase) return; // SDK not present on this page
+
+    var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    client.auth.getSession().then(function (result) {
+      var session = result && result.data && result.data.session;
+      if (session && session.user) {
+        applyAuthNav(session.user);
+      }
+    });
+
+    // Also react to sign-in / sign-out events without a page reload
+    client.auth.onAuthStateChange(function (event, session) {
+      applyAuthNav(session && session.user ? session.user : null);
+    });
+  });
+}());
+
+
