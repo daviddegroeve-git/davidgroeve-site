@@ -452,4 +452,89 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('confirmDisableModal').classList.remove('hidden');
   };
 
+  // --- INNER TABS FOR USERS SECTION ---
+  const usersTabBtns = document.querySelectorAll('.users-tab-btn');
+  const usersTabContents = document.querySelectorAll('.users-tab-content');
+  const userDirectoryActions = document.getElementById('userDirectoryActions');
+
+  usersTabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-target');
+      
+      // Update buttons
+      usersTabBtns.forEach(b => {
+        b.classList.remove('border-secondary', 'text-secondary');
+        b.classList.add('border-transparent', 'text-on-surface-variant');
+      });
+      btn.classList.remove('border-transparent', 'text-on-surface-variant');
+      btn.classList.add('border-secondary', 'text-secondary');
+      
+      // Update contents
+      usersTabContents.forEach(content => {
+        content.classList.add('hidden');
+        content.classList.remove('block');
+      });
+      document.getElementById(targetId).classList.remove('hidden');
+      document.getElementById(targetId).classList.add('block');
+      
+      // Toggle actions
+      if (targetId === 'users-permissions-view') {
+        if(userDirectoryActions) userDirectoryActions.classList.add('hidden');
+        renderPermissions();
+      } else {
+        if(userDirectoryActions) userDirectoryActions.classList.remove('hidden');
+      }
+    });
+  });
+
+  function renderPermissions() {
+    const container = document.getElementById('permissions-container');
+    if (!container || container.dataset.loaded) return;
+    
+    const roles = [
+      {
+        name: 'Admin',
+        desc: 'Full access to all platform settings, user management, and AI labs.',
+        perms: ['Manage Users', 'System Settings', 'AI Lab Provisioning', 'Document Vault Access', 'Curriculum Management']
+      },
+      {
+        name: 'Student',
+        desc: 'Access to learning materials, trajectory paths, and assigned tasks.',
+        perms: ['View Curriculum', 'Submit Assignments', 'View Own Trajectory', 'Access Public Documents']
+      },
+      {
+        name: 'Customer',
+        desc: 'Access to project tracking, support portal, and billing documents.',
+        perms: ['View Active Projects', 'Download Invoices', 'Submit Support Tickets', 'Access Customer Vault']
+      },
+      {
+        name: 'Recruiter',
+        desc: 'Access to student profiles, resumes, and hiring pipelines.',
+        perms: ['View Student Profiles', 'Download Resumes', 'Manage Pipeline', 'Contact Students']
+      }
+    ];
+
+    container.innerHTML = roles.map(role => `
+      <div class="border border-outline-variant/30 rounded p-4 bg-surface-container-low flex flex-col h-full hover:border-secondary/50 transition-colors">
+        <div class="flex justify-between items-start mb-2">
+          <h3 class="font-headline-md text-lg text-on-surface capitalize">${role.name}</h3>
+          <button class="text-outline-variant hover:text-secondary" title="Edit Role"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+        </div>
+        <p class="text-sm text-on-surface-variant mb-4 flex-1">${role.desc}</p>
+        <div class="space-y-2">
+          <p class="font-label-caps text-[10px] text-tertiary">Allowed Actions</p>
+          <ul class="space-y-1">
+            ${role.perms.map(p => `
+              <li class="flex items-center gap-2 text-sm text-on-surface">
+                <span class="material-symbols-outlined text-[14px] text-secondary">check_circle</span>
+                ${p}
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      </div>
+    `).join('');
+    container.dataset.loaded = 'true';
+  }
+
 });

@@ -304,12 +304,12 @@
 </div> <!-- End dashboard tab -->
 
 <div id="users" class="tab-content">
-  <header class="mb-12 flex justify-between items-end">
+  <header class="mb-8 flex justify-between items-end">
     <div>
-      <h1 class="font-display-lg text-display-lg md:text-display-lg text-on-surface">User Directory</h1>
-      <p class="font-body-lg text-body-lg text-on-surface-variant mt-2 max-w-2xl">Full list of registered platform users across all roles.</p>
+      <h1 class="font-display-lg text-display-lg md:text-display-lg text-on-surface">Users & Permissions</h1>
+      <p class="font-body-lg text-body-lg text-on-surface-variant mt-2 max-w-2xl">Manage platform users and role-based permissions.</p>
     </div>
-    <div class="flex gap-4">
+    <div class="flex gap-4" id="userDirectoryActions">
       <button id="exportUsersBtn" class="flex items-center gap-2 px-4 py-2 border border-outline-variant/30 rounded hover:bg-surface-container transition-colors text-on-surface font-label-caps text-label-caps">
         <span class="material-symbols-outlined text-[18px]">download</span> Export CSV
       </button>
@@ -318,22 +318,49 @@
       </button>
     </div>
   </header>
-  <div class="bg-slate-surface rounded-lg border-t border-tertiary/30 shadow-ambient p-6">
-    <div class="overflow-x-auto">
-      <table class="w-full text-left">
-        <thead>
-          <tr class="border-b border-outline-variant/30">
-            <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold">User</th>
-            <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold">Role</th>
-            <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold">Status</th>
-            <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold">Joined</th>
-            <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold text-right">Actions</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-outline-variant/20" id="users-full-container">
-          <tr><td colspan="5" class="py-8 text-center text-on-surface-variant">Loading users...</td></tr>
-        </tbody>
-      </table>
+
+  <!-- Inner Tabs Navigation -->
+  <div class="flex gap-6 mb-6 border-b border-outline-variant/30">
+    <button class="users-tab-btn pb-3 font-label-caps text-label-caps border-b-2 border-secondary text-secondary transition-colors" data-target="users-directory-view">Directory</button>
+    <button class="users-tab-btn pb-3 font-label-caps text-label-caps border-b-2 border-transparent text-on-surface-variant hover:text-on-surface transition-colors" data-target="users-permissions-view">Permissions</button>
+  </div>
+
+  <!-- Directory View -->
+  <div id="users-directory-view" class="users-tab-content block">
+    <div class="bg-slate-surface rounded-lg border-t border-tertiary/30 shadow-ambient p-6">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead>
+            <tr class="border-b border-outline-variant/30">
+              <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold">User</th>
+              <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold">Role</th>
+              <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold">Status</th>
+              <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold">Joined</th>
+              <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-outline-variant/20" id="users-full-container">
+            <tr><td colspan="5" class="py-8 text-center text-on-surface-variant">Loading users...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Permissions View -->
+  <div id="users-permissions-view" class="users-tab-content hidden">
+    <div class="bg-slate-surface rounded-lg border-t border-tertiary/30 shadow-ambient p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="font-headline-md text-[20px] text-on-surface">Platform Roles & Permissions</h2>
+        <button class="flex items-center gap-2 px-3 py-1.5 border border-outline-variant/30 rounded hover:bg-surface-container transition-colors text-on-surface font-label-caps text-label-caps">
+          <span class="material-symbols-outlined text-[16px]">add</span> Add Role
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="permissions-container">
+        <!-- Will be populated by JS -->
+        <p class="text-on-surface-variant">Loading permissions matrix...</p>
+      </div>
     </div>
   </div>
 </div>
