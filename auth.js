@@ -66,11 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       if (error) throw error;
 
-      if (authError) {
-        authError.style.display = 'block';
-        authError.style.color   = '#86efac';
-        authError.innerHTML     = 'Account created! Check your email to confirm, then sign in.';
-      }
+      // Dispatch success event to handle UI state in login.html
+      document.dispatchEvent(new CustomEvent('signupSuccess', { detail: { data } }));
 
       // If Supabase auto-confirms (e.g. email confirmation disabled), redirect immediately
       if (data.session) {

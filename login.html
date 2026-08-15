@@ -411,8 +411,24 @@
             </div>
           </div>
 
+          <!-- STEP 4 — Confirmation -->
+          <div class="signup-step" id="signupStep4">
+            <div class="text-center py-8">
+              <span class="material-symbols-outlined text-5xl text-[#86efac] mb-4">mark_email_read</span>
+              <h4 class="font-headline-md text-xl text-on-surface mb-2">Account Created!</h4>
+              <p class="text-sm text-on-surface-variant/80 mb-6 leading-relaxed">
+                Check your email to confirm, then sign in.<br><br>
+                For security reasons, please close this window.
+              </p>
+              <button class="w-full bg-secondary text-ink-black font-data-mono text-xs uppercase tracking-widest font-bold py-3.5 hover:bg-secondary-fixed transition-colors flex items-center justify-center gap-2 group" onclick="window.close(); return false;" type="button">
+                Close Window
+                <span class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">close</span>
+              </button>
+            </div>
+          </div>
+
           <!-- Switch back -->
-          <div class="text-center pt-5 text-xs font-data-mono text-on-surface-variant">
+          <div id="switchToSigninWrap" class="text-center pt-5 text-xs font-data-mono text-on-surface-variant">
             <span>Already have an account? </span>
             <a id="switchToSignin" class="text-secondary hover:underline cursor-pointer font-semibold">Sign In</a>
           </div>
@@ -487,10 +503,20 @@
         document.querySelectorAll('.signup-step').forEach(s => s.classList.remove('active'));
         document.getElementById('signupStep' + n).classList.add('active');
         dots.forEach((d, i) => {
+          if (!d) return;
           d.classList.remove('active', 'done');
           if (i + 1 < n)  d.classList.add('done');
           if (i + 1 === n) d.classList.add('active');
         });
+        
+        const switchToSigninWrap = document.getElementById('switchToSigninWrap');
+        if (n === 4) {
+          stepIndicator.classList.add('hidden');
+          if (switchToSigninWrap) switchToSigninWrap.classList.add('hidden');
+        } else {
+          if (switchToSigninWrap) switchToSigninWrap.classList.remove('hidden');
+          if (!signupFlow.classList.contains('hidden')) stepIndicator.classList.remove('hidden');
+        }
       }
 
       function resetSignup() {
@@ -633,6 +659,14 @@
         document.dispatchEvent(new CustomEvent('doSignup', {
           detail: { email, password: pw, accountType: selectedAccountType, portal: selectedPortal }
         }));
+      });
+
+      /* ── Listen for signup success ── */
+      document.addEventListener('signupSuccess', (e) => {
+        const data = e.detail?.data;
+        if (!data?.session) {
+          goToStep(4);
+        }
       });
     });
   </script>
