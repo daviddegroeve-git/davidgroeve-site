@@ -1,8 +1,8 @@
-const supabaseUrl = 'https://gbagcctlymqfefyjhqzu.supabase.co';
-const supabaseKey = 'sb_publishable_T7GC3hfaUA0DAul1E6o2Ww_aUYc15_6';
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+const SUPABASE_URL = 'https://gbagcctlymqfefyjhqzu.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_T7GC3hfaUA0DAul1E6o2Ww_aUYc15_6';
 
 document.addEventListener('DOMContentLoaded', () => {
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   const authForm = document.getElementById('authForm');
   const authSubmitBtn = document.getElementById('authSubmitBtn');
   const authTitle = document.getElementById('authTitle');
@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
           authError.style.display = 'block';
           authError.style.color = 'green';
           authError.textContent = 'Account created successfully! You can now log in.';
+          // Automatically log them in if email confirmation is off, else ask to verify.
           if (data.session) {
              window.location.href = 'dashboard.html';
           }
