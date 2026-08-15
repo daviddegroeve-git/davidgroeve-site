@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Portal - David Groeve</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .portal-header {
+      padding: 40px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logout-btn {
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--ink-faint);
+    }
+    .logout-btn:hover {
+      color: var(--ink);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav">
+      <a href="index.html" class="name">David Groeve</a>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="portal-header">
+      <div>
+        <span class="eyebrow">Customer Access</span>
+        <h2>Customer Portal</h2>
+      </div>
+      <a id="logoutBtn" class="logout-btn">Log Out</a>
+    </div>
+    
+    <div class="section">
+      <h3>Your Documents</h3>
+      <p class="lede">Access your invoices, project manuals, and signed NDAs.</p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) window.location.href = 'login.html';
+      
+      document.getElementById('logoutBtn').addEventListener('click', async () => {
+        await supabase.auth.signOut();
+        window.location.href = 'login.html';
+      });
+    });
+  </script>
+</body>
+</html>
