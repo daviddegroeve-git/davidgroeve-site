@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - David Groeve</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .auth-container {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 40px;
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--line-light);
+    }
+    .auth-container h2 {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .auth-input {
+      padding: 12px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      background: var(--bg);
+      color: var(--ink);
+    }
+    .auth-input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .auth-btn {
+      width: 100%;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .auth-switch {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--ink-soft);
+    }
+    .auth-switch a {
+      color: var(--accent-ink);
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .auth-error {
+      color: #e53e3e;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav">
+      <a href="index.html" class="name">David Groeve</a>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="auth-container">
+      <h2 id="authTitle">Sign In</h2>
+      <div id="authError" class="auth-error"></div>
+      <form id="authForm" class="auth-form">
+        <input type="email" id="email" class="auth-input" placeholder="Email Address" required>
+        <input type="password" id="password" class="auth-input" placeholder="Password" required>
+        <button type="submit" class="btn primary auth-btn" id="authSubmitBtn">Sign In</button>
+      </form>
+      <div class="auth-switch">
+        <span id="authSwitchText">Don't have an account? </span><a id="authSwitchLink">Sign Up</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
+</body>
+</html>

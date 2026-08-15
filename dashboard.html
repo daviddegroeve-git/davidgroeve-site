@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Redirecting... - David Groeve</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+    .spinner {
+      border: 4px solid var(--line-light);
+      border-top: 4px solid var(--accent);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav">
+      <a href="index.html" class="name">David Groeve</a>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <h2>Loading your dashboard...</h2>
+      <p id="dashboardError" style="color: #e53e3e; display: none;"></p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const errorEl = document.getElementById('dashboardError');
+      
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (!session) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      try {
+        const { data: roleData, error: roleError } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id)
+          .single();
+
+        if (roleError) throw roleError;
+
+        if (roleData) {
+          switch(roleData.role) {
+            case 'admin':
+              window.location.href = 'admin-panel.html';
+              break;
+            case 'customer':
+              window.location.href = 'customer-portal.html';
+              break;
+            case 'student':
+              window.location.href = 'student-portal.html';
+              break;
+            case 'recruiter':
+              window.location.href = 'recruiter-portal.html';
+              break;
+            default:
+              window.location.href = 'student-portal.html';
+          }
+        } else {
+          // If no role found, default to student portal
+          window.location.href = 'student-portal.html';
+        }
+      } catch (err) {
+        console.error(err);
+        errorEl.textContent = 'Error loading role. Please try again.';
+        errorEl.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
