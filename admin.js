@@ -172,6 +172,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         <td class="py-4 font-data-mono text-[13px] text-on-surface-variant">${new Date(u.created_at).toLocaleDateString()}</td>
         <td class="py-4 text-right">
           <div class="flex justify-end gap-2">
+            ${!u.email_confirmed_at ? `
+            <button onclick="openConfirmEmailModal('${u.id}')" class="text-outline-variant hover:text-secondary transition-colors" title="Confirm Email">
+              <span class="material-symbols-outlined text-[18px]">mark_email_read</span>
+            </button>
+            ` : ''}
             <button onclick="openEditModal('${u.id}', '${u.email}', '${u.full_name?.replace(/'/g, "\\'")}', '${u.role}')" class="text-outline-variant hover:text-secondary transition-colors" title="Edit User">
               <span class="material-symbols-outlined text-[18px]">edit</span>
             </button>
@@ -227,12 +232,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   const userModal = document.getElementById('userModal');
   const resetModal = document.getElementById('resetPasswordModal');
   const disableModal = document.getElementById('confirmDisableModal');
+  const confirmEmailModal = document.getElementById('confirmEmailModal');
   
   const closeAllModals = () => {
     modalsContainer.classList.add('hidden');
     userModal.classList.add('hidden');
     resetModal.classList.add('hidden');
     disableModal.classList.add('hidden');
+    if (confirmEmailModal) confirmEmailModal.classList.add('hidden');
   };
 
   document.querySelectorAll('.close-modal').forEach(btn => {
@@ -323,6 +330,33 @@ document.addEventListener('DOMContentLoaded', async () => {
       
       modalsContainer.classList.remove('hidden');
       userModal.classList.remove('hidden');
+    });
+  }
+
+  // Confirm Email Submit
+  const confirmEmailBtn = document.getElementById('confirmEmailBtn');
+  if (confirmEmailBtn) {
+    confirmEmailBtn.addEventListener('click', async () => {
+      const id = document.getElementById('confirmEmailUserId').value;
+      const btn = document.getElementById('confirmEmailBtn');
+      const errObj = document.getElementById('confirmEmailError');
+      
+      btn.disabled = true;
+      errObj.classList.add('hidden');
+      try {
+        const { error } = await supabase.rpc('admin_confirm_user', {
+          target_user_id: id
+        });
+        if (error) throw error;
+        
+        closeAllModals();
+        await loadFullUsers(true);
+      } catch (err) {
+        errObj.textContent = err.message;
+        errObj.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+      }
     });
   }
 
@@ -425,6 +459,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     document.getElementById('adminModals').classList.remove('hidden');
     document.getElementById('resetPasswordModal').classList.remove('hidden');
+  };
+
+  window.openConfirmEmailModal = (id) => {
+    document.getElementById('confirmEmailUserId').value = id;
+    document.getElementById('confirmEmailError').classList.add('hidden');
+    
+    document.getElementById('adminModals').classList.remove('hidden');
+    document.getElementById('confirmEmailModal').classList.remove('hidden');
   };
 
   window.openDisableModal = (id, currentlyDisabled) => {

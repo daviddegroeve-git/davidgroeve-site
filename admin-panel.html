@@ -6,8 +6,7 @@
 <title>Executive Portal - Dashboard</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Fraunces:wght@500;600&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -80,13 +79,13 @@
                         "gutter": "24px"
                     },
                     "fontFamily": {
-                        "label-caps": ["Inter"],
-                        "data-mono": ["IBM Plex Mono"],
-                        "headline-md": ["Fraunces"],
-                        "body-md": ["Inter"],
-                        "display-lg": ["Fraunces"],
-                        "display-lg-mobile": ["Fraunces"],
-                        "body-lg": ["Inter"]
+                        "label-caps": ["Montserrat"],
+                        "data-mono": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "body-md": ["Montserrat"],
+                        "display-lg": ["Montserrat"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "body-lg": ["Montserrat"]
                     },
                     "fontSize": {
                         "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
@@ -513,6 +512,21 @@
         <div class="pt-4 flex justify-center gap-3">
           <button type="button" class="close-modal px-4 py-2 border border-outline-variant/30 rounded text-on-surface hover:bg-surface-container transition-colors">Cancel</button>
           <button type="button" id="confirmDisableBtn" class="px-4 py-2 bg-error text-on-error rounded font-bold hover:bg-error/80 transition-colors">Confirm</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirm Email Modal -->
+    <div id="confirmEmailModal" class="bg-surface-container-low border border-outline-variant/30 rounded-lg shadow-ambient w-full max-w-sm hidden flex-col">
+      <div class="p-6 space-y-4 text-center">
+        <span class="material-symbols-outlined text-4xl text-secondary mb-2">mark_email_read</span>
+        <h2 class="font-headline-md text-xl text-on-surface">Confirm Email?</h2>
+        <p class="text-on-surface-variant text-sm">Are you sure you want to manually confirm this user's email address?</p>
+        <input type="hidden" id="confirmEmailUserId" />
+        <p id="confirmEmailError" class="text-error text-sm hidden"></p>
+        <div class="pt-4 flex justify-center gap-3">
+          <button type="button" class="close-modal px-4 py-2 border border-outline-variant/30 rounded text-on-surface hover:bg-surface-container transition-colors">Cancel</button>
+          <button type="button" id="confirmEmailBtn" class="px-4 py-2 bg-secondary text-on-secondary rounded font-bold hover:bg-secondary/80 transition-colors">Confirm</button>
         </div>
       </div>
     </div>

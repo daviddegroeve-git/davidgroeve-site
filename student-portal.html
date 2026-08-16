@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Executive Portal - Dashboard</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,typography"></script>
 <script id="tailwind-config">
         tailwind.config = {
           darkMode: "class",
@@ -77,27 +77,13 @@
                       "gutter": "24px"
               },
               "fontFamily": {
-                      "label-caps": [
-                              "Inter"
-                      ],
-                      "data-mono": [
-                              "IBM Plex Mono"
-                      ],
-                      "headline-md": [
-                              "Fraunces"
-                      ],
-                      "body-md": [
-                              "Inter"
-                      ],
-                      "display-lg": [
-                              "Fraunces"
-                      ],
-                      "display-lg-mobile": [
-                              "Fraunces"
-                      ],
-                      "body-lg": [
-                              "Inter"
-                      ]
+                      "label-caps": ["Montserrat"],
+                      "data-mono": ["Montserrat"],
+                      "headline-md": ["Montserrat"],
+                      "body-md": ["Montserrat"],
+                      "display-lg": ["Montserrat"],
+                      "display-lg-mobile": ["Montserrat"],
+                      "body-lg": ["Montserrat"]
               },
               "fontSize": {
                       "label-caps": [
@@ -160,10 +146,10 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="auth.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;600&amp;family=IBM+Plex+Mono:wght@500&amp;family=Inter:wght@400;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
         body {
             background-color: theme('colors.deep-midnight');
@@ -338,10 +324,12 @@
     <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-4">Education Hub</h2>
     <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Access premium executive training and strategic learning paths.</p>
   </header>
-  <div class="bg-slate-surface border-t border-tertiary p-12 text-center shadow-ambient rounded">
-    <span class="material-symbols-outlined text-6xl text-tertiary mb-4">school</span>
-    <h3 class="text-2xl text-on-surface font-headline-md mb-2">Curriculum Locked</h3>
-    <p class="text-on-surface-variant font-body-md max-w-md mx-auto">No active corporate training modules assigned to your organization at this time.</p>
+  <div id="course-container" class="bg-slate-surface border-t border-tertiary p-8 shadow-ambient rounded">
+    <div class="text-center py-12">
+      <span class="material-symbols-outlined text-6xl text-tertiary mb-4 animate-pulse">school</span>
+      <h3 class="text-2xl text-on-surface font-headline-md mb-2">Loading Curriculum...</h3>
+      <p class="text-on-surface-variant font-body-md max-w-md mx-auto">Fetching your assigned training modules.</p>
+    </div>
   </div>
 </div>
 

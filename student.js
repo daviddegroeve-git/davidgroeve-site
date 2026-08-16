@@ -129,4 +129,200 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Prepend to existing "View Registry" block
     docsContainer.insertAdjacentHTML('afterbegin', docsHtml);
   }
+
+  // Load Course Content
+  const courseContainer = document.getElementById('course-container');
+  if (courseContainer) {
+    try {
+      const response = await fetch('gemini_course_lms_import.json');
+      if (response.ok) {
+        const courseData = await response.json();
+        const course = courseData.course;
+        
+        let currentWeekIndex = 0;
+        let currentModuleIndex = -1; // -1 = week overview, 'quiz' = quiz view, 0+ = module
+
+        const renderCourse = () => {
+          const week = course.weeks[currentWeekIndex];
+          let contentHtml = '';
+          
+          if (currentModuleIndex === -1) {
+            // Week Overview
+            contentHtml = `
+              <div class="mb-8">
+                <div class="inline-block px-3 py-1 bg-tertiary-container text-tertiary rounded-full font-label-caps text-[10px] mb-4">WEEK OVERVIEW</div>
+                <h3 class="text-3xl text-on-surface font-headline-md mb-4">${week.title}</h3>
+                <p class="text-on-surface-variant font-body-lg">${week.summary}</p>
+              </div>
+              
+              <div class="space-y-4">
+                <h4 class="text-lg text-secondary font-headline-md border-b border-outline-variant/20 pb-2 mb-4">Modules in this Week</h4>
+                ${week.modules.map((m, idx) => `
+                  <div class="p-5 bg-surface-container-low hover:bg-surface-container border border-outline-variant/20 rounded cursor-pointer transition-colors group" onclick="window.setCourseModule(${idx})">
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center gap-4">
+                        <div class="w-8 h-8 rounded-full bg-tertiary/10 text-tertiary flex items-center justify-center font-data-mono text-sm">${idx + 1}</div>
+                        <span class="text-on-surface font-body-md group-hover:text-tertiary transition-colors">${m.title}</span>
+                      </div>
+                      <span class="material-symbols-outlined text-outline group-hover:text-tertiary transition-colors group-hover:translate-x-1">arrow_forward</span>
+                    </div>
+                  </div>
+                `).join('')}
+                
+                <div class="p-5 bg-secondary/5 hover:bg-secondary/10 border border-secondary/20 rounded cursor-pointer transition-colors mt-8 group" onclick="window.setCourseModule('quiz')">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                      <div class="w-8 h-8 rounded-full bg-secondary/20 text-secondary flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[16px]">quiz</span>
+                      </div>
+                      <span class="text-on-surface font-body-md font-bold text-secondary">Knowledge Check: ${week.quiz.title}</span>
+                    </div>
+                    <span class="material-symbols-outlined text-secondary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                  </div>
+                </div>
+              </div>
+            `;
+          } else if (currentModuleIndex === 'quiz') {
+            // Quiz View
+            contentHtml = `
+              <div class="mb-8">
+                <button class="text-tertiary text-sm flex items-center gap-1 mb-6 hover:text-secondary transition-colors" onclick="window.setCourseModule(-1)">
+                  <span class="material-symbols-outlined text-[16px]">arrow_back</span> Back to Week Overview
+                </button>
+                <div class="inline-block px-3 py-1 bg-secondary/20 text-secondary rounded-full font-label-caps text-[10px] mb-4">ASSESSMENT</div>
+                <h3 class="text-2xl text-on-surface font-headline-md mb-2">${week.quiz.title}</h3>
+                <p class="text-on-surface-variant text-sm">Select the best answer for each question below.</p>
+              </div>
+              <div class="space-y-8">
+                ${week.quiz.questions.map((q, qIdx) => `
+                  <div class="bg-surface-container-low p-6 border border-outline-variant/20 rounded">
+                    <p class="text-on-surface font-body-lg font-medium mb-6">${qIdx + 1}. ${q.question_text}</p>
+                    <div class="space-y-3">
+                      ${q.options.map(opt => `
+                        <label class="flex items-start gap-3 p-4 border border-outline-variant/30 rounded cursor-pointer hover:bg-surface-container transition-colors group">
+                          <input type="radio" name="q_${q.question_id}" value="${opt.id}" class="mt-1 text-secondary bg-surface border-outline-variant/50 focus:ring-secondary focus:ring-offset-surface">
+                          <span class="text-on-surface-variant font-body-md group-hover:text-on-surface transition-colors">${opt.text}</span>
+                        </label>
+                      `).join('')}
+                    </div>
+                  </div>
+                `).join('')}
+                <div class="pt-4 border-t border-outline-variant/20">
+                  <button class="bg-secondary text-ink-black px-8 py-3 rounded font-label-caps font-bold hover:opacity-90 transition-opacity flex items-center gap-2 justify-center w-full md:w-auto">
+                    <span class="material-symbols-outlined text-[18px]">fact_check</span>
+                    Submit Answers
+                  </button>
+                </div>
+              </div>
+            `;
+          } else {
+            // Module View
+            const mod = week.modules[currentModuleIndex];
+            
+            // Visual Placeholders based on content keywords
+            let illustration = '';
+            const t = mod.title.toLowerCase();
+            if (t.includes('environment') || t.includes('setup')) {
+               illustration = `<div class="bg-surface-container flex flex-col md:flex-row items-center justify-center p-12 rounded-lg border border-outline-variant/20 mb-8"><span class="material-symbols-outlined text-6xl text-tertiary">terminal</span><div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left"><h4 class="text-on-surface font-headline-md text-xl">Environment Sandbox</h4><p class="text-on-surface-variant text-sm mt-1">Interactive terminal environment initializing...</p></div></div>`;
+            } else if (t.includes('parameter') || t.includes('behavior')) {
+               illustration = `<div class="bg-surface-container flex flex-col md:flex-row items-center justify-center p-12 rounded-lg border border-outline-variant/20 mb-8"><span class="material-symbols-outlined text-6xl text-secondary">tune</span><div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left"><h4 class="text-on-surface font-headline-md text-xl">Model Parameters</h4><p class="text-on-surface-variant text-sm mt-1">Adjust temperature, top_k, and top_p interactively.</p></div></div>`;
+            } else if (t.includes('json') || t.includes('schema') || t.includes('structured')) {
+               illustration = `<div class="bg-surface-container flex flex-col md:flex-row items-center justify-center p-12 rounded-lg border border-outline-variant/20 mb-8"><span class="material-symbols-outlined text-6xl text-tertiary">data_object</span><div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left"><h4 class="text-on-surface font-headline-md text-xl">JSON Schema Validator</h4><p class="text-on-surface-variant text-sm mt-1">Live data extraction and schema enforcement visualization.</p></div></div>`;
+            } else if (t.includes('multimodal')) {
+               illustration = `<div class="bg-surface-container flex flex-col items-center justify-center p-10 rounded-lg border border-outline-variant/20 mb-8"><div class="flex gap-6 mb-4"><span class="material-symbols-outlined text-4xl text-secondary">image</span><span class="material-symbols-outlined text-4xl text-tertiary">mic</span><span class="material-symbols-outlined text-4xl text-secondary">videocam</span></div><h4 class="text-on-surface font-headline-md text-xl text-center">Multimodal Inputs</h4><p class="text-on-surface-variant text-sm mt-1 text-center">Drag and drop images or audio to see model inference.</p></div>`;
+            } else if (t.includes('rag') || t.includes('embedding')) {
+               illustration = `<div class="bg-surface-container flex flex-col md:flex-row items-center justify-center p-12 rounded-lg border border-outline-variant/20 mb-8"><span class="material-symbols-outlined text-6xl text-tertiary">schema</span><div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left"><h4 class="text-on-surface font-headline-md text-xl">Vector Search Pipeline</h4><p class="text-on-surface-variant text-sm mt-1">Visualizing document chunks and embedding similarities.</p></div></div>`;
+            } else {
+               illustration = `<div class="bg-surface-container flex flex-col md:flex-row items-center justify-center p-12 rounded-lg border border-outline-variant/20 mb-8"><span class="material-symbols-outlined text-6xl text-tertiary">model_training</span><div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left"><h4 class="text-on-surface font-headline-md text-xl">Interactive Example</h4><p class="text-on-surface-variant text-sm mt-1">Run the code snippets below in the sandbox.</p></div></div>`;
+            }
+
+            contentHtml = `
+              <div class="mb-6">
+                <button class="text-tertiary text-sm flex items-center gap-1 mb-6 hover:text-secondary transition-colors" onclick="window.setCourseModule(-1)">
+                  <span class="material-symbols-outlined text-[16px]">arrow_back</span> Back to Week ${week.week_number} Overview
+                </button>
+                <div class="inline-block px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full font-label-caps text-[10px] mb-4">MODULE ${currentModuleIndex + 1}</div>
+                ${illustration}
+                <div class="prose prose-invert prose-pre:bg-[#1a1c1c] prose-pre:border prose-pre:border-outline-variant/20 max-w-none text-on-surface-variant">
+                  ${marked.parse ? marked.parse(mod.content_markdown) : mod.content_markdown.replace(/\\n/g, '<br/>')}
+                </div>
+              </div>
+              
+              <!-- Pagination -->
+              <div class="flex justify-between mt-12 pt-6 border-t border-outline-variant/20">
+                 <button class="px-5 py-2 border border-outline-variant/50 text-on-surface rounded font-label-caps text-xs hover:bg-surface-container transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-2" ${currentModuleIndex === 0 ? 'disabled' : ''} onclick="window.setCourseModule(${currentModuleIndex - 1})">
+                   <span class="material-symbols-outlined text-[16px]">arrow_back</span> Previous
+                 </button>
+                 <button class="px-5 py-2 bg-tertiary text-on-tertiary rounded font-label-caps text-xs hover:opacity-90 transition-opacity flex items-center gap-2" onclick="window.setCourseModule(${currentModuleIndex === week.modules.length - 1 ? "'quiz'" : currentModuleIndex + 1})">
+                   ${currentModuleIndex === week.modules.length - 1 ? 'Go to Quiz' : 'Next Module'} <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                 </button>
+              </div>
+            `;
+          }
+
+          let courseHtml = `
+            <div class="flex flex-col md:flex-row gap-8">
+              <!-- Sidebar Navigation -->
+              <div class="md:w-1/4 shrink-0 border-r border-outline-variant/20 md:pr-6">
+                <div class="mb-8">
+                  <h2 class="font-headline-md text-2xl text-on-surface leading-tight">${course.title}</h2>
+                  <div class="flex gap-2 mt-3">
+                    <span class="text-[10px] font-label-caps bg-secondary/10 text-secondary px-2 py-1 rounded">${course.code}</span>
+                  </div>
+                </div>
+                
+                <nav class="space-y-2">
+                  <div class="text-[10px] font-label-caps text-on-surface-variant mb-3 px-2">CURRICULUM</div>
+                  ${course.weeks.map((w, idx) => `
+                    <button class="w-full text-left px-4 py-3 rounded transition-colors flex items-center justify-between ${idx === currentWeekIndex ? 'bg-tertiary/10 border border-tertiary/30 text-tertiary' : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'}" onclick="window.setCourseWeek(${idx})">
+                      <div class="flex flex-col">
+                        <span class="font-label-caps text-[10px] opacity-70 mb-1">WEEK ${w.week_number}</span>
+                        <span class="font-body-md text-sm font-medium line-clamp-1">${w.title}</span>
+                      </div>
+                      ${idx === currentWeekIndex ? '<span class="material-symbols-outlined text-[18px]">chevron_right</span>' : ''}
+                    </button>
+                  `).join('')}
+                </nav>
+              </div>
+              
+              <!-- Main Content Area -->
+              <div class="md:w-3/4 pb-12">
+                 ${contentHtml}
+              </div>
+            </div>
+          `;
+          
+          courseContainer.innerHTML = courseHtml;
+          // Clean up any default card styling on the parent container so our layout breathes
+          courseContainer.className = "mt-4 relative";
+        };
+
+        window.setCourseWeek = (idx) => {
+          currentWeekIndex = idx;
+          currentModuleIndex = -1;
+          renderCourse();
+        };
+
+        window.setCourseModule = (idx) => {
+          currentModuleIndex = idx;
+          renderCourse();
+          // Scroll to top of course container smoothly
+          document.getElementById('course-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+
+        renderCourse();
+      } else {
+        throw new Error('Failed to fetch course data');
+      }
+    } catch (error) {
+      console.error('Error loading course:', error);
+      courseContainer.innerHTML = `
+        <div class="text-center py-12">
+          <span class="material-symbols-outlined text-6xl text-error mb-4">error</span>
+          <h3 class="text-2xl text-on-surface font-headline-md mb-2">Error Loading Curriculum</h3>
+          <p class="text-on-surface-variant font-body-md max-w-md mx-auto">Please try again later or contact support.</p>
+        </div>
+      `;
+    }
+  }
 });

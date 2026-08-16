@@ -1,0 +1,349 @@
+{
+  "course": {
+    "title": "Mastering Artificial Intelligence with Gemini",
+    "code": "AI-GEMINI-401",
+    "description": "A comprehensive 4-week course on building enterprise Generative AI applications using Google Gemini models, prompt engineering, multimodal AI, RAG, function calling, and autonomous agents.",
+    "duration_weeks": 4,
+    "author": "Derived from Google Cloud Platform & DeepMind Educational Resources",
+    "license": "Apache-2.0",
+    "weeks": [
+      {
+        "week_number": 1,
+        "title": "Foundations of Gemini & Prompt Engineering",
+        "summary": "Environment setup, SDK initialization, prompt configuration parameters, and structured JSON schema enforcement using Pydantic.",
+        "modules": [
+          {
+            "module_id": "W1-M1",
+            "title": "Environment Setup & SDK Fundamentals",
+            "content_markdown": "### Module 1: Environment Setup & SDK Fundamentals\n\nThe `google-genai` Python SDK provides a unified client interface for interacting with Gemini models. Before invoking model endpoints, you must authenticate your environment using an API key or Google Cloud credentials.\n\n#### API Key Configuration\nTo authenticate with the Gemini API, set the `GEMINI_API_KEY` environment variable in your system shell or execution runtime:\n\n```bash\nexport GEMINI_API_KEY=\"your-gemini-api-key-here\"\n```\n\n#### Initializing the SDK Client\nIn Python, initialize the client using `google.genai.Client()`. The SDK automatically reads the `GEMINI_API_KEY` environment variable.\n\n```python\nfrom google import genai\n\n# Initialize client using environment variable\nclient = genai.Client()\n\n# Generate content with Gemini\nresponse = client.models.generate_content(\n    model=\"gemini-2.5-flash\",\n    contents=\"Explain tokenization in Large Language Models in two sentences.\"\n)\n\nprint(response.text)\n```"
+          },
+          {
+            "module_id": "W1-M2",
+            "title": "Controlling Model Behavior with Parameters",
+            "content_markdown": "### Module 2: Controlling Model Behavior with Parameters\n\nYou can adjust response generation using configuration parameters passed to `client.models.generate_content()` via `types.GenerateContentConfig`:\n\n* **`temperature` (0.0 to 2.0):** Controls output randomness. Lower values (e.g., `0.0` or `0.2`) yield deterministic, factual responses suitable for classification or coding tasks. Higher values (e.g., `1.0`+) yield creative outputs.\n* **`top_p` (0.0 to 1.0):** Implements nucleus sampling. The model considers tokens whose cumulative probability reaches the `top_p` threshold.\n* **`top_k` (Integer):** Limits candidate token selection to the top $K$ most probable tokens at each step.\n* **`system_instruction`:** Sets background behavior, persona, constraints, and operational rules prior to evaluating user input.\n\n#### Example: System Instructions & Generation Config\n\n```python\nfrom google import genai\nfrom google.genai import types\n\nclient = genai.Client()\n\nconfig = types.GenerateContentConfig(\n    system_instruction=\"You are an enterprise software architect. Keep answers concise, factual, and formatted as technical bullet points.\",\n    temperature=0.2,\n    max_output_tokens=300\n)\n\nresponse = client.models.generate_content(\n    model=\"gemini-2.5-flash\",\n    contents=\"What are the key benefits of asynchronous API design?\",\n    config=config\n)\n\nprint(response.text)\n```"
+          },
+          {
+            "module_id": "W1-M3",
+            "title": "Enforcing Structured Output (JSON Schemas)",
+            "content_markdown": "### Module 3: Enforcing Structured Output (JSON Schemas)\n\nWhen building software integrations, relying on plain text requires brittle parsing. Gemini allows enforcing strict output schemas using **Pydantic** models or raw **JSON Schemas**. The response guarantees adherence to the requested data structure.\n\n#### Example: Structured Extraction with Pydantic\n\n```python\nfrom google import genai\nfrom google.genai import types\nfrom pydantic import BaseModel, Field\nfrom typing import List\n\n# 1. Define target data structure\nclass EntityExtraction(BaseModel):\n    summary: str = Field(description=\"A 1-sentence summary of the text.\")\n    sentiment: str = Field(description=\"Overall sentiment: POSITIVE, NEGATIVE, or NEUTRAL.\")\n    key_technologies: List[str] = Field(description=\"List of technologies mentioned in the text.\")\n\nclient = genai.Client()\n\nunstructured_input = \"\"\"\nOur engineering team migrated our legacy Monolith to a Kubernetes-backed microservices \narchitecture using Go and gRPC. Response latencies dropped by 45%, though initial \ndeployment complexity gave us significant operational friction during week 1.\n\"\"\"\n\n# 2. Pass schema into response_schema config\nconfig = types.GenerateContentConfig(\n    response_mime_type=\"application/json\",\n    response_schema=EntityExtraction,\n    temperature=0.1\n)\n\nresponse = client.models.generate_content(\n    model=\"gemini-2.5-flash\",\n    contents=unstructured_input,\n    config=config\n)\n\nprint(response.text)\n```"
+          }
+        ],
+        "quiz": {
+          "quiz_id": "QZ-W1",
+          "title": "Week 1 Assessment: Foundations of Gemini & Prompt Engineering",
+          "questions": [
+            {
+              "question_id": "W1-Q1",
+              "question_text": "What is the standard environment variable name recognized by the official google-genai Python SDK for authentication?",
+              "options": [
+                {
+                  "id": "A",
+                  "text": "GOOGLE_AI_SECRET"
+                },
+                {
+                  "id": "B",
+                  "text": "GEMINI_API_KEY"
+                },
+                {
+                  "id": "C",
+                  "text": "VERTEX_AUTH_TOKEN"
+                },
+                {
+                  "id": "D",
+                  "text": "GEMINI_CLIENT_ID"
+                }
+              ],
+              "correct_option": "B",
+              "explanation": "The google-genai client automatically looks for the GEMINI_API_KEY (or GOOGLE_API_KEY) environment variable upon initialization."
+            },
+            {
+              "question_id": "W1-Q2",
+              "question_text": "Which temperature value setting is recommended for tasks demanding deterministic, reproducible, and strictly factual outputs (e.g., code generation, entity extraction)?",
+              "options": [
+                {
+                  "id": "A",
+                  "text": "2.0"
+                },
+                {
+                  "id": "B",
+                  "text": "1.5"
+                },
+                {
+                  "id": "C",
+                  "text": "0.1"
+                },
+                {
+                  "id": "D",
+                  "text": "-1.0"
+                }
+              ],
+              "correct_option": "C",
+              "explanation": "Lower temperatures (close to 0.0) reduce token sampling randomness, producing more consistent, deterministic results."
+            },
+            {
+              "question_id": "W1-Q3",
+              "question_text": "When should a developer use system_instruction instead of embedding instructions directly in the user prompt?",
+              "options": [
+                {
+                  "id": "A",
+                  "text": "Only when translating text between different foreign languages."
+                },
+                {
+                  "id": "B",
+                  "text": "To set persistent personas, global formatting rules, and guardrails across multiple user requests."
+                },
+                {
+                  "id": "C",
+                  "text": "System instructions are required to run image processing scripts."
+                },
+                {
+                  "id": "D",
+                  "text": "System instructions increase latency and should be avoided in production."
+                }
+              ],
+              "correct_option": "B",
+              "explanation": "system_instruction provides context, guardrails, and behavioral guidelines before the user query is evaluated, separating operational controls from input data."
+            },
+            {
+              "question_id": "W1-Q4",
+              "question_text": "To force Gemini to return valid JSON that conforms strictly to a Pydantic model, which parameter configuration must be set?",
+              "options": [
+                {
+                  "id": "A",
+                  "text": "response_mime_type='application/json' and response_schema=YourModelClass"
+                },
+                {
+                  "id": "B",
+                  "text": "format='json' inside the prompt string"
+                },
+                {
+                  "id": "C",
+                  "text": "parse_json=True in client.models.generate_content()"
+                },
+                {
+                  "id": "D",
+                  "text": "tools=['json_parser']"
+                }
+              ],
+              "correct_option": "A",
+              "explanation": "Setting response_mime_type='application/json' combined with response_schema instructs Gemini's backend decoder to enforce schema compliance during generation."
+            }
+          ]
+        }
+      },
+      {
+        "week_number": 2,
+        "title": "Multimodal AI & Function Calling",
+        "summary": "Processing visual and audio inputs alongside text, long-context window analysis, and implementing function calling/tools.",
+        "modules": [
+          {
+            "module_id": "W2-M1",
+            "title": "Processing Multimodal Inputs",
+            "content_markdown": "### Module 1: Processing Multimodal Inputs\n\nGemini natively processes text, high-resolution images, long-form audio, and full-length video files within a unified context window. You can pass media directly to `client.models.generate_content()` using raw bytes, local file streams, or cloud URIs.\n\n#### Processing Images & Local Media\nTo analyze local media assets, load the file bytes or pass file streams directly into the content payload:\n\n```python\nfrom google import genai\nfrom google.genai import types\nfrom PIL import Image\n\nclient = genai.Client()\n\n# Load a local image file\nimage = Image.open(\"architecture_diagram.png\")\n\nprompt = \"Analyze this system architecture diagram. Identify all database components and potential single points of failure.\"\n\nresponse = client.models.generate_content(\n    model=\"gemini-2.5-flash\",\n    contents=[image, prompt]\n)\n\nprint(response.text)\n```"
+          },
+          {
+            "module_id": "W2-M2",
+            "title": "Function Calling Mechanics",
+            "content_markdown": "### Module 2: Function Calling Mechanics\n\nFunction Calling allows Gemini to act as an orchestrator. Instead of generating plain text, the model evaluates user requests, determines when an external tool is required, and outputs structured JSON arguments matching your target Python functions.\n\n#### Implementing Tool Use Workflow\n\n1. **Define the Python Tool Function:** Write the function that performs the real action (e.g., database query or REST call).\n2. **Pass Function to Client:** Provide the python function reference inside `config.tools`.\n3. **Handle Model Invocation:** Execute the returned function call and send the tool response back to Gemini to complete the answer.\n\n```python\nfrom google import genai\nfrom google.genai import types\n\n# 1. Define real application tool\ndef get_user_account_status(user_id: str) -> dict:\n    \"\"\"Retrieves account tier and billing status for a given user ID.\"\"\"\n    # Mock database lookup\n    return {\n        \"user_id\": user_id,\n        \"account_tier\": \"Enterprise\",\n        \"status\": \"Active\",\n        \"monthly_quota_used\": 78.5\n    }\n\nclient = genai.Client()\n\n# 2. Configure model with tool availability\nconfig = types.GenerateContentConfig(\n    tools=[get_user_account_status],\n    temperature=0.0\n)\n\n# 3. Prompt requiring tool execution\nresponse = client.models.generate_content(\n    model=\"gemini-2.5-flash\",\n    contents=\"Can you check account status and quota consumption for user USR-9821?\",\n    config=config\n)\n\n# Inspect function call output generated by the model\nif response.function_calls:\n    for call in response.function_calls:\n        print(f\"Tool to invoke: {call.name}\")\n        print(f\"Extracted Arguments: {call.args}\")\n```"
+          }
+        ],
+        "quiz": {
+          "quiz_id": "QZ-W2",
+          "title": "Week 2 Assessment: Multimodal AI & Function Calling",
+          "questions": [
+            {
+              "question_id": "W2-Q1",
+              "question_text": "How does Gemini process multimodal inputs such as images, audio, or video files?",
+              "options": [
+                {
+                  "id": "A",
+                  "text": "Media files must be converted into text summaries using an external OCR model before passing to Gemini."
+                },
+                {
+                  "id": "B",
+                  "text": "Media assets are passed directly into contents alongside text prompts via native multimodal tokens."
+                },
+                {
+                  "id": "C",
+                  "text": "Gemini can only accept images if they are converted into binary string representations in system prompts."
+                },
+                {
+                  "id": "D",
+                  "text": "Multimodal processing requires using a separate audio-only client library."
+                }
+              ],
+              "correct_option": "B",
+              "explanation": "Gemini models are natively multimodal and process image, video, and audio tokens directly inside the context window without requiring pre-translation to text."
+            },
+            {
+              "question_id": "W2-Q2",
+              "question_text": "When using Function Calling with Gemini, who is responsible for executing the actual Python function code or external API request?",
+              "options": [
+                {
+                  "id": "A",
+                  "text": "Gemini automatically executes the Python code on Google's cloud servers."
+                },
+                {
+                  "id": "B",
+                  "text": "The local client or host application receives the structured tool arguments from Gemini and executes the function locally."
+                },
+                {
+                  "id": "C",
+                  "text": "Google Cloud Vertex AI sandboxes run the code silently in the background."
+                },
+                {
+                  "id": "D",
+                  "text": "Function calling can only send emails; it cannot execute custom code."
+                }
+              ],
+              "correct_option": "B",
+              "explanation": "Gemini determines which function to call and generates the structured arguments; the host application executes the function and returns the results to the model."
+            }
+          ]
+        }
+      },
+      {
+        "week_number": 3,
+        "title": "Retrieval-Augmented Generation (RAG) & Grounding",
+        "summary": "Generating text embeddings, building vector search indexes, and implementing grounded QA systems over enterprise documents.",
+        "modules": [
+          {
+            "module_id": "W3-M1",
+            "title": "Embeddings & Vector Representations",
+            "content_markdown": "### Module 1: Embeddings & Vector Representations\n\nRetrieval-Augmented Generation (RAG) grounds language models on custom document collections. The first phase converts raw text chunks into dense mathematical vector representations using text embedding models.\n\n```python\nfrom google import genai\n\nclient = genai.Client()\n\n# Generate 768-dimensional vector embedding\nresponse = client.models.embed_content(\n    model=\"text-embedding-004\",\n    contents=\"Retrieval-Augmented Generation grounds LLMs on external enterprise knowledge bases.\"\n)\n\nembedding_vector = response.embedding.values\nprint(f\"Vector length: {len(embedding_vector)}\")\nprint(f\"First 5 dimensions: {embedding_vector[:5]}\")\n```"
+          },
+          {
+            "module_id": "W3-M2",
+            "title": "Building an End-to-End RAG Pipeline",
+            "content_markdown": "### Module 2: Building an End-to-End RAG Pipeline\n\nA basic RAG architecture retrieves the top $K$ relevant document context chunks matching a user query via semantic vector search, then injects those chunks into the generation prompt.\n\n```python\nfrom google import genai\nfrom google.genai import types\n\nclient = genai.Client()\n\n# Simulated retrieved knowledge chunks from a vector database\nretrieved_context_chunks = [\n    \"Doc 142: Company policy states annual tech stipend allowances reset every fiscal year on October 1st.\",\n    \"Doc 143: Unused home-office stipends up to $500 can roll over into Q1 of the following year upon manager approval.\"\n]\n\nuser_query = \"When does my annual tech stipend reset, and can I roll over unused funds?\"\n\n# Format augmented context prompt\naugmented_prompt = f\"\"\"\nAnswer the user query based ONLY on the provided document excerpts below.\nIf the answer cannot be found in the documents, state 'Information not found'.\n\n--- DOCUMENT CONTEXT ---\n{\"\\n\".join(retrieved_context_chunks)}\n\n--- USER QUERY ---\n{user_query}\n\"\"\"\n\nconfig = types.GenerateContentConfig(temperature=0.0)\n\nresponse = client.models.generate_content(\n    model=\"gemini-2.5-flash\",\n    contents=augmented_prompt,\n    config=config\n)\n\nprint(response.text)\n```"
+          }
+        ],
+        "quiz": {
+          "quiz_id": "QZ-W3",
+          "title": "Week 3 Assessment: RAG & Grounding",
+          "questions": [
+            {
+              "question_id": "W3-Q1",
+              "question_text": "What is the primary role of a model like text-embedding-004 in a RAG pipeline?",
+              "options": [
+                {
+                  "id": "A",
+                  "text": "Generating human-readable summary paragraphs from raw text files."
+                },
+                {
+                  "id": "B",
+                  "text": "Converting text into dense numerical vector representations that capture semantic meaning for retrieval."
+                },
+                {
+                  "id": "C",
+                  "text": "Executing database deletion scripts when context windows overflow."
+                },
+                {
+                  "id": "D",
+                  "text": "Translating Python code into C++ binaries."
+                }
+              ],
+              "correct_option": "B",
+              "explanation": "Text embedding models map words and phrases to multi-dimensional vectors, enabling mathematical similarity searching across text databases."
+            },
+            {
+              "question_id": "W3-Q2",
+              "question_text": "Why is setting temperature=0.0 or 0.1 recommended when running generation over retrieved RAG contexts?",
+              "options": [
+                {
+                  "id": "A",
+                  "text": "It speeds up the network request by omitting security verification checks."
+                },
+                {
+                  "id": "B",
+                  "text": "It ensures maximum deterministic behavior, instructing the model to strictly adhere to retrieved facts without creative embellishments."
+                },
+                {
+                  "id": "C",
+                  "text": "It forces the model to ignore user inputs and print raw JSON blocks."
+                },
+                {
+                  "id": "D",
+                  "text": "It enables multimodal video streaming."
+                }
+              ],
+              "correct_option": "B",
+              "explanation": "Low temperature minimizes output variance, forcing the LLM to rely strictly on facts provided inside the prompt context rather than hallucinatory associations."
+            }
+          ]
+        }
+      },
+      {
+        "week_number": 4,
+        "title": "Enterprise Search & Autonomous AI Agents",
+        "summary": "Building autonomous multi-agent systems, managing stateful multi-turn conversations, and orchestrating enterprise search workflows.",
+        "modules": [
+          {
+            "module_id": "W4-M1",
+            "title": "Autonomous Agent Architectures",
+            "content_markdown": "### Module 1: Autonomous Agent Architectures\n\nAn **AI Agent** extends standard chat interfaces by combining reasoning loops, persistent memory, and multiple tool capabilities. Agents operate autonomously to complete multi-step objectives.\n\n```\n       ┌──────────────────────────────────────────────────┐\n       │                 USER OBJECTIVE                   │\n       └────────────────────────┬─────────────────────────┘\n                                │\n                                ▼\n       ┌──────────────────────────────────────────────────┐\n       │             REASONING & PLANNING LOOP            │\n       │    (Gemini models evaluate state & pick tools)   │\n       └─────┬──────────────────┬───────────────────┬─────┘\n             │                  │                   │\n             ▼                  ▼                   ▼\n    ┌─────────────────┐ ┌───────────────┐ ┌───────────────────┐\n    │ Knowledge Search│ │ Execution API │ │ Database Query   │\n    │ (RAG & Docs)    │ │ (Function)    │ │ (SQL / Analytics) │\n    └─────────────────┘ └───────────────┘ └───────────────────┘\n```"
+          },
+          {
+            "module_id": "W4-M2",
+            "title": "Building Multi-Turn Stateful Agents",
+            "content_markdown": "### Module 2: Building Multi-Turn Stateful Agents\n\nStateful agents maintain conversation memory across interactions using `client.chats.create()`, allowing them to execute sequential reasoning chains without dropping context.\n\n```python\nfrom google import genai\nfrom google.genai import types\n\n# Tool 1: Internal Knowledge Base Lookup\ndef search_knowledge_base(query: str) -> str:\n    \"\"\"Searches internal corporate policies for specific query strings.\"\"\"\n    return \"Policy Doc 88: Travel reimbursements require itemized receipts for expenses over $25.\"\n\n# Tool 2: Submit Expense Approval\ndef submit_expense_claim(employee_id: str, amount: float, category: str) -> str:\n    \"\"\"Submits an expense claim to the finance processing queue.\"\"\"\n    return f\"Claim submitted successfully. Claim ID: EXP-{employee_id}-99\"\n\nclient = genai.Client()\n\nconfig = types.GenerateContentConfig(\n    system_instruction=\"You are an autonomous HR & Expense AI Agent. Use available tools to assist employees accurately.\",\n    tools=[search_knowledge_base, submit_expense_claim],\n    temperature=0.1\n)\n\n# Start stateful multi-turn agent chat session\nchat = client.chats.create(\n    model=\"gemini-2.5-flash\",\n    config=config\n)\n\n# Interaction 1: Agent determines it needs policy lookup tool\nresponse_1 = chat.send_message(\"Do I need a receipt to claim a $40 dinner during business travel?\")\nprint(\"Agent Response 1:\\n\", response_1.text or response_1.function_calls)\n\n# Interaction 2: Agent remembers context and executes submission tool\nresponse_2 = chat.send_message(\"Okay, submit an expense claim for $40 under Meals for employee EMP-402.\")\nprint(\"Agent Response 2:\\n\", response_2.text or response_2.function_calls)\n```"
+          }
+        ],
+        "quiz": {
+          "quiz_id": "QZ-W4",
+          "title": "Week 4 Assessment: Enterprise Search & Autonomous AI Agents",
+          "questions": [
+            {
+              "question_id": "W4-Q1",
+              "question_text": "What is the primary technical advantage of using client.chats.create() over standard client.models.generate_content() requests when building an AI agent?",
+              "options": [
+                {
+                  "id": "A",
+                  "text": "Chat sessions automatically compress images to save bandwidth."
+                },
+                {
+                  "id": "B",
+                  "text": "Chat objects automatically maintain stateful conversation history across multi-turn interactions."
+                },
+                {
+                  "id": "C",
+                  "text": "Standard requests cannot invoke function calling tools."
+                },
+                {
+                  "id": "D",
+                  "text": "Chat sessions bypass API authentication requirements."
+                }
+              ],
+              "correct_option": "B",
+              "explanation": "chats.create() manages interaction history internally, appending previous inputs, model responses, and tool call outputs automatically across successive turns."
+            },
+            {
+              "question_id": "W4-Q2",
+              "question_text": "In an enterprise agent architecture, what primary component determines which tool to call based on user inputs and intermediate state updates?",
+              "options": [
+                {
+                  "id": "A",
+                  "text": "The SQL database trigger script."
+                },
+                {
+                  "id": "B",
+                  "text": "The LLM reasoning and decision engine (e.g., Gemini model running inside a tool loop)."
+                },
+                {
+                  "id": "C",
+                  "text": "A static IF/ELSE hardware switch inside the client device."
+                },
+                {
+                  "id": "D",
+                  "text": "The HTML rendering engine."
+                }
+              ],
+              "correct_option": "B",
+              "explanation": "The core LLM evaluates user intent, system instructions, current state, and available tool definitions to dynamically reason and orchestrate tool execution steps."
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
