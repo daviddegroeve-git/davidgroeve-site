@@ -18,13 +18,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     
   const qualContainer = document.getElementById('qualifications-container');
   if (qualContainer && modules) {
-    qualContainer.innerHTML = modules.map(m => `
-      <div class="flex justify-between items-center pb-3 border-b border-outline-variant/20">
-        <div>
-          <p class="font-body-md text-[14px] text-on-surface">${m.title}</p>
-          <p class="font-data-mono text-[10px] text-on-surface-variant">Mod: ${m.id.substring(0,6).toUpperCase()}</p>
-        </div>
-        <span class="font-data-mono text-[16px] ${m.progress > 80 ? 'text-secondary' : 'text-on-surface-variant'}">${m.progress > 0 ? m.progress + '%' : m.status}</span>
+    qualContainer.innerHTML = modules.map((m, i) => `
+      <div class="flex items-center gap-4 group">
+          <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-secondary-text group-hover:bg-brand-success-light group-hover:text-brand-success transition-colors duration-300">
+              <span class="font-semibold text-sm">${i + 1}</span>
+          </div>
+          <div class="flex-1">
+              <div class="flex justify-between items-center mb-1.5">
+                  <p class="font-medium text-sm text-primary-text truncate max-w-[150px] md:max-w-[200px]">${m.title}</p>
+                  <span class="text-xs font-semibold ${m.progress > 80 ? 'text-brand-success' : 'text-tertiary-text'}">${m.progress > 0 ? m.progress + '%' : m.status}</span>
+              </div>
+              <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div class="h-full bg-brand-success transition-all duration-1000 ease-out" style="width: ${m.progress > 0 ? m.progress : 0}%"></div>
+              </div>
+          </div>
       </div>
     `).join('');
   }
@@ -42,17 +49,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // Update active nav styling
       navLinks.forEach(nav => {
-        nav.classList.remove('text-secondary', 'bg-tertiary-container/30', 'border-r-2', 'border-secondary', 'translate-x-1');
-        nav.classList.add('text-on-surface-variant');
+        nav.classList.remove('text-brand-navy', 'bg-slate-100');
+        nav.classList.add('text-tertiary-text');
       });
-      link.classList.remove('text-on-surface-variant');
-      link.classList.add('text-secondary', 'bg-tertiary-container/30', 'border-r-2', 'border-secondary', 'translate-x-1');
+      
+      link.classList.remove('text-tertiary-text');
+      link.classList.add('text-brand-navy');
 
       // Show target content
       tabContents.forEach(tab => {
-        tab.classList.remove('active');
+        tab.classList.remove('active', 'animate-fade-slide');
         if (tab.id === targetId) {
           tab.classList.add('active');
+          void tab.offsetWidth; // trigger reflow
+          tab.classList.add('animate-fade-slide');
         }
       });
     });
@@ -62,75 +72,223 @@ document.addEventListener('DOMContentLoaded', async () => {
   const settingsName = document.getElementById('settings-name');
   const settingsEmail = document.getElementById('settings-email');
   const settingsRole = document.getElementById('settings-role');
+  const settingsOrg = document.getElementById('settings-organization');
+  const settingsCity = document.getElementById('settings-city');
+  const settingsMobile = document.getElementById('settings-mobile');
+  const settingsLinkedin = document.getElementById('settings-linkedin');
+  const settingsGithub = document.getElementById('settings-github');
+  const profileAvatar = document.getElementById('profile-avatar');
+  const displayName = document.getElementById('profile-display-name');
 
-  if (settingsName && user.user_metadata) {
-    settingsName.value = user.user_metadata.full_name || '';
-    settingsEmail.value = user.email || '';
-    settingsRole.value = user.user_metadata.role || 'student';
+  if (user.user_metadata) {
+    if (settingsName) settingsName.value = user.user_metadata.full_name || '';
+    if (settingsEmail) settingsEmail.value = user.email || '';
+    if (settingsRole) settingsRole.value = user.user_metadata.role || 'student';
+    if (settingsOrg) settingsOrg.value = user.user_metadata.organization || '';
+    if (settingsCity) settingsCity.value = user.user_metadata.city || '';
+    if (settingsMobile) settingsMobile.value = user.user_metadata.mobile || '';
+    if (settingsLinkedin) settingsLinkedin.value = user.user_metadata.linkedin || '';
+    if (settingsGithub) settingsGithub.value = user.user_metadata.github || '';
+    
+    if (profileAvatar && user.user_metadata.avatar_url) {
+        profileAvatar.src = user.user_metadata.avatar_url;
+    }
+    if (displayName) displayName.textContent = user.user_metadata.full_name || 'Student';
   }
 
-  // Fetch all documents for the Documents Tab
+  // --- CROPPER & AVATAR LOGIC ---
+  const avatarUploadTrigger = document.getElementById('avatar-upload-trigger');
+  const avatarInput = document.getElementById('avatar-input');
+  const cropperModal = document.getElementById('cropper-modal');
+  const cropperImage = document.getElementById('cropper-image');
+  const cancelCropBtn = document.getElementById('cancel-crop-btn');
+  const applyCropBtn = document.getElementById('apply-crop-btn');
+  let cropperInstance = null;
+  let currentAvatarBase64 = null;
+
+  if (avatarUploadTrigger && avatarInput) {
+      avatarUploadTrigger.addEventListener('click', () => {
+          avatarInput.click();
+      });
+
+      avatarInput.addEventListener('change', (e) => {
+          const files = e.target.files;
+          if (files && files.length > 0) {
+              const file = files[0];
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                  cropperImage.src = e.target.result;
+                  cropperImage.classList.remove('hidden');
+                  cropperModal.classList.remove('hidden');
+                  cropperModal.classList.add('flex');
+                  
+                  if (cropperInstance) cropperInstance.destroy();
+                  cropperInstance = new Cropper(cropperImage, {
+                      aspectRatio: 1,
+                      viewMode: 1,
+                      dragMode: 'move',
+                      autoCropArea: 1,
+                      cropBoxResizable: false,
+                      cropBoxMovable: false,
+                      guides: false,
+                      center: false,
+                      highlight: false,
+                      background: false
+                  });
+              };
+              reader.readAsDataURL(file);
+          }
+      });
+  }
+
+  if (cancelCropBtn) {
+      cancelCropBtn.addEventListener('click', () => {
+          cropperModal.classList.add('hidden');
+          cropperModal.classList.remove('flex');
+          if (cropperInstance) {
+              cropperInstance.destroy();
+              cropperInstance = null;
+          }
+          avatarInput.value = ''; // reset
+      });
+  }
+
+  if (applyCropBtn) {
+      applyCropBtn.addEventListener('click', () => {
+          if (!cropperInstance) return;
+          const canvas = cropperInstance.getCroppedCanvas({
+              width: 256,
+              height: 256,
+              imageSmoothingEnabled: true,
+              imageSmoothingQuality: 'high',
+          });
+          
+          currentAvatarBase64 = canvas.toDataURL('image/jpeg', 0.9);
+          if (profileAvatar) profileAvatar.src = currentAvatarBase64;
+          
+          cropperModal.classList.add('hidden');
+          cropperModal.classList.remove('flex');
+          cropperInstance.destroy();
+          cropperInstance = null;
+      });
+  }
+
+  // --- SAVE PROFILE LOGIC ---
+  const saveProfileBtn = document.getElementById('save-profile-btn');
+  if (saveProfileBtn) {
+      saveProfileBtn.addEventListener('click', async () => {
+          saveProfileBtn.disabled = true;
+          saveProfileBtn.innerHTML = `Saving... <span class="material-symbols-outlined text-[18px] animate-spin">sync</span>`;
+          
+          const updates = {
+              full_name: settingsName ? settingsName.value : undefined,
+              organization: settingsOrg ? settingsOrg.value : undefined,
+              city: settingsCity ? settingsCity.value : undefined,
+              mobile: settingsMobile ? settingsMobile.value : undefined,
+              linkedin: settingsLinkedin ? settingsLinkedin.value : undefined,
+              github: settingsGithub ? settingsGithub.value : undefined,
+          };
+
+          if (currentAvatarBase64) {
+              updates.avatar_url = currentAvatarBase64;
+          }
+
+          const { data, error } = await supabase.auth.updateUser({
+              data: updates
+          });
+
+          if (error) {
+              console.error('Error updating profile:', error);
+              alert('Failed to update profile. Please try again.');
+          } else {
+              // Success
+              if (displayName && updates.full_name) displayName.textContent = updates.full_name;
+              
+              const btnOriginalHtml = saveProfileBtn.innerHTML;
+              saveProfileBtn.innerHTML = `Saved <span class="material-symbols-outlined text-[18px]">check</span>`;
+              saveProfileBtn.classList.replace('bg-brand-success', 'bg-brand-navy');
+              
+              setTimeout(() => {
+                  saveProfileBtn.innerHTML = `Save Changes <span class="material-symbols-outlined text-[18px]">save</span>`;
+                  saveProfileBtn.classList.replace('bg-brand-navy', 'bg-brand-success');
+                  saveProfileBtn.disabled = false;
+              }, 2000);
+          }
+      });
+  }
+
+  // Fetch all documents for the Documents Tab (The Vault)
   const allDocsContainer = document.getElementById('all-documents-container');
   if (allDocsContainer) {
-    const { data: allDocs } = await supabase
+    const { data: fetchedDocs } = await supabase
       .from('documents')
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (allDocs && allDocs.length > 0) {
-      allDocsContainer.innerHTML = `
-        <table class="w-full text-left">
-          <thead>
-            <tr class="border-b border-outline-variant/30">
-              <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant">Name</th>
-              <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant">Type</th>
-              <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant">Date</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-outline-variant/20">
-            ${allDocs.map(doc => `
-              <tr class="hover:bg-surface-container transition-colors cursor-pointer group">
-                <td class="py-4 font-body-md text-on-surface flex items-center gap-2">
-                  <span class="material-symbols-outlined text-outline-variant group-hover:text-secondary">description</span>
-                  ${doc.title}
-                </td>
-                <td class="py-4 font-label-caps text-[10px] text-tertiary uppercase">${doc.type.replace('_', ' ')}</td>
-                <td class="py-4 font-data-mono text-[12px] text-on-surface-variant">${new Date(doc.created_at).toLocaleDateString()}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-      `;
+    // Ensure the Welcome Document is always the first document for every user
+    const welcomeDoc = {
+        id: 'welcome-doc-001',
+        title: 'Platform Welcome & Instructions',
+        type: 'system_guide',
+        created_at: new Date().toISOString(),
+        content: 'Welcome to your Learning Path. Here you can access your modules, simulate AI inference, and manage your profile.'
+    };
+
+    const allDocs = [welcomeDoc, ...(fetchedDocs || [])];
+
+    if (allDocs.length > 0) {
+      // Store docs in window for modal access
+      window.vaultDocuments = allDocs;
+
+      allDocsContainer.innerHTML = allDocs.map(doc => `
+        <div class="clean-panel p-6 clean-panel-hover flex flex-col justify-between group cursor-pointer h-40 ${doc.id === 'welcome-doc-001' ? 'border-brand-success bg-brand-success/5 relative overflow-hidden' : ''}" onclick="window.openDocument('${doc.id}')">
+            ${doc.id === 'welcome-doc-001' ? '<div class="absolute top-0 right-0 w-24 h-24 bg-brand-success/10 rounded-full blur-xl -translate-y-1/2 translate-x-1/2"></div><div class="absolute top-0 right-0 bg-brand-success text-white text-[9px] font-bold px-2 py-0.5 rounded-bl-lg shadow-sm">PINNED</div>' : ''}
+            <div class="flex justify-between items-start mb-4 relative z-10">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center transition-colors shadow-sm ${doc.id === 'welcome-doc-001' ? 'bg-white text-brand-success border border-brand-success/20 group-hover:bg-brand-success group-hover:text-white' : 'bg-slate-50 text-secondary-text border border-border-subtle group-hover:bg-brand-navy group-hover:text-white'}">
+                    <span class="material-symbols-outlined text-[20px]">${doc.id === 'welcome-doc-001' ? 'stars' : 'description'}</span>
+                </div>
+                <span class="text-[10px] font-bold ${doc.id === 'welcome-doc-001' ? 'bg-brand-success/10 text-brand-success' : 'bg-slate-100 text-secondary-text'} px-2 py-1 rounded uppercase tracking-wider">${doc.type.replace('_', ' ')}</span>
+            </div>
+            <div class="relative z-10">
+                <h4 class="font-semibold text-primary-text truncate mb-1">${doc.title}</h4>
+                <p class="text-xs text-tertiary-text font-medium">${doc.id === 'welcome-doc-001' ? 'System Guide' : new Date(doc.created_at).toLocaleDateString()}</p>
+            </div>
+        </div>
+      `).join('');
     } else {
-      allDocsContainer.innerHTML = '<p class="text-on-surface-variant">No documents available.</p>';
+      allDocsContainer.innerHTML = '<div class="col-span-full text-center py-20 text-tertiary-text">No documents found in the vault.</div>';
     }
   }
 
-  // Fetch Documents (certificates)
-  const { data: documents } = await supabase
-    .from('documents')
-    .select('*')
-    .eq('user_id', user.id)
-    .eq('type', 'certificate');
+  // Document Modal Logic
+  window.openDocument = (docId) => {
+      const doc = window.vaultDocuments?.find(d => d.id === docId);
+      if (!doc) return;
+      
+      const modal = document.getElementById('document-modal');
+      const title = document.getElementById('document-modal-title');
+      const content = document.getElementById('document-modal-content');
+      const badge = document.getElementById('document-modal-badge');
+      
+      if (modal && title && content) {
+          title.textContent = doc.title;
+          badge.textContent = doc.type.replace('_', ' ');
+          content.innerHTML = marked.parse ? marked.parse(doc.content || '') : (doc.content || '');
+          
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+      }
+  };
 
-  const docsContainer = document.getElementById('documents-container');
-  if (docsContainer && documents) {
-    const docsHtml = documents.map(d => `
-      <div class="group border border-outline-variant/20 p-4 rounded-sm hover:border-tertiary/50 transition-colors cursor-pointer bg-surface-container-lowest">
-        <div class="flex justify-between items-start mb-4">
-          <span class="material-symbols-outlined text-secondary">workspace_premium</span>
-          <span class="font-label-caps text-[9px] bg-secondary/20 text-secondary px-2 py-1 rounded-sm">CERT</span>
-        </div>
-        <h4 class="font-body-md text-[14px] text-on-surface truncate group-hover:text-secondary transition-colors">${d.title}</h4>
-        <p class="font-data-mono text-[11px] text-on-surface-variant mt-1">${new Date(d.created_at).toLocaleDateString()} • Valid</p>
-      </div>
-    `).join('');
-    
-    // Prepend to existing "View Registry" block
-    docsContainer.insertAdjacentHTML('afterbegin', docsHtml);
-  }
+  window.closeDocument = () => {
+      const modal = document.getElementById('document-modal');
+      if (modal) {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+      }
+  };
 
-  // Load Course Content
+  // Load Course Content (The Trajectory)
   const courseContainer = document.getElementById('course-container');
   if (courseContainer) {
     try {
@@ -140,187 +298,169 @@ document.addEventListener('DOMContentLoaded', async () => {
         const course = courseData.course;
         
         let currentWeekIndex = 0;
-        let currentModuleIndex = -1; // -1 = week overview, 'quiz' = quiz view, 0+ = module
+        let activeModuleIndex = null; 
 
-        const renderCourse = () => {
+        const renderTimeline = () => {
           const week = course.weeks[currentWeekIndex];
-          let contentHtml = '';
           
-          if (currentModuleIndex === -1) {
-            // Week Overview
-            contentHtml = `
-              <div class="mb-8">
-                <div class="inline-block px-3 py-1 bg-tertiary-container text-tertiary rounded-full font-label-caps text-[10px] mb-4">WEEK OVERVIEW</div>
-                <h3 class="text-3xl text-on-surface font-headline-md mb-4">${week.title}</h3>
-                <p class="text-on-surface-variant font-body-lg">${week.summary}</p>
-              </div>
-              
-              <div class="space-y-4">
-                <h4 class="text-lg text-secondary font-headline-md border-b border-outline-variant/20 pb-2 mb-4">Modules in this Week</h4>
-                ${week.modules.map((m, idx) => `
-                  <div class="p-5 bg-surface-container-low hover:bg-surface-container border border-outline-variant/20 rounded cursor-pointer transition-colors group" onclick="window.setCourseModule(${idx})">
-                    <div class="flex items-center justify-between">
-                      <div class="flex items-center gap-4">
-                        <div class="w-8 h-8 rounded-full bg-tertiary/10 text-tertiary flex items-center justify-center font-data-mono text-sm">${idx + 1}</div>
-                        <span class="text-on-surface font-body-md group-hover:text-tertiary transition-colors">${m.title}</span>
-                      </div>
-                      <span class="material-symbols-outlined text-outline group-hover:text-tertiary transition-colors group-hover:translate-x-1">arrow_forward</span>
-                    </div>
-                  </div>
-                `).join('')}
-                
-                <div class="p-5 bg-secondary/5 hover:bg-secondary/10 border border-secondary/20 rounded cursor-pointer transition-colors mt-8 group" onclick="window.setCourseModule('quiz')">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                      <div class="w-8 h-8 rounded-full bg-secondary/20 text-secondary flex items-center justify-center">
-                        <span class="material-symbols-outlined text-[16px]">quiz</span>
-                      </div>
-                      <span class="text-on-surface font-body-md font-bold text-secondary">Knowledge Check: ${week.quiz.title}</span>
-                    </div>
-                    <span class="material-symbols-outlined text-secondary group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                  </div>
+          let timelineHtml = `
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-brand-navy">${week.title}</h2>
+                    <p class="text-xs font-semibold text-tertiary-text tracking-wide mt-2 uppercase">Phase ${week.week_number} of ${course.weeks.length}</p>
                 </div>
-              </div>
-            `;
-          } else if (currentModuleIndex === 'quiz') {
-            // Quiz View
-            contentHtml = `
-              <div class="mb-8">
-                <button class="text-tertiary text-sm flex items-center gap-1 mb-6 hover:text-secondary transition-colors" onclick="window.setCourseModule(-1)">
-                  <span class="material-symbols-outlined text-[16px]">arrow_back</span> Back to Week Overview
-                </button>
-                <div class="inline-block px-3 py-1 bg-secondary/20 text-secondary rounded-full font-label-caps text-[10px] mb-4">ASSESSMENT</div>
-                <h3 class="text-2xl text-on-surface font-headline-md mb-2">${week.quiz.title}</h3>
-                <p class="text-on-surface-variant text-sm">Select the best answer for each question below.</p>
-              </div>
-              <div class="space-y-8">
-                ${week.quiz.questions.map((q, qIdx) => `
-                  <div class="bg-surface-container-low p-6 border border-outline-variant/20 rounded">
-                    <p class="text-on-surface font-body-lg font-medium mb-6">${qIdx + 1}. ${q.question_text}</p>
-                    <div class="space-y-3">
-                      ${q.options.map(opt => `
-                        <label class="flex items-start gap-3 p-4 border border-outline-variant/30 rounded cursor-pointer hover:bg-surface-container transition-colors group">
-                          <input type="radio" name="q_${q.question_id}" value="${opt.id}" class="mt-1 text-secondary bg-surface border-outline-variant/50 focus:ring-secondary focus:ring-offset-surface">
-                          <span class="text-on-surface-variant font-body-md group-hover:text-on-surface transition-colors">${opt.text}</span>
-                        </label>
-                      `).join('')}
-                    </div>
-                  </div>
-                `).join('')}
-                <div class="pt-4 border-t border-outline-variant/20">
-                  <button class="bg-secondary text-ink-black px-8 py-3 rounded font-label-caps font-bold hover:opacity-90 transition-opacity flex items-center gap-2 justify-center w-full md:w-auto">
-                    <span class="material-symbols-outlined text-[18px]">fact_check</span>
-                    Submit Answers
-                  </button>
-                </div>
-              </div>
-            `;
-          } else {
-            // Module View
-            const mod = week.modules[currentModuleIndex];
-            
-            // Visual Placeholders based on content keywords
-            let illustration = '';
-            const t = mod.title.toLowerCase();
-            if (t.includes('environment') || t.includes('setup')) {
-               illustration = `<div class="bg-surface-container flex flex-col md:flex-row items-center justify-center p-12 rounded-lg border border-outline-variant/20 mb-8"><span class="material-symbols-outlined text-6xl text-tertiary">terminal</span><div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left"><h4 class="text-on-surface font-headline-md text-xl">Environment Sandbox</h4><p class="text-on-surface-variant text-sm mt-1">Interactive terminal environment initializing...</p></div></div>`;
-            } else if (t.includes('parameter') || t.includes('behavior')) {
-               illustration = `<div class="bg-surface-container flex flex-col md:flex-row items-center justify-center p-12 rounded-lg border border-outline-variant/20 mb-8"><span class="material-symbols-outlined text-6xl text-secondary">tune</span><div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left"><h4 class="text-on-surface font-headline-md text-xl">Model Parameters</h4><p class="text-on-surface-variant text-sm mt-1">Adjust temperature, top_k, and top_p interactively.</p></div></div>`;
-            } else if (t.includes('json') || t.includes('schema') || t.includes('structured')) {
-               illustration = `<div class="bg-surface-container flex flex-col md:flex-row items-center justify-center p-12 rounded-lg border border-outline-variant/20 mb-8"><span class="material-symbols-outlined text-6xl text-tertiary">data_object</span><div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left"><h4 class="text-on-surface font-headline-md text-xl">JSON Schema Validator</h4><p class="text-on-surface-variant text-sm mt-1">Live data extraction and schema enforcement visualization.</p></div></div>`;
-            } else if (t.includes('multimodal')) {
-               illustration = `<div class="bg-surface-container flex flex-col items-center justify-center p-10 rounded-lg border border-outline-variant/20 mb-8"><div class="flex gap-6 mb-4"><span class="material-symbols-outlined text-4xl text-secondary">image</span><span class="material-symbols-outlined text-4xl text-tertiary">mic</span><span class="material-symbols-outlined text-4xl text-secondary">videocam</span></div><h4 class="text-on-surface font-headline-md text-xl text-center">Multimodal Inputs</h4><p class="text-on-surface-variant text-sm mt-1 text-center">Drag and drop images or audio to see model inference.</p></div>`;
-            } else if (t.includes('rag') || t.includes('embedding')) {
-               illustration = `<div class="bg-surface-container flex flex-col md:flex-row items-center justify-center p-12 rounded-lg border border-outline-variant/20 mb-8"><span class="material-symbols-outlined text-6xl text-tertiary">schema</span><div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left"><h4 class="text-on-surface font-headline-md text-xl">Vector Search Pipeline</h4><p class="text-on-surface-variant text-sm mt-1">Visualizing document chunks and embedding similarities.</p></div></div>`;
-            } else {
-               illustration = `<div class="bg-surface-container flex flex-col md:flex-row items-center justify-center p-12 rounded-lg border border-outline-variant/20 mb-8"><span class="material-symbols-outlined text-6xl text-tertiary">model_training</span><div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left"><h4 class="text-on-surface font-headline-md text-xl">Interactive Example</h4><p class="text-on-surface-variant text-sm mt-1">Run the code snippets below in the sandbox.</p></div></div>`;
-            }
-
-            contentHtml = `
-              <div class="mb-6">
-                <button class="text-tertiary text-sm flex items-center gap-1 mb-6 hover:text-secondary transition-colors" onclick="window.setCourseModule(-1)">
-                  <span class="material-symbols-outlined text-[16px]">arrow_back</span> Back to Week ${week.week_number} Overview
-                </button>
-                <div class="inline-block px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full font-label-caps text-[10px] mb-4">MODULE ${currentModuleIndex + 1}</div>
-                ${illustration}
-                <div class="prose prose-invert prose-pre:bg-[#1a1c1c] prose-pre:border prose-pre:border-outline-variant/20 max-w-none text-on-surface-variant">
-                  ${marked.parse ? marked.parse(mod.content_markdown) : mod.content_markdown.replace(/\\n/g, '<br/>')}
-                </div>
-              </div>
-              
-              <!-- Pagination -->
-              <div class="flex justify-between mt-12 pt-6 border-t border-outline-variant/20">
-                 <button class="px-5 py-2 border border-outline-variant/50 text-on-surface rounded font-label-caps text-xs hover:bg-surface-container transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-2" ${currentModuleIndex === 0 ? 'disabled' : ''} onclick="window.setCourseModule(${currentModuleIndex - 1})">
-                   <span class="material-symbols-outlined text-[16px]">arrow_back</span> Previous
-                 </button>
-                 <button class="px-5 py-2 bg-tertiary text-on-tertiary rounded font-label-caps text-xs hover:opacity-90 transition-opacity flex items-center gap-2" onclick="window.setCourseModule(${currentModuleIndex === week.modules.length - 1 ? "'quiz'" : currentModuleIndex + 1})">
-                   ${currentModuleIndex === week.modules.length - 1 ? 'Go to Quiz' : 'Next Module'} <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                 </button>
-              </div>
-            `;
-          }
-
-          let courseHtml = `
-            <div class="flex flex-col md:flex-row gap-8">
-              <!-- Sidebar Navigation -->
-              <div class="md:w-1/4 shrink-0 border-r border-outline-variant/20 md:pr-6">
-                <div class="mb-8">
-                  <h2 class="font-headline-md text-2xl text-on-surface leading-tight">${course.title}</h2>
-                  <div class="flex gap-2 mt-3">
-                    <span class="text-[10px] font-label-caps bg-secondary/10 text-secondary px-2 py-1 rounded">${course.code}</span>
-                  </div>
-                </div>
-                
-                <nav class="space-y-2">
-                  <div class="text-[10px] font-label-caps text-on-surface-variant mb-3 px-2">CURRICULUM</div>
-                  ${course.weeks.map((w, idx) => `
-                    <button class="w-full text-left px-4 py-3 rounded transition-colors flex items-center justify-between ${idx === currentWeekIndex ? 'bg-tertiary/10 border border-tertiary/30 text-tertiary' : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'}" onclick="window.setCourseWeek(${idx})">
-                      <div class="flex flex-col">
-                        <span class="font-label-caps text-[10px] opacity-70 mb-1">WEEK ${w.week_number}</span>
-                        <span class="font-body-md text-sm font-medium line-clamp-1">${w.title}</span>
-                      </div>
-                      ${idx === currentWeekIndex ? '<span class="material-symbols-outlined text-[18px]">chevron_right</span>' : ''}
+                <div class="flex gap-2">
+                    <button class="w-10 h-10 rounded-lg border border-border-subtle flex items-center justify-center hover:bg-slate-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-brand-navy" ${currentWeekIndex === 0 ? 'disabled' : ''} onclick="window.setCourseWeek(${currentWeekIndex - 1})">
+                        <span class="material-symbols-outlined text-[18px]">west</span>
                     </button>
-                  `).join('')}
-                </nav>
-              </div>
-              
-              <!-- Main Content Area -->
-              <div class="md:w-3/4 pb-12">
-                 ${contentHtml}
-              </div>
+                    <button class="w-10 h-10 rounded-lg border border-border-subtle flex items-center justify-center hover:bg-slate-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-brand-navy" ${currentWeekIndex === course.weeks.length - 1 ? 'disabled' : ''} onclick="window.setCourseWeek(${currentWeekIndex + 1})">
+                        <span class="material-symbols-outlined text-[18px]">east</span>
+                    </button>
+                </div>
+            </div>
+            
+            <p class="text-secondary-text max-w-2xl mb-12 text-lg">${week.summary}</p>
+            
+            <div class="relative pl-8 md:pl-12 space-y-10 pb-12">
+                <div class="timeline-line hidden md:block"></div>
+                <!-- Highlight progress to 50% just for demo -->
+                <div class="timeline-line-progress hidden md:block" style="height: 40%;"></div>
+                
+                ${week.modules.map((m, idx) => `
+                    <div class="relative group cursor-pointer" onclick="window.setCourseModule(${idx})">
+                        <!-- Node Point -->
+                        <div class="absolute left-[-2rem] md:left-[-3.5rem] top-6 w-4 h-4 rounded-full bg-white border-2 border-border-subtle group-hover:border-brand-success transition-colors z-10"></div>
+                        
+                        <div class="clean-panel p-6 md:p-8 clean-panel-hover overflow-hidden relative">
+                            <span class="text-xs font-semibold text-brand-success tracking-wider uppercase mb-2 block">Module 0${idx + 1}</span>
+                            <h3 class="text-xl font-bold text-brand-navy mb-2">${m.title}</h3>
+                            <p class="text-secondary-text text-sm line-clamp-2 md:line-clamp-none">${marked.parse ? marked.parse(m.content_markdown).replace(/<[^>]*>?/gm, '').substring(0, 120) + '...' : 'Interactive curriculum module.'}</p>
+                            
+                            <div class="mt-5 flex items-center text-tertiary-text group-hover:text-brand-success transition-colors text-xs font-semibold gap-2">
+                                Start Module <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+
+                <!-- Quiz Node -->
+                <div class="relative group cursor-pointer" onclick="window.setCourseModule('quiz')">
+                    <div class="absolute left-[-2rem] md:left-[-3.5rem] top-6 w-4 h-4 rounded-full bg-white border-2 border-border-subtle group-hover:border-brand-navy transition-colors z-10"></div>
+                    
+                    <div class="clean-panel p-6 md:p-8 clean-panel-hover border-brand-navy/10 overflow-hidden relative bg-slate-50">
+                        <span class="text-xs font-semibold text-brand-navy tracking-wider uppercase mb-2 block">Knowledge Check</span>
+                        <h3 class="text-xl font-bold text-brand-navy mb-2">${week.quiz.title}</h3>
+                        <div class="mt-5 flex items-center text-brand-navy text-xs font-semibold gap-2">
+                            Begin Assessment <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
           `;
           
-          courseContainer.innerHTML = courseHtml;
-          // Clean up any default card styling on the parent container so our layout breathes
-          courseContainer.className = "mt-4 relative";
+          courseContainer.innerHTML = timelineHtml;
+        };
+        
+        const renderModule = () => {
+            const week = course.weeks[currentWeekIndex];
+            
+            if (activeModuleIndex === 'quiz') {
+                // Assessment View
+                courseContainer.innerHTML = `
+                    <button class="hover:bg-slate-100 text-secondary-text px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 mb-8" onclick="window.setCourseModule(null)">
+                        <span class="material-symbols-outlined text-[16px]">west</span> Back to Path
+                    </button>
+                    
+                    <div class="clean-panel p-8 md:p-12">
+                        <span class="text-xs font-semibold text-brand-navy tracking-wider uppercase mb-3 block">Assessment</span>
+                        <h2 class="text-3xl font-bold mb-10 text-brand-navy">${week.quiz.title}</h2>
+                        
+                        <div class="space-y-10">
+                            ${week.quiz.questions.map((q, qIdx) => `
+                                <div>
+                                    <p class="text-lg font-medium text-primary-text mb-5"><span class="text-brand-navy font-bold mr-3">0${qIdx + 1}.</span> ${q.question_text}</p>
+                                    <div class="space-y-3 pl-8">
+                                        ${q.options.map(opt => `
+                                            <label class="flex items-start gap-4 p-4 border border-border-subtle rounded-xl cursor-pointer hover:bg-slate-50 transition-colors group">
+                                                <input type="radio" name="q_${q.question_id}" value="${opt.id}" class="mt-1 text-brand-navy focus:ring-brand-navy">
+                                                <span class="text-secondary-text group-hover:text-primary-text transition-colors">${opt.text}</span>
+                                            </label>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="mt-12 pt-8 border-t border-border-subtle">
+                            <button class="bg-brand-navy hover:bg-slate-800 text-white px-8 py-3.5 rounded-xl font-semibold text-sm transition-transform hover:scale-105 flex items-center gap-2">
+                                Submit Answers <span class="material-symbols-outlined text-[18px]">check_circle</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Focus Reading Mode
+                const mod = week.modules[activeModuleIndex];
+                
+                courseContainer.innerHTML = `
+                    <button class="hover:bg-slate-100 text-secondary-text px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 mb-8" onclick="window.setCourseModule(null)">
+                        <span class="material-symbols-outlined text-[16px]">west</span> Back to Path
+                    </button>
+                    
+                    <div class="clean-panel p-8 md:p-16 relative overflow-hidden bg-white">
+                        <div class="max-w-3xl mx-auto">
+                            <span class="text-xs font-semibold text-brand-success tracking-wider uppercase mb-3 block">Module 0${activeModuleIndex + 1}</span>
+                            <h2 class="text-4xl font-bold mb-10 text-brand-navy leading-tight">${mod.title}</h2>
+                            
+                            <div class="prose prose-slate prose-lg prose-headings:font-bold prose-headings:text-brand-navy prose-a:text-brand-success prose-pre:bg-slate-50 prose-pre:border prose-pre:border-border-subtle prose-pre:rounded-xl max-w-none">
+                                ${marked.parse ? marked.parse(mod.content_markdown) : mod.content_markdown.replace(/\\n/g, '<br/>')}
+                            </div>
+                            
+                            <!-- Pagination -->
+                            <div class="flex justify-between items-center mt-16 pt-8 border-t border-border-subtle">
+                                <button class="text-tertiary-text hover:text-brand-navy transition-colors flex items-center gap-2 text-sm font-semibold tracking-wide disabled:opacity-0" ${activeModuleIndex === 0 ? 'disabled' : ''} onclick="window.setCourseModule(${activeModuleIndex - 1})">
+                                    <span class="material-symbols-outlined text-[18px]">west</span> Previous
+                                </button>
+                                
+                                <button class="text-brand-navy hover:text-brand-success transition-colors flex items-center gap-2 text-sm font-semibold tracking-wide" onclick="window.setCourseModule(${activeModuleIndex === week.modules.length - 1 ? "'quiz'" : activeModuleIndex + 1})">
+                                    ${activeModuleIndex === week.modules.length - 1 ? 'Go to Assessment' : 'Next Module'} <span class="material-symbols-outlined text-[18px]">east</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
         };
 
         window.setCourseWeek = (idx) => {
           currentWeekIndex = idx;
-          currentModuleIndex = -1;
-          renderCourse();
+          activeModuleIndex = null;
+          renderTimeline();
         };
 
         window.setCourseModule = (idx) => {
-          currentModuleIndex = idx;
-          renderCourse();
-          // Scroll to top of course container smoothly
-          document.getElementById('course-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          activeModuleIndex = idx;
+          if (idx === null) {
+              renderTimeline();
+          } else {
+              renderModule();
+          }
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        renderCourse();
+        renderTimeline();
+        
       } else {
         throw new Error('Failed to fetch course data');
       }
     } catch (error) {
       console.error('Error loading course:', error);
       courseContainer.innerHTML = `
-        <div class="text-center py-12">
-          <span class="material-symbols-outlined text-6xl text-error mb-4">error</span>
-          <h3 class="text-2xl text-on-surface font-headline-md mb-2">Error Loading Curriculum</h3>
-          <p class="text-on-surface-variant font-body-md max-w-md mx-auto">Please try again later or contact support.</p>
+        <div class="clean-panel p-12 text-center border-red-200 bg-red-50">
+          <span class="material-symbols-outlined text-4xl text-red-500 mb-3">error_outline</span>
+          <h3 class="text-xl font-bold mb-2 text-red-700">Unable to load curriculum</h3>
+          <p class="text-red-600/70 text-sm">Please check your connection and try again.</p>
         </div>
       `;
     }

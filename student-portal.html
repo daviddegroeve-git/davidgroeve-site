@@ -1,385 +1,388 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Executive Portal - Dashboard</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,typography"></script>
-<script id="tailwind-config">
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Student Portal - Career Suite</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,typography"></script>
+    <script id="tailwind-config">
         tailwind.config = {
-          darkMode: "class",
           theme: {
             extend: {
-              "colors": {
-                      "inverse-primary": "#565f6f",
-                      "on-primary-fixed": "#131c2a",
-                      "outline": "#8f9096",
-                      "tertiary-container": "#142438",
-                      "error": "#ffb4ab",
-                      "surface": "#121414",
-                      "on-secondary-container": "#dbb26a",
-                      "tertiary": "#b7c8e1",
-                      "on-error-container": "#ffdad6",
-                      "surface-variant": "#333535",
-                      "on-surface": "#e2e2e2",
-                      "on-secondary-fixed-variant": "#5e4201",
-                      "surface-container-lowest": "#0c0f0f",
-                      "primary-container": "#1b2432",
-                      "on-background": "#e2e2e2",
-                      "primary-fixed": "#dae3f6",
-                      "on-surface-variant": "#c5c6cc",
-                      "background": "#121414",
-                      "primary": "#bec7da",
-                      "ink-black": "#020617",
-                      "on-tertiary": "#213145",
-                      "surface-tint": "#bec7da",
-                      "amber-accent": "#D97706",
-                      "inverse-on-surface": "#2f3131",
-                      "on-tertiary-fixed-variant": "#38485d",
-                      "secondary": "#eac076",
-                      "surface-container-low": "#1a1c1c",
-                      "surface-container": "#1e2020",
-                      "secondary-fixed-dim": "#eac076",
-                      "tertiary-fixed-dim": "#b7c8e1",
-                      "slate-surface": "#1E293B",
-                      "on-tertiary-container": "#7b8ca3",
-                      "primary-fixed-dim": "#bec7da",
-                      "on-primary-container": "#828b9d",
-                      "surface-bright": "#37393a",
-                      "deep-midnight": "#0F172A",
-                      "on-secondary-fixed": "#271900",
-                      "surface-container-high": "#282a2b",
-                      "outline-variant": "#45474c",
-                      "on-primary-fixed-variant": "#3e4757",
-                      "on-secondary": "#412d00",
-                      "inverse-surface": "#e2e2e2",
-                      "tertiary-fixed": "#d3e4fe",
-                      "on-tertiary-fixed": "#0b1c30",
-                      "surface-dim": "#121414",
-                      "secondary-container": "#604403",
-                      "error-container": "#93000a",
-                      "on-error": "#690005",
-                      "surface-container-highest": "#333535",
-                      "secondary-fixed": "#ffdea7",
-                      "on-primary": "#28313f"
+              colors: {
+                  'surface-bg': '#f7f9fb',
+                  'surface-card': '#ffffff',
+                  'surface-hover': '#f1f5f9',
+                  'primary-text': '#0f172a',
+                  'secondary-text': '#475569',
+                  'tertiary-text': '#94a3b8',
+                  'brand-navy': '#1e293b',
+                  'brand-success': '#10b981',
+                  'brand-success-light': '#d1fae5',
+                  'border-subtle': '#e2e8f0',
+                  'border-focus': '#94a3b8'
               },
-              "borderRadius": {
-                      "DEFAULT": "0.125rem",
-                      "lg": "0.25rem",
-                      "xl": "0.5rem",
-                      "full": "0.75rem"
+              fontFamily: {
+                  'body': ['Inter', 'sans-serif'],
+                  'mono': ['JetBrains Mono', 'monospace']
               },
-              "spacing": {
-                      "margin-mobile": "16px",
-                      "container-max": "1280px",
-                      "section-gap": "80px",
-                      "base": "8px",
-                      "gutter": "24px"
-              },
-              "fontFamily": {
-                      "label-caps": ["Montserrat"],
-                      "data-mono": ["Montserrat"],
-                      "headline-md": ["Montserrat"],
-                      "body-md": ["Montserrat"],
-                      "display-lg": ["Montserrat"],
-                      "display-lg-mobile": ["Montserrat"],
-                      "body-lg": ["Montserrat"]
-              },
-              "fontSize": {
-                      "label-caps": [
-                              "12px",
-                              {
-                                      "lineHeight": "1",
-                                      "letterSpacing": "0.1em",
-                                      "fontWeight": "700"
-                              }
-                      ],
-                      "data-mono": [
-                              "14px",
-                              {
-                                      "lineHeight": "1.4",
-                                      "fontWeight": "500"
-                              }
-                      ],
-                      "headline-md": [
-                              "32px",
-                              {
-                                      "lineHeight": "1.3",
-                                      "fontWeight": "500"
-                              }
-                      ],
-                      "body-md": [
-                              "16px",
-                              {
-                                      "lineHeight": "1.5",
-                                      "fontWeight": "400"
-                              }
-                      ],
-                      "display-lg": [
-                              "48px",
-                              {
-                                      "lineHeight": "1.1",
-                                      "letterSpacing": "-0.02em",
-                                      "fontWeight": "600"
-                              }
-                      ],
-                      "display-lg-mobile": [
-                              "32px",
-                              {
-                                      "lineHeight": "1.2",
-                                      "letterSpacing": "-0.01em",
-                                      "fontWeight": "600"
-                              }
-                      ],
-                      "body-lg": [
-                              "18px",
-                              {
-                                      "lineHeight": "1.6",
-                                      "fontWeight": "400"
-                              }
-                      ]
+              boxShadow: {
+                  'soft': '0 4px 20px -2px rgba(15, 23, 42, 0.05)',
+                  'floating': '0 20px 40px -10px rgba(15, 23, 42, 0.1)',
               }
-      },
+            },
           },
         }
     </script>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="auth.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<style>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="auth.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300..400,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    <style>
         body {
-            background-color: theme('colors.deep-midnight');
-            color: theme('colors.on-surface');
+            background-color: theme('colors.surface-bg');
+            color: theme('colors.primary-text');
+            font-family: theme('fontFamily.body');
+            overflow-x: hidden;
         }
         
         .material-symbols-outlined {
-          font-variation-settings:
-          'FILL' 0,
-          'wght' 300,
-          'GRAD' 0,
-          'opsz' 24
+          font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
+
+        /* Clean White Panels */
+        .clean-panel {
+            background: theme('colors.surface-card');
+            border: 1px solid theme('colors.border-subtle');
+            border-radius: 16px;
+            box-shadow: theme('boxShadow.soft');
+        }
+
+        .clean-panel-hover {
+            transition: all 0.3s ease;
+        }
+        .clean-panel-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: theme('boxShadow.floating');
+            border-color: theme('colors.border-focus');
+        }
+
+        /* Animations */
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-slide {
+            animation: fadeSlideUp 0.5s ease-out forwards;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
         
-        .material-symbols-outlined.filled {
-          font-variation-settings:
-          'FILL' 1,
-          'wght' 300,
-          'GRAD' 0,
-          'opsz' 24
+        /* Timeline styling */
+        .timeline-line {
+            width: 2px;
+            background: theme('colors.border-subtle');
+            position: absolute;
+            top: 0; bottom: 0; left: 31px;
+            z-index: 0;
         }
-        
-        /* Ambient shadow utility */
-        .shadow-ambient {
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        .timeline-line-progress {
+            width: 2px;
+            background: theme('colors.brand-success');
+            position: absolute;
+            top: 0; bottom: 50%; left: 31px;
+            z-index: 1;
         }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: theme('colors.border-subtle'); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: theme('colors.border-focus'); }
     </style>
 </head>
-<body class="bg-deep-midnight text-on-surface font-body-md antialiased flex flex-col md:flex-row min-h-screen">
-<!-- SideNavBar -->
-<nav class="hidden md:flex h-screen w-64 fixed left-0 top-0 bg-surface-container-low flex-col py-base border-r border-outline-variant z-40">
-<!-- Brand/Header -->
-<div class="px-gutter pb-6 pt-4 border-b border-outline-variant/30 mb-4">
-<div class="flex items-center gap-3">
-<img alt="David Sánchez de Groeve Profile" class="w-10 h-10 rounded-full object-cover border border-outline-variant/50" data-alt="A sophisticated, high-contrast monochrome portrait of a tech executive in a minimalist corporate setting, side lit to emphasize features. The styling is modern, clean, and professional, reflecting an industrial-luxe aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt2aiAvMXdsIcQo0AnAsVTBb2KF978NxjN80mtQOwlNrFIEnstZ0B8L5NnSz6xFNXGMzCONdgLnRw1jDCKhXC5c8ov34EPkfNu449vc4A22LlLt_UrLa_O6UJ-0Jf2DQye6XnfJwhFqc9gt4GPIFARCc9DlL-WpAhNtf3NLf4M1EfEsRSQCsZ_6ez0e_T_NWLFJGdEfBaFxbBmwfoQtWB3VP9vNpiGkOLj8A7xwu0xk2AU7Mz_6jpB"/>
-<div>
-<h1 class="font-headline-md text-[18px] text-on-surface leading-tight font-bold">Executive Portal</h1>
-<p class="font-data-mono text-[12px] text-on-surface-variant">Technology Strategy</p>
-</div>
-</div>
-</div>
-<!-- Main Nav Links -->
-<div class="flex-1 px-4 space-y-1 overflow-y-auto">
-<!-- Active State Navigation Item -->
-<a class="flex items-center gap-3 px-4 py-3 rounded text-secondary bg-tertiary-container/30 border-r-2 border-secondary group translate-x-1 duration-150 nav-link" href="#" data-target="dashboard">
-<span class="material-symbols-outlined group-hover:text-secondary transition-all">dashboard</span>
-<span class="font-label-caps text-label-caps">Dashboard</span>
-</a>
-<!-- Inactive State Navigation Items -->
-<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest transition-colors group nav-link" href="#" data-target="documents">
-<span class="material-symbols-outlined group-hover:text-secondary transition-all">description</span>
-<span class="font-label-caps text-label-caps">Documents</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest transition-colors group nav-link" href="#" data-target="ai-lab">
-<span class="material-symbols-outlined group-hover:text-secondary transition-all">precision_manufacturing</span>
-<span class="font-label-caps text-label-caps">AI Lab</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest transition-colors group nav-link" href="#" data-target="education">
-<span class="material-symbols-outlined group-hover:text-secondary transition-all">school</span>
-<span class="font-label-caps text-label-caps">Education</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high hover:bg-surface-container-highest transition-colors group nav-link" href="#" data-target="settings">
-<span class="material-symbols-outlined group-hover:text-secondary transition-all">settings</span>
-<span class="font-label-caps text-label-caps">Settings</span>
-</a>
-</div>
-<!-- CTA -->
-<div class="px-4 py-4">
-<button class="w-full bg-secondary text-ink-black font-label-caps text-label-caps py-3 rounded-none uppercase font-bold transition-opacity hover:opacity-90">
-                 New Project
-             </button>
-</div>
-<!-- Footer Links -->
-<div class="px-4 pt-4 pb-2 border-t border-outline-variant/30 space-y-1">
-<a class="flex items-center gap-3 px-4 py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-caps text-[10px]" href="#" data-action="support">
-<span class="material-symbols-outlined text-[16px]">help</span>
-                Support
-            </a>
-<a class="flex items-center gap-3 px-4 py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-caps text-[10px]" href="#" data-action="logout">
-<span class="material-symbols-outlined text-[16px]">logout</span>
-                Logout
-            </a>
-</div>
-</nav>
-<!-- Mobile Top Bar (Fallback for small screens) -->
-<div class="md:hidden flex items-center justify-between px-margin-mobile py-4 bg-surface-container-low border-b border-outline-variant/30 sticky top-0 z-40 w-full">
-<h1 class="font-headline-md text-headline-md font-bold text-on-surface text-xl">Executive Portal</h1>
-<span class="material-symbols-outlined text-secondary">menu</span>
-</div>
-<!-- Main Content Area -->
-<div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter py-8 md:py-12 relative z-10">
+<body class="bg-surface-bg text-primary-text min-h-screen flex flex-col relative selection:bg-brand-success-light selection:text-brand-navy pb-24 md:pb-0 md:pl-24">
 
-<style>
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-</style>
+    <!-- Floating Navigation (Bottom on Mobile, Left Side on Desktop) -->
+    <nav class="fixed bottom-4 left-4 right-4 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:left-6 md:right-auto md:w-16 md:h-auto bg-white/90 backdrop-blur-md border border-border-subtle z-50 flex md:flex-col justify-around md:justify-center items-center py-3 md:py-6 md:px-0 md:gap-8 px-6 shadow-floating rounded-2xl md:rounded-[2rem]">
+        <a href="#" class="nav-link group relative p-2 text-brand-navy transition-colors duration-300" data-target="dashboard">
+            <span class="material-symbols-outlined text-[28px] md:text-[24px]">space_dashboard</span>
+            <span class="absolute -top-10 md:top-1/2 md:-translate-y-1/2 left-1/2 -translate-x-1/2 md:left-14 md:translate-x-0 bg-brand-navy text-white px-3 py-1 rounded text-[11px] font-semibold tracking-wide opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-md">Dashboard</span>
+        </a>
+        <a href="#" class="nav-link group relative p-2 text-tertiary-text hover:text-brand-navy transition-colors duration-300" data-target="education">
+            <span class="material-symbols-outlined text-[28px] md:text-[24px]">timeline</span>
+            <span class="absolute -top-10 md:top-1/2 md:-translate-y-1/2 left-1/2 -translate-x-1/2 md:left-14 md:translate-x-0 bg-brand-navy text-white px-3 py-1 rounded text-[11px] font-semibold tracking-wide opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-md">Learning Path</span>
+        </a>
+        <a href="#" class="nav-link group relative p-2 text-tertiary-text hover:text-brand-navy transition-colors duration-300" data-target="ai-lab">
+            <span class="material-symbols-outlined text-[28px] md:text-[24px]">model_training</span>
+            <span class="absolute -top-10 md:top-1/2 md:-translate-y-1/2 left-1/2 -translate-x-1/2 md:left-14 md:translate-x-0 bg-brand-navy text-white px-3 py-1 rounded text-[11px] font-semibold tracking-wide opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-md">Simulator</span>
+        </a>
+        <a href="#" class="nav-link group relative p-2 text-tertiary-text hover:text-brand-navy transition-colors duration-300" data-target="documents">
+            <span class="material-symbols-outlined text-[28px] md:text-[24px]">folder_open</span>
+            <span class="absolute -top-10 md:top-1/2 md:-translate-y-1/2 left-1/2 -translate-x-1/2 md:left-14 md:translate-x-0 bg-brand-navy text-white px-3 py-1 rounded text-[11px] font-semibold tracking-wide opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-md">Vault</span>
+        </a>
+        <div class="w-px h-6 bg-border-subtle md:w-6 md:h-px mx-2"></div>
+        <a href="#" class="nav-link group relative p-2 text-tertiary-text hover:text-brand-navy transition-colors duration-300" data-target="settings">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt2aiAvMXdsIcQo0AnAsVTBb2KF978NxjN80mtQOwlNrFIEnstZ0B8L5NnSz6xFNXGMzCONdgLnRw1jDCKhXC5c8ov34EPkfNu449vc4A22LlLt_UrLa_O6UJ-0Jf2DQye6XnfJwhFqc9gt4GPIFARCc9DlL-WpAhNtf3NLf4M1EfEsRSQCsZ_6ez0e_T_NWLFJGdEfBaFxbBmwfoQtWB3VP9vNpiGkOLj8A7xwu0xk2AU7Mz_6jpB" alt="Profile" class="w-8 h-8 rounded-full border border-border-subtle object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+            <span class="absolute -top-10 md:top-1/2 md:-translate-y-1/2 left-1/2 -translate-x-1/2 md:left-14 md:translate-x-0 bg-brand-navy text-white px-3 py-1 rounded text-[11px] font-semibold tracking-wide opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-md">Settings</span>
+        </a>
+    </nav>
 
-<div id="dashboard" class="tab-content active">
-<!-- Page Header -->
-<header class="mb-10 mt-4">
-<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">Overview</h2>
-<p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-2xl">Monitor training progress, manage documentation, and interface with the AI Lab environment.</p>
-</header>
-<!-- Dashboard Grid -->
-<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-<!-- AI Lab Widget (Spans 8 cols on desktop) -->
-<section class="md:col-span-8 bg-slate-surface border-t border-tertiary/30 rounded-DEFAULT p-6 shadow-ambient relative overflow-hidden flex flex-col">
-<div class="flex justify-between items-start mb-6 z-10">
-<div>
-<h3 class="font-headline-md text-[24px] text-on-surface flex items-center gap-2">
-<span class="material-symbols-outlined text-secondary">precision_manufacturing</span>
-                            AI Lab
-                        </h3>
-<p class="font-body-md text-[14px] text-on-surface-variant mt-1">Active LLM Practice Session</p>
-</div>
-<span class="font-data-mono text-data-mono text-tertiary bg-tertiary-container/50 px-3 py-1 rounded-sm">Env: Prod-A</span>
-</div>
-<div class="flex-1 bg-deep-midnight/50 border border-outline-variant/20 rounded-sm p-4 mb-6 z-10 flex flex-col justify-end min-h-[200px]">
-<div class="space-y-4">
-<div class="flex gap-3">
-<div class="w-6 h-6 rounded-full bg-secondary/20 flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined text-secondary text-[14px]">smart_toy</span>
-</div>
-<div class="bg-surface-container p-3 rounded-sm text-on-surface font-body-md text-[14px] border border-outline-variant/10">
-                                 System ready. Formulate your strategic query to begin the scenario analysis.
-                             </div>
-</div>
-</div>
-</div>
-<div class="mt-auto z-10">
-<button class="flex items-center gap-2 text-secondary font-data-mono text-[14px] hover:text-on-secondary-container transition-colors group">
-                        Start Practice Session 
-                        <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
-</button>
-</div>
-</section>
-<!-- Qualifications Widget (Spans 4 cols on desktop) -->
-<section class="md:col-span-4 bg-slate-surface border-t border-tertiary/30 rounded-DEFAULT p-6 shadow-ambient flex flex-col">
-<div class="mb-6">
-<h3 class="font-headline-md text-[20px] text-on-surface">Qualifications</h3>
-<p class="font-body-md text-[12px] text-on-surface-variant mt-1">Recent assessments</p>
-</div>
-<div class="space-y-4 flex-1" id="qualifications-container">
-</div>
-</div>
-</div> <!-- End dashboard tab -->
+    <!-- Main Content Area -->
+    <main class="flex-1 w-full max-w-[1200px] mx-auto px-6 py-12 md:py-20 relative z-10">
+        
+        <!-- DASHBOARD: COMMAND CENTER -->
+        <div id="dashboard" class="tab-content active animate-fade-slide">
+            <header class="mb-12">
+                <p class="text-brand-success font-semibold text-xs tracking-wider uppercase mb-2">Student Portal</p>
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-primary-text">Overview</h1>
+                <p class="text-secondary-text mt-3 max-w-xl">Track your progress and access your learning modules.</p>
+            </header>
 
-<div id="documents" class="tab-content">
-  <header class="mb-12">
-    <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-4">Documents Vault</h2>
-    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Secure access to all project files, legal agreements, and technical architecture diagrams.</p>
-  </header>
-  <div class="bg-surface-container-low border border-outline-variant/20 p-6 rounded" id="all-documents-container">
-    <p class="text-on-surface-variant">Loading documents...</p>
-  </div>
-</div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Strategic Readiness (Large Hero Widget) -->
+                <section class="lg:col-span-8 clean-panel p-8 md:p-10 flex flex-col justify-between min-h-[360px] relative overflow-hidden group clean-panel-hover">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-brand-success-light rounded-full blur-[80px] -translate-y-1/2 translate-x-1/4 opacity-50 group-hover:opacity-70 transition-opacity duration-700"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-2 mb-6">
+                            <span class="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-success-light text-brand-success border border-brand-success/20">
+                                On Track
+                            </span>
+                        </div>
+                        <h2 class="text-3xl font-bold mb-3 text-brand-navy">Learning Trajectory</h2>
+                        <p class="text-secondary-text max-w-md leading-relaxed">You are making excellent progress through the core modules. Continue to the next assignment to stay on schedule.</p>
+                    </div>
 
-<div id="ai-lab" class="tab-content">
-  <header class="mb-12">
-    <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-4">AI Lab</h2>
-    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Experiment with customized LLM models and proprietary generative workflows.</p>
-  </header>
-  <div class="bg-slate-surface border-t border-tertiary p-12 text-center shadow-ambient rounded">
-    <span class="material-symbols-outlined text-6xl text-tertiary mb-4">precision_manufacturing</span>
-    <h3 class="text-2xl text-on-surface font-headline-md mb-2">Environment Initializing</h3>
-    <p class="text-on-surface-variant font-body-md max-w-md mx-auto">Your dedicated sandbox environment is currently being provisioned. Please check back later.</p>
-  </div>
-</div>
+                    <div class="mt-10 relative z-10 flex flex-col md:flex-row gap-6 items-end justify-between border-t border-border-subtle pt-6">
+                        <div>
+                            <p class="text-xs text-tertiary-text uppercase font-semibold tracking-wide mb-1">Up Next</p>
+                            <p class="text-lg font-medium text-primary-text">Advanced Inference Patterns</p>
+                        </div>
+                        <button class="bg-brand-navy hover:bg-slate-800 text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors flex items-center gap-2 w-full md:w-auto justify-center" onclick="document.querySelector('[data-target=education]').click()">
+                            Resume Learning
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                        </button>
+                    </div>
+                </section>
 
-<div id="education" class="tab-content">
-  <header class="mb-12">
-    <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-4">Education Hub</h2>
-    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Access premium executive training and strategic learning paths.</p>
-  </header>
-  <div id="course-container" class="bg-slate-surface border-t border-tertiary p-8 shadow-ambient rounded">
-    <div class="text-center py-12">
-      <span class="material-symbols-outlined text-6xl text-tertiary mb-4 animate-pulse">school</span>
-      <h3 class="text-2xl text-on-surface font-headline-md mb-2">Loading Curriculum...</h3>
-      <p class="text-on-surface-variant font-body-md max-w-md mx-auto">Fetching your assigned training modules.</p>
-    </div>
-  </div>
-</div>
+                <!-- Qualifications / Quick Stats -->
+                <section class="lg:col-span-4 clean-panel p-8 flex flex-col clean-panel-hover">
+                    <h3 class="text-xl font-bold mb-6 text-brand-navy border-b border-border-subtle pb-4">Milestones</h3>
+                    
+                    <div class="flex-1 flex flex-col space-y-5" id="qualifications-container">
+                        <!-- Populated by JS -->
+                        <div class="animate-pulse flex gap-4 items-center opacity-50">
+                            <div class="w-10 h-10 rounded-full bg-slate-200"></div>
+                            <div class="flex-1 space-y-2">
+                                <div class="h-2 bg-slate-200 rounded w-3/4"></div>
+                                <div class="h-2 bg-slate-200 rounded w-1/2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Quick Simulator Access -->
+                <section class="lg:col-span-12 clean-panel p-6 flex flex-col md:flex-row items-center justify-between gap-6 cursor-pointer clean-panel-hover group" onclick="document.querySelector('[data-target=ai-lab]').click()">
+                    <div class="flex items-center gap-5">
+                        <div class="w-14 h-14 rounded-xl bg-slate-100 flex items-center justify-center text-brand-navy group-hover:bg-brand-navy group-hover:text-white transition-colors duration-300">
+                            <span class="material-symbols-outlined text-2xl">model_training</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-brand-navy mb-1">AI Sandbox Simulator</h3>
+                            <p class="text-secondary-text text-sm">Access your isolated environment for practical exercises.</p>
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined text-tertiary-text group-hover:text-brand-navy group-hover:translate-x-2 transition-transform duration-300">east</span>
+                </section>
+            </div>
+        </div>
 
-<div id="settings" class="tab-content">
-  <header class="mb-12">
-    <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-4">Account Settings</h2>
-    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Manage your executive profile and security preferences.</p>
-  </header>
-  <div class="bg-surface-container-low border border-outline-variant/20 p-6 rounded max-w-2xl">
-    <div class="space-y-6">
-      <div>
-        <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">Full Name</label>
-        <input type="text" id="settings-name" class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface" disabled />
-      </div>
-      <div>
-        <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">Email Address</label>
-        <input type="email" id="settings-email" class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface" disabled />
-      </div>
-      <div>
-        <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">Role</label>
-        <input type="text" id="settings-role" class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface capitalize" disabled />
-      </div>
-    </div>
-  </div>
-</div>
-<div class="mt-4 pt-2">
-<button class="w-full border border-outline-variant/50 text-on-surface font-label-caps text-[10px] py-2 uppercase hover:bg-surface-container-high transition-colors">
-                        View All Transcripts
+        <!-- EDUCATION: THE TRAJECTORY -->
+        <div id="education" class="tab-content">
+            <header class="mb-12">
+                <p class="text-brand-success font-semibold text-xs tracking-wider uppercase mb-2">Curriculum</p>
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-primary-text">Learning Path</h1>
+                <p class="text-secondary-text mt-3 max-w-xl">Follow the structured sequence of modules to complete your certification.</p>
+            </header>
+            
+            <div id="course-container" class="relative">
+                <div class="text-center py-20 clean-panel">
+                    <span class="material-symbols-outlined text-4xl text-tertiary-text mb-4 animate-spin" style="animation-duration: 3s;">sync</span>
+                    <h3 class="text-lg font-medium text-brand-navy">Loading Curriculum...</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI LAB: THE SIMULATOR -->
+        <div id="ai-lab" class="tab-content">
+            <header class="mb-12">
+                <p class="text-brand-success font-semibold text-xs tracking-wider uppercase mb-2">Sandbox</p>
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-primary-text">Simulator</h1>
+                <p class="text-secondary-text mt-3 max-w-xl">Experiment with model parameters and custom inference tasks.</p>
+            </header>
+            
+            <div class="clean-panel min-h-[50vh] flex flex-col relative overflow-hidden">
+                <div class="bg-slate-50 border-b border-border-subtle p-3 flex gap-2">
+                    <div class="w-3 h-3 rounded-full bg-slate-300"></div>
+                    <div class="w-3 h-3 rounded-full bg-slate-300"></div>
+                    <div class="w-3 h-3 rounded-full bg-slate-300"></div>
+                </div>
+                
+                <div class="flex-1 p-8 flex flex-col items-center justify-center text-center">
+                    <div class="w-20 h-20 rounded-full bg-brand-success-light text-brand-success flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-3xl">build</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-brand-navy mb-3">Environment Provisioning</h2>
+                    <p class="text-secondary-text max-w-md">Your dedicated sandbox instance is currently starting up. Please check back shortly.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- DOCUMENTS: THE VAULT -->
+        <div id="documents" class="tab-content">
+            <header class="mb-12">
+                <p class="text-brand-success font-semibold text-xs tracking-wider uppercase mb-2">Resources</p>
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-primary-text">Document Vault</h1>
+                <p class="text-secondary-text mt-3 max-w-xl">Access course materials, certificates, and reference files.</p>
+            </header>
+            
+            <div id="all-documents-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                 <!-- Populated by JS, fallback skeleton below -->
+                 <div class="clean-panel h-40 animate-pulse bg-slate-100"></div>
+                 <div class="clean-panel h-40 animate-pulse bg-slate-100"></div>
+                 <div class="clean-panel h-40 animate-pulse bg-slate-100"></div>
+            </div>
+        </div>
+
+        <!-- SETTINGS: PROFILE -->
+        <div id="settings" class="tab-content">
+            <header class="mb-12 flex justify-between items-end">
+                <div>
+                    <p class="text-brand-success font-semibold text-xs tracking-wider uppercase mb-2">Account</p>
+                    <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-primary-text">Profile Settings</h1>
+                </div>
+                <button id="save-profile-btn" class="bg-brand-success hover:bg-emerald-600 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-transform hover:scale-105 flex items-center gap-2 shadow-soft">
+                    Save Changes <span class="material-symbols-outlined text-[18px]">save</span>
+                </button>
+            </header>
+            
+            <div class="clean-panel p-8 md:p-12 max-w-4xl relative overflow-hidden">
+                <!-- Avatar Section -->
+                <div class="flex flex-col sm:flex-row items-center gap-8 mb-12 border-b border-border-subtle pb-8">
+                    <div class="relative group cursor-pointer" id="avatar-upload-trigger">
+                        <div class="w-32 h-32 rounded-full border-4 border-white shadow-floating overflow-hidden bg-slate-100 flex items-center justify-center relative">
+                            <img id="profile-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt2aiAvMXdsIcQo0AnAsVTBb2KF978NxjN80mtQOwlNrFIEnstZ0B8L5NnSz6xFNXGMzCONdgLnRw1jDCKhXC5c8ov34EPkfNu449vc4A22LlLt_UrLa_O6UJ-0Jf2DQye6XnfJwhFqc9gt4GPIFARCc9DlL-WpAhNtf3NLf4M1EfEsRSQCsZ_6ez0e_T_NWLFJGdEfBaFxbBmwfoQtWB3VP9vNpiGkOLj8A7xwu0xk2AU7Mz_6jpB" alt="Profile" class="w-full h-full object-cover" />
+                            <div class="absolute inset-0 bg-brand-navy/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-[2px]">
+                                <span class="material-symbols-outlined text-white text-3xl">photo_camera</span>
+                            </div>
+                        </div>
+                        <input type="file" id="avatar-input" class="hidden" accept="image/png, image/jpeg, image/jpg" />
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-brand-navy" id="profile-display-name">Student</h2>
+                        <p class="text-secondary-text mt-1 text-sm">Update your photo and personal details.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+                    <div class="space-y-6">
+                        <h3 class="text-sm font-bold text-brand-navy uppercase tracking-wider mb-4">Core Info</h3>
+                        <div>
+                            <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Full Name</label>
+                            <input type="text" id="settings-name" class="w-full bg-slate-50 border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-4 py-3 text-primary-text transition-colors" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Email Address</label>
+                            <input type="email" id="settings-email" class="w-full bg-slate-100 border border-border-subtle rounded-lg px-4 py-3 text-secondary-text cursor-not-allowed" disabled />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Role</label>
+                            <input type="text" id="settings-role" class="w-full bg-slate-100 border border-border-subtle rounded-lg px-4 py-3 text-secondary-text capitalize cursor-not-allowed" disabled />
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <h3 class="text-sm font-bold text-brand-navy uppercase tracking-wider mb-4">Professional Details</h3>
+                        <div>
+                            <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">University / Company</label>
+                            <input type="text" id="settings-organization" placeholder="e.g. Stanford University" class="w-full bg-slate-50 border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-4 py-3 text-primary-text transition-colors" />
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">City</label>
+                                <input type="text" id="settings-city" placeholder="e.g. San Francisco" class="w-full bg-slate-50 border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-4 py-3 text-primary-text transition-colors" />
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Mobile</label>
+                                <input type="tel" id="settings-mobile" placeholder="+1 234 567 890" class="w-full bg-slate-50 border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-4 py-3 text-primary-text transition-colors" />
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1 flex items-center gap-1">LinkedIn <span class="material-symbols-outlined text-[14px]">link</span></label>
+                                <input type="url" id="settings-linkedin" placeholder="linkedin.com/in/..." class="w-full bg-slate-50 border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-4 py-3 text-primary-text transition-colors text-sm" />
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1 flex items-center gap-1">GitHub <span class="material-symbols-outlined text-[14px]">link</span></label>
+                                <input type="url" id="settings-github" placeholder="github.com/..." class="w-full bg-slate-50 border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-4 py-3 text-primary-text transition-colors text-sm" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 pt-6 border-t border-border-subtle flex gap-4">
+                    <button class="bg-white border border-border-subtle hover:bg-slate-50 text-brand-navy px-5 py-2.5 rounded-lg font-medium text-sm transition-colors flex items-center gap-2" data-action="support">
+                        <span class="material-symbols-outlined text-[18px]">help</span> Support
                     </button>
-</div>
-</section>
-<!-- Documents Widget (Spans full width below) -->
-<section class="md:col-span-12 bg-slate-surface border-t border-tertiary/30 rounded-DEFAULT p-6 shadow-ambient mt-section-gap">
-<div class="flex justify-between items-end mb-6 border-b border-outline-variant/20 pb-4">
-<div>
-<h3 class="font-headline-md text-[24px] text-on-surface">Documents</h3>
-<p class="font-body-md text-[14px] text-on-surface-variant mt-1">Invoices and Certificates</p>
-</div>
-<button class="flex items-center gap-2 text-on-surface-variant font-data-mono text-[12px] hover:text-on-surface transition-colors">
-<span class="material-symbols-outlined text-[16px]">filter_list</span> Filter
+                    <button class="bg-red-50 text-red-600 hover:bg-red-100 px-5 py-2.5 rounded-lg font-medium text-sm transition-colors flex items-center gap-2" data-action="logout">
+                        <span class="material-symbols-outlined text-[18px]">logout</span> Sign Out
                     </button>
-</div>
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4" id="documents-container">
-<!-- View All Area -->
-<div class="border border-dashed border-outline-variant/40 p-4 rounded-sm flex items-center justify-center hover:bg-surface-container-low transition-colors cursor-pointer">
-<span class="font-data-mono text-[12px] text-on-surface-variant">View Registry →</span>
-</div>
-</div>
-</section>
-</div>
-</main>
-<script src="student.js"></script>
-</body></html>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    <!-- Document Viewer Modal -->
+    <div id="document-modal" class="fixed inset-0 bg-brand-navy/50 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
+        <div class="clean-panel w-full max-w-3xl max-h-[85vh] flex flex-col bg-white overflow-hidden relative shadow-2xl">
+            <header class="p-6 border-b border-border-subtle flex justify-between items-start bg-slate-50">
+                <div>
+                    <span id="document-modal-badge" class="text-[10px] font-bold bg-brand-navy text-white px-2 py-1 rounded uppercase tracking-wider mb-3 inline-block">Document</span>
+                    <h2 id="document-modal-title" class="text-2xl font-bold text-brand-navy">Document Title</h2>
+                </div>
+                <button onclick="window.closeDocument()" class="w-8 h-8 rounded-full bg-white border border-border-subtle flex items-center justify-center text-secondary-text hover:bg-slate-100 hover:text-brand-navy transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">close</span>
+                </button>
+            </header>
+            
+            <div class="p-8 overflow-y-auto flex-1 prose prose-slate prose-headings:text-brand-navy prose-a:text-brand-success max-w-none">
+                <div id="document-modal-content"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Image Cropper Modal -->
+    <div id="cropper-modal" class="fixed inset-0 bg-brand-navy/50 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
+        <div class="clean-panel w-full max-w-lg p-6 bg-white">
+            <h3 class="text-xl font-bold text-brand-navy mb-4">Edit Profile Photo</h3>
+            <div class="w-full h-80 bg-slate-100 mb-6 relative overflow-hidden rounded-lg">
+                <img id="cropper-image" src="" alt="To Crop" class="max-w-full hidden">
+            </div>
+            <div class="flex justify-end gap-3">
+                <button id="cancel-crop-btn" class="bg-white border border-border-subtle hover:bg-slate-50 text-brand-navy px-5 py-2 rounded-lg font-medium text-sm transition-colors">Cancel</button>
+                <button id="apply-crop-btn" class="bg-brand-success hover:bg-emerald-600 text-white px-5 py-2 rounded-lg font-semibold text-sm transition-colors">Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="student.js"></script>
+</body>
+</html>

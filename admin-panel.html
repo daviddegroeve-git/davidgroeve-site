@@ -1,277 +1,219 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="en"><head>
+<html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Executive Portal - Dashboard</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<title>Admin Dashboard - Career Suite</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,typography"></script>
 <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "inverse-primary": "#565f6f",
-                        "on-primary-fixed": "#131c2a",
-                        "outline": "#8f9096",
-                        "tertiary-container": "#142438",
-                        "error": "#ffb4ab",
-                        "surface": "#121414",
-                        "on-secondary-container": "#dbb26a",
-                        "tertiary": "#b7c8e1",
-                        "on-error-container": "#ffdad6",
-                        "surface-variant": "#333535",
-                        "on-surface": "#e2e2e2",
-                        "on-secondary-fixed-variant": "#5e4201",
-                        "surface-container-lowest": "#0c0f0f",
-                        "primary-container": "#1b2432",
-                        "on-background": "#e2e2e2",
-                        "primary-fixed": "#dae3f6",
-                        "on-surface-variant": "#c5c6cc",
-                        "background": "#121414",
-                        "primary": "#bec7da",
-                        "ink-black": "#020617",
-                        "on-tertiary": "#213145",
-                        "surface-tint": "#bec7da",
-                        "amber-accent": "#D97706",
-                        "inverse-on-surface": "#2f3131",
-                        "on-tertiary-fixed-variant": "#38485d",
-                        "secondary": "#eac076",
-                        "surface-container-low": "#1a1c1c",
-                        "surface-container": "#1e2020",
-                        "secondary-fixed-dim": "#eac076",
-                        "tertiary-fixed-dim": "#b7c8e1",
-                        "slate-surface": "#1E293B",
-                        "on-tertiary-container": "#7b8ca3",
-                        "primary-fixed-dim": "#bec7da",
-                        "on-primary-container": "#828b9d",
-                        "surface-bright": "#37393a",
-                        "deep-midnight": "#0F172A",
-                        "on-secondary-fixed": "#271900",
-                        "surface-container-high": "#282a2b",
-                        "outline-variant": "#45474c",
-                        "on-primary-fixed-variant": "#3e4757",
-                        "on-secondary": "#412d00",
-                        "inverse-surface": "#e2e2e2",
-                        "tertiary-fixed": "#d3e4fe",
-                        "on-tertiary-fixed": "#0b1c30",
-                        "surface-dim": "#121414",
-                        "secondary-container": "#604403",
-                        "error-container": "#93000a",
-                        "on-error": "#690005",
-                        "surface-container-highest": "#333535",
-                        "secondary-fixed": "#ffdea7",
-                        "on-primary": "#28313f"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    "spacing": {
-                        "margin-mobile": "16px",
-                        "container-max": "1280px",
-                        "section-gap": "80px",
-                        "base": "8px",
-                        "gutter": "24px"
-                    },
-                    "fontFamily": {
-                        "label-caps": ["Montserrat"],
-                        "data-mono": ["Montserrat"],
-                        "headline-md": ["Montserrat"],
-                        "body-md": ["Montserrat"],
-                        "display-lg": ["Montserrat"],
-                        "display-lg-mobile": ["Montserrat"],
-                        "body-lg": ["Montserrat"]
-                    },
-                    "fontSize": {
-                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
-                        "data-mono": ["14px", { "lineHeight": "1.4", "fontWeight": "500" }],
-                        "headline-md": ["32px", { "lineHeight": "1.3", "fontWeight": "500" }],
-                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
-                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
-                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
-                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
-                    }
-                }
-            }
-        }
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="auth.js"></script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+              'surface-bg': '#f7f9fb',
+              'surface-card': '#ffffff',
+              'surface-hover': '#f1f5f9',
+              'primary-text': '#0f172a',
+              'secondary-text': '#475569',
+              'tertiary-text': '#94a3b8',
+              'brand-navy': '#1e293b',
+              'brand-success': '#10b981',
+              'brand-success-light': '#d1fae5',
+              'border-subtle': '#e2e8f0',
+              'border-focus': '#94a3b8'
+          },
+          fontFamily: {
+              'body': ['Inter', 'sans-serif'],
+              'mono': ['JetBrains Mono', 'monospace']
+          },
+          boxShadow: {
+              'soft': '0 4px 20px -2px rgba(15, 23, 42, 0.05)',
+              'floating': '0 20px 40px -10px rgba(15, 23, 42, 0.1)',
+          }
+        },
+      },
+    }
+</script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300..400,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth.js"></script>
 <style>
-        body {
-            background-color: theme('colors.deep-midnight');
-            color: theme('colors.on-surface');
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        
-        .shadow-ambient {
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-        }
-    </style>
-</head>
-<body class="bg-deep-midnight text-on-surface font-body-md antialiased flex h-screen overflow-hidden">
-<!-- SideNavBar -->
-<nav class="h-screen w-64 fixed left-0 top-0 border-r border-outline-variant bg-surface-container-low hidden md:flex flex-col py-base z-50">
-<!-- Header -->
-<div class="px-gutter pb-6 border-b border-outline-variant/30 mb-4">
-<div class="flex items-center gap-4 mb-4 mt-2">
-<div class="w-10 h-10 rounded-full bg-slate-surface overflow-hidden border border-outline-variant/50">
-<img alt="David Sánchez de Groeve Profile" class="w-full h-full object-cover" data-alt="A professional headshot of an executive in a dark modern office, high contrast lighting, corporate minimalist aesthetic, dark sophisticated background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFWW7bAakOx8f0S-hvyZ5LNnxIPbEp4WdGI9tGsjQZ2BewllDfPqBjlX7ddfe98MMowFNi7eg4F59zdh56XZ-v3RXRzo4hcc-Lx1iVxikdU-3MCtjKBoIiFHjGMrRN67TsCypcCujONQ2uTd4HUt5Muv51tBfpGh4YIM3G_I8j4MAoq0iuper1AUAVQVAhLnw3GFpd5a_taXy2QNXiHCS_s77CA0j-XrnDzyUmEmZLn7RMHErJ9hdZ"/>
-</div>
-<div>
-<h2 class="font-headline-md text-headline-md text-on-surface text-[20px]">Executive Portal</h2>
-<p class="font-label-caps text-label-caps text-on-surface-variant mt-1">Technology Strategy</p>
-</div>
-</div>
-<button class="w-full py-3 bg-secondary text-ink-black font-label-caps text-label-caps uppercase font-bold hover:bg-secondary-fixed transition-colors">
-                New Project
-            </button>
-</div>
-<!-- Main Navigation -->
-<div class="flex-1 overflow-y-auto px-4 space-y-1">
-<!-- Active Tab: Dashboard -->
-<a class="flex items-center gap-3 px-4 py-3 text-secondary bg-tertiary-container/30 border-r-2 border-secondary font-label-caps text-label-caps translate-x-1 duration-150 rounded-l nav-link" href="#" data-target="dashboard">
-<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">dashboard</span>
-<span>Dashboard</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest transition-colors font-label-caps text-label-caps rounded nav-link" href="#" data-target="users">
-<span class="material-symbols-outlined text-[20px]">group</span>
-<span>Users</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest transition-colors font-label-caps text-label-caps rounded nav-link" href="#" data-target="documents">
-<span class="material-symbols-outlined text-[20px]">description</span>
-<span>Documents</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest transition-colors font-label-caps text-label-caps rounded nav-link" href="#" data-target="ai-lab">
-<span class="material-symbols-outlined text-[20px]">precision_manufacturing</span>
-<span>AI Lab</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest transition-colors font-label-caps text-label-caps rounded nav-link" href="#" data-target="education">
-<span class="material-symbols-outlined text-[20px]">school</span>
-<span>Education</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest transition-colors font-label-caps text-label-caps rounded nav-link" href="#" data-target="settings">
-<span class="material-symbols-outlined text-[20px]">settings</span>
-<span>Settings</span>
-</a>
-</div>
-<!-- Footer Navigation -->
-<div class="mt-auto px-4 pt-4 border-t border-outline-variant/30 space-y-1">
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest transition-colors font-label-caps text-label-caps rounded" href="#" data-action="support">
-<span class="material-symbols-outlined text-[20px]">help</span>
-<span>Support</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest transition-colors font-label-caps text-label-caps rounded" href="#" data-action="logout">
-<span class="material-symbols-outlined text-[20px]">logout</span>
-<span>Logout</span>
-</a>
-</div>
-</nav>
-<!-- Main Content Canvas -->
-<main class="flex-1 md:ml-64 h-full overflow-y-auto bg-deep-midnight p-gutter md:p-section-gap">
+    body {
+        background-color: theme('colors.surface-bg');
+        color: theme('colors.primary-text');
+        font-family: theme('fontFamily.body');
+        overflow-x: hidden;
+    }
 
-<style>
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+
+    /* Clean White Panels */
+    .clean-panel {
+        background: theme('colors.surface-card');
+        border: 1px solid theme('colors.border-subtle');
+        border-radius: 16px;
+        box-shadow: theme('boxShadow.soft');
+    }
+
+    .clean-panel-hover {
+        transition: all 0.3s ease;
+    }
+    .clean-panel-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: theme('boxShadow.floating');
+        border-color: theme('colors.border-focus');
+    }
+
+    /* Animations */
+    @keyframes fadeSlideUp {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-slide {
+        animation: fadeSlideUp 0.5s ease-out forwards;
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: theme('colors.border-subtle'); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: theme('colors.border-focus'); }
+
+    /* Inner sub-tabs */
+    .users-tab-content { display: none; }
+    .users-tab-content.block { display: block; }
+    .job-tab-content { display: none; }
+    .job-tab-content.block { display: block; }
 </style>
+</head>
+<body class="bg-surface-bg text-primary-text min-h-screen flex flex-col relative selection:bg-brand-success-light selection:text-brand-navy pb-24 md:pb-0 md:pl-24">
 
-<div id="dashboard" class="tab-content active">
-<header class="mb-12 flex justify-between items-end">
-<div>
-<h1 class="font-display-lg text-display-lg md:text-display-lg text-on-surface">Command Center</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant mt-2 max-w-2xl">Platform management hub and executive overview.</p>
-</div>
-<div class="hidden lg:flex items-center gap-4">
-<div class="bg-surface-container py-2 px-4 rounded flex items-center gap-3 border border-outline-variant/30">
-<span class="material-symbols-outlined text-tertiary">schedule</span>
-<span class="font-data-mono text-data-mono text-on-surface-variant">System Status: Optimal</span>
-</div>
-</div>
+    <!-- Floating Navigation (Bottom on Mobile, Left Side on Desktop) -->
+    <nav class="fixed bottom-4 left-4 right-4 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:left-6 md:right-auto md:w-16 md:h-auto bg-white/90 backdrop-blur-md border border-border-subtle z-50 flex md:flex-col justify-around md:justify-center items-center py-3 md:py-6 md:px-0 md:gap-6 px-4 shadow-floating rounded-2xl md:rounded-[2rem]">
+        <a href="#" class="nav-link group relative p-2 text-brand-navy transition-colors duration-300" data-target="dashboard">
+            <span class="material-symbols-outlined text-[28px] md:text-[24px]">space_dashboard</span>
+            <span class="absolute -top-10 md:top-1/2 md:-translate-y-1/2 left-1/2 -translate-x-1/2 md:left-14 md:translate-x-0 bg-brand-navy text-white px-3 py-1 rounded text-[11px] font-semibold tracking-wide opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-md">Dashboard</span>
+        </a>
+        <a href="#" class="nav-link group relative p-2 text-tertiary-text hover:text-brand-navy transition-colors duration-300" data-target="users">
+            <span class="material-symbols-outlined text-[28px] md:text-[24px]">group</span>
+            <span class="absolute -top-10 md:top-1/2 md:-translate-y-1/2 left-1/2 -translate-x-1/2 md:left-14 md:translate-x-0 bg-brand-navy text-white px-3 py-1 rounded text-[11px] font-semibold tracking-wide opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-md">Users</span>
+        </a>
+        <a href="#" class="nav-link group relative p-2 text-tertiary-text hover:text-brand-navy transition-colors duration-300" data-target="documents">
+            <span class="material-symbols-outlined text-[28px] md:text-[24px]">description</span>
+            <span class="absolute -top-10 md:top-1/2 md:-translate-y-1/2 left-1/2 -translate-x-1/2 md:left-14 md:translate-x-0 bg-brand-navy text-white px-3 py-1 rounded text-[11px] font-semibold tracking-wide opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-md">Documents</span>
+        </a>
+        <a href="#" class="nav-link group relative p-2 text-tertiary-text hover:text-brand-navy transition-colors duration-300" data-target="ai-lab">
+            <span class="material-symbols-outlined text-[28px] md:text-[24px]">precision_manufacturing</span>
+            <span class="absolute -top-10 md:top-1/2 md:-translate-y-1/2 left-1/2 -translate-x-1/2 md:left-14 md:translate-x-0 bg-brand-navy text-white px-3 py-1 rounded text-[11px] font-semibold tracking-wide opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-md">AI Lab</span>
+        </a>
+        <a href="#" class="nav-link group relative p-2 text-tertiary-text hover:text-brand-navy transition-colors duration-300" data-target="education">
+            <span class="material-symbols-outlined text-[28px] md:text-[24px]">school</span>
+            <span class="absolute -top-10 md:top-1/2 md:-translate-y-1/2 left-1/2 -translate-x-1/2 md:left-14 md:translate-x-0 bg-brand-navy text-white px-3 py-1 rounded text-[11px] font-semibold tracking-wide opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-md">Education</span>
+        </a>
+        <a href="#" class="nav-link group relative p-2 text-tertiary-text hover:text-brand-navy transition-colors duration-300" data-target="job-search">
+            <span class="material-symbols-outlined text-[28px] md:text-[24px]">work</span>
+            <span class="absolute -top-10 md:top-1/2 md:-translate-y-1/2 left-1/2 -translate-x-1/2 md:left-14 md:translate-x-0 bg-brand-navy text-white px-3 py-1 rounded text-[11px] font-semibold tracking-wide opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-md">Job Search</span>
+        </a>
+        <div class="w-px h-6 bg-border-subtle md:w-6 md:h-px mx-1"></div>
+        <a href="#" class="nav-link group relative p-2 text-tertiary-text hover:text-brand-navy transition-colors duration-300" data-target="settings">
+            <span class="material-symbols-outlined text-[28px] md:text-[24px]">settings</span>
+            <span class="absolute -top-10 md:top-1/2 md:-translate-y-1/2 left-1/2 -translate-x-1/2 md:left-14 md:translate-x-0 bg-brand-navy text-white px-3 py-1 rounded text-[11px] font-semibold tracking-wide opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-md">Settings</span>
+        </a>
+    </nav>
+    <!-- Main Content Area -->
+    <main class="flex-1 w-full max-w-[1200px] mx-auto px-6 py-12 md:py-20 relative z-10">
+
+<div id="dashboard" class="tab-content active animate-fade-slide">
+<header class="mb-12">
+    <p class="text-brand-success font-semibold text-xs tracking-wider uppercase mb-2">Admin</p>
+    <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-primary-text">Command Center</h1>
+    <p class="text-secondary-text mt-3 max-w-xl">Platform management hub and executive overview.</p>
 </header>
 <!-- Bento Grid Layout -->
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 <!-- Portal Statistics (Top Left - Span 8) -->
-<div class="lg:col-span-8 bg-slate-surface rounded-lg border-t border-tertiary/30 shadow-ambient p-6 flex flex-col">
+<div class="lg:col-span-8 clean-panel p-6 flex flex-col clean-panel-hover">
 <div class="flex justify-between items-center mb-6">
-<h3 class="font-headline-md text-[24px] text-on-surface">Portal Analytics</h3>
-<button class="text-secondary font-label-caps text-label-caps flex items-center gap-1 hover:text-secondary-fixed transition-colors">
-                        View Full Report <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+<h3 class="text-xl font-bold text-brand-navy">Portal Analytics</h3>
+<button class="text-brand-success font-semibold text-sm flex items-center gap-1 hover:text-emerald-700 transition-colors">
+    View Full Report <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
 </button>
 </div>
-<div class="grid grid-cols-3 gap-4 mb-8" id="metrics-container">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8" id="metrics-container">
 </div>
 <!-- Simulated Chart Area -->
-<div class="flex-1 bg-surface-container-lowest rounded border border-outline-variant/20 relative overflow-hidden flex items-end p-4 h-48">
+<div class="flex-1 bg-slate-50 rounded-xl border border-border-subtle relative overflow-hidden flex items-end p-4 h-48">
 <!-- Grid lines -->
-<div class="absolute inset-0 flex flex-col justify-between p-4 pointer-events-none opacity-20">
-<div class="w-full h-px bg-tertiary"></div>
-<div class="w-full h-px bg-tertiary"></div>
-<div class="w-full h-px bg-tertiary"></div>
-<div class="w-full h-px bg-tertiary"></div>
+<div class="absolute inset-0 flex flex-col justify-between p-4 pointer-events-none opacity-30">
+<div class="w-full h-px bg-border-subtle"></div>
+<div class="w-full h-px bg-border-subtle"></div>
+<div class="w-full h-px bg-border-subtle"></div>
+<div class="w-full h-px bg-border-subtle"></div>
 </div>
 <!-- Fake Bars -->
 <div class="w-full flex justify-between items-end gap-2 h-full z-10 px-4">
-<div class="w-full bg-secondary/20 hover:bg-secondary/40 transition-colors h-[40%] rounded-t border-t border-secondary"></div>
-<div class="w-full bg-secondary/20 hover:bg-secondary/40 transition-colors h-[60%] rounded-t border-t border-secondary"></div>
-<div class="w-full bg-secondary/20 hover:bg-secondary/40 transition-colors h-[45%] rounded-t border-t border-secondary"></div>
-<div class="w-full bg-secondary/20 hover:bg-secondary/40 transition-colors h-[80%] rounded-t border-t border-secondary"></div>
-<div class="w-full bg-secondary/20 hover:bg-secondary/40 transition-colors h-[75%] rounded-t border-t border-secondary"></div>
-<div class="w-full bg-secondary/20 hover:bg-secondary/40 transition-colors h-[90%] rounded-t border-t border-secondary"></div>
-<div class="w-full bg-secondary text-ink-black h-[100%] rounded-t flex items-start justify-center pt-2 font-data-mono text-[10px]">Today</div>
+<div class="w-full bg-brand-success/10 hover:bg-brand-success/20 transition-colors h-[40%] rounded-t border-t-2 border-brand-success"></div>
+<div class="w-full bg-brand-success/10 hover:bg-brand-success/20 transition-colors h-[60%] rounded-t border-t-2 border-brand-success"></div>
+<div class="w-full bg-brand-success/10 hover:bg-brand-success/20 transition-colors h-[45%] rounded-t border-t-2 border-brand-success"></div>
+<div class="w-full bg-brand-success/10 hover:bg-brand-success/20 transition-colors h-[80%] rounded-t border-t-2 border-brand-success"></div>
+<div class="w-full bg-brand-success/10 hover:bg-brand-success/20 transition-colors h-[75%] rounded-t border-t-2 border-brand-success"></div>
+<div class="w-full bg-brand-success/10 hover:bg-brand-success/20 transition-colors h-[90%] rounded-t border-t-2 border-brand-success"></div>
+<div class="w-full bg-brand-success text-white h-[100%] rounded-t flex items-start justify-center pt-2 text-[10px] font-semibold">Today</div>
 </div>
 </div>
 </div>
 <!-- Content Management Quick Actions (Top Right - Span 4) -->
-<div class="lg:col-span-4 flex flex-col gap-gutter">
-<div class="bg-slate-surface rounded-lg border-t border-tertiary/30 shadow-ambient p-6 flex-1">
-<h3 class="font-headline-md text-[20px] text-on-surface mb-6">Content Management</h3>
+<div class="lg:col-span-4 flex flex-col gap-6">
+<div class="clean-panel p-6 flex-1 clean-panel-hover">
+<h3 class="text-xl font-bold text-brand-navy mb-6">Content Management</h3>
 <div class="space-y-3">
-<button class="w-full flex items-center justify-between p-3 border border-outline-variant/30 rounded hover:bg-surface-container transition-colors group">
+<button class="w-full flex items-center justify-between p-3 border border-border-subtle rounded-xl hover:bg-surface-hover transition-colors group">
 <div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded bg-primary-container text-primary flex items-center justify-center group-hover:bg-secondary/20 group-hover:text-secondary transition-colors">
+<div class="w-8 h-8 rounded-lg bg-brand-success-light text-brand-success flex items-center justify-center group-hover:bg-brand-success group-hover:text-white transition-colors">
 <span class="material-symbols-outlined text-[18px]">timeline</span>
 </div>
-<span class="font-body-md text-body-md text-on-surface">Update Trajectory</span>
+<span class="text-sm font-medium text-primary-text">Update Trajectory</span>
 </div>
-<span class="material-symbols-outlined text-outline-variant group-hover:text-secondary">arrow_forward</span>
+<span class="material-symbols-outlined text-tertiary-text group-hover:text-brand-navy group-hover:translate-x-1 transition-transform">arrow_forward</span>
 </button>
-<button class="w-full flex items-center justify-between p-3 border border-outline-variant/30 rounded hover:bg-surface-container transition-colors group">
+<button class="w-full flex items-center justify-between p-3 border border-border-subtle rounded-xl hover:bg-surface-hover transition-colors group">
 <div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded bg-primary-container text-primary flex items-center justify-center group-hover:bg-secondary/20 group-hover:text-secondary transition-colors">
+<div class="w-8 h-8 rounded-lg bg-brand-success-light text-brand-success flex items-center justify-center group-hover:bg-brand-success group-hover:text-white transition-colors">
 <span class="material-symbols-outlined text-[18px]">work</span>
 </div>
-<span class="font-body-md text-body-md text-on-surface">Manage Projects</span>
+<span class="text-sm font-medium text-primary-text">Manage Projects</span>
 </div>
-<span class="material-symbols-outlined text-outline-variant group-hover:text-secondary">arrow_forward</span>
+<span class="material-symbols-outlined text-tertiary-text group-hover:text-brand-navy group-hover:translate-x-1 transition-transform">arrow_forward</span>
 </button>
-<button class="w-full flex items-center justify-between p-3 border border-outline-variant/30 rounded hover:bg-surface-container transition-colors group mt-6 border-dashed">
+<button class="w-full flex items-center justify-between p-3 border border-dashed border-border-subtle rounded-xl hover:bg-surface-hover transition-colors group mt-4">
 <div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded bg-surface-container-highest text-on-surface-variant flex items-center justify-center group-hover:bg-secondary/20 group-hover:text-secondary transition-colors">
+<div class="w-8 h-8 rounded-lg bg-slate-100 text-tertiary-text flex items-center justify-center group-hover:bg-brand-success group-hover:text-white transition-colors">
 <span class="material-symbols-outlined text-[18px]">upload_file</span>
 </div>
-<span class="font-body-md text-body-md text-on-surface">Upload Documents</span>
+<span class="text-sm font-medium text-primary-text">Upload Documents</span>
 </div>
-<span class="material-symbols-outlined text-outline-variant group-hover:text-secondary">add</span>
+<span class="material-symbols-outlined text-tertiary-text group-hover:text-brand-success">add</span>
 </button>
 </div>
 </div>
 </div>
 <!-- User Management Table (Bottom - Span 12) -->
-<div class="lg:col-span-12 bg-slate-surface rounded-lg border-t border-tertiary/30 shadow-ambient p-6">
+<div class="lg:col-span-12 clean-panel p-6">
 <div class="flex justify-between items-center mb-6">
-<h3 class="font-headline-md text-[24px] text-on-surface">User Directory</h3>
-<div class="flex items-center gap-4">
+<h3 class="text-xl font-bold text-brand-navy">User Directory</h3>
+<div class="flex items-center gap-3">
 <div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-[18px]">search</span>
-<input class="bg-surface-container-lowest border-b border-outline-variant/50 border-t-0 border-l-0 border-r-0 focus:border-secondary focus:ring-0 text-on-surface font-body-md pl-10 py-2 w-64 transition-colors" placeholder="Search users..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-tertiary-text text-[18px]">search</span>
+<input class="bg-slate-50 border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg pl-10 pr-4 py-2 w-56 text-sm text-primary-text transition-colors outline-none" placeholder="Search users..." type="text"/>
 </div>
-<button class="p-2 border border-outline-variant/30 rounded hover:bg-surface-container text-on-surface-variant transition-colors">
+<button class="p-2 border border-border-subtle rounded-lg hover:bg-surface-hover text-tertiary-text hover:text-brand-navy transition-colors">
 <span class="material-symbols-outlined text-[20px]">filter_list</span>
 </button>
 </div>
@@ -279,67 +221,68 @@
 <div class="overflow-x-auto">
 <table class="w-full text-left">
 <thead>
-<tr class="border-b border-outline-variant/30">
-<th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold">User</th>
-<th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold">Role</th>
-<th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold">Status</th>
-<th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold">Last Active</th>
-<th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold text-right">Actions</th>
+<tr class="border-b border-border-subtle">
+<th class="pb-3 text-xs font-semibold text-tertiary-text uppercase tracking-wide">User</th>
+<th class="pb-3 text-xs font-semibold text-tertiary-text uppercase tracking-wide">Role</th>
+<th class="pb-3 text-xs font-semibold text-tertiary-text uppercase tracking-wide">Status</th>
+<th class="pb-3 text-xs font-semibold text-tertiary-text uppercase tracking-wide">Last Active</th>
+<th class="pb-3 text-xs font-semibold text-tertiary-text uppercase tracking-wide text-right">Actions</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-outline-variant/20" id="users-container">
+<tbody class="divide-y divide-border-subtle" id="users-container">
 </tbody>
 </table>
 </div>
-<div class="mt-4 pt-4 border-t border-outline-variant/30 flex justify-between items-center">
-<p class="font-data-mono text-[12px] text-on-surface-variant">Showing 1-3 of 1,332 users</p>
+<div class="mt-4 pt-4 border-t border-border-subtle flex justify-between items-center">
+<p class="text-xs text-tertiary-text font-mono">Showing 1-3 of 1,332 users</p>
 <div class="flex gap-2">
-<button class="px-3 py-1 border border-outline-variant/30 rounded font-data-mono text-[12px] text-outline-variant cursor-not-allowed">Prev</button>
-<button class="px-3 py-1 border border-outline-variant/30 rounded font-data-mono text-[12px] hover:bg-surface-container hover:text-on-surface transition-colors">Next</button>
+<button class="px-3 py-1 border border-border-subtle rounded-lg text-xs text-tertiary-text cursor-not-allowed">Prev</button>
+<button class="px-3 py-1 border border-border-subtle rounded-lg text-xs hover:bg-surface-hover hover:text-primary-text transition-colors">Next</button>
 </div>
 </div>
 </div>
 </div>
 </div> <!-- End dashboard tab -->
 
-<div id="users" class="tab-content">
-  <header class="mb-8 flex justify-between items-end">
+<div id="users" class="tab-content animate-fade-slide">
+  <header class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
     <div>
-      <h1 class="font-display-lg text-display-lg md:text-display-lg text-on-surface">Users & Permissions</h1>
-      <p class="font-body-lg text-body-lg text-on-surface-variant mt-2 max-w-2xl">Manage platform users and role-based permissions.</p>
+      <p class="text-brand-success font-semibold text-xs tracking-wider uppercase mb-2">Management</p>
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-primary-text">Users &amp; Permissions</h1>
+      <p class="text-secondary-text mt-3 max-w-xl">Manage platform users and role-based permissions.</p>
     </div>
-    <div class="flex gap-4" id="userDirectoryActions">
-      <button id="exportUsersBtn" class="flex items-center gap-2 px-4 py-2 border border-outline-variant/30 rounded hover:bg-surface-container transition-colors text-on-surface font-label-caps text-label-caps">
+    <div class="flex gap-3" id="userDirectoryActions">
+      <button id="exportUsersBtn" class="flex items-center gap-2 px-4 py-2.5 border border-border-subtle rounded-lg hover:bg-surface-hover transition-colors text-secondary-text text-sm font-medium">
         <span class="material-symbols-outlined text-[18px]">download</span> Export CSV
       </button>
-      <button id="createUserBtn" class="flex items-center gap-2 px-4 py-2 bg-secondary text-ink-black rounded hover:bg-secondary-fixed transition-colors font-label-caps text-label-caps font-bold">
+      <button id="createUserBtn" class="flex items-center gap-2 px-4 py-2.5 bg-brand-navy text-white rounded-lg hover:bg-slate-800 transition-colors text-sm font-semibold">
         <span class="material-symbols-outlined text-[18px]">person_add</span> Create User
       </button>
     </div>
   </header>
 
   <!-- Inner Tabs Navigation -->
-  <div class="flex gap-6 mb-6 border-b border-outline-variant/30">
-    <button class="users-tab-btn pb-3 font-label-caps text-label-caps border-b-2 border-secondary text-secondary transition-colors" data-target="users-directory-view">Directory</button>
-    <button class="users-tab-btn pb-3 font-label-caps text-label-caps border-b-2 border-transparent text-on-surface-variant hover:text-on-surface transition-colors" data-target="users-permissions-view">Permissions</button>
+  <div class="flex gap-6 mb-6 border-b border-border-subtle">
+    <button class="users-tab-btn pb-3 text-xs font-semibold uppercase tracking-wide border-b-2 border-brand-success text-brand-success transition-colors" data-target="users-directory-view">Directory</button>
+    <button class="users-tab-btn pb-3 text-xs font-semibold uppercase tracking-wide border-b-2 border-transparent text-tertiary-text hover:text-primary-text transition-colors" data-target="users-permissions-view">Permissions</button>
   </div>
 
   <!-- Directory View -->
   <div id="users-directory-view" class="users-tab-content block">
-    <div class="bg-slate-surface rounded-lg border-t border-tertiary/30 shadow-ambient p-6">
+    <div class="clean-panel p-6">
       <div class="overflow-x-auto">
         <table class="w-full text-left">
           <thead>
-            <tr class="border-b border-outline-variant/30">
-              <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold">User</th>
-              <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold">Role</th>
-              <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold">Status</th>
-              <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold">Joined</th>
-              <th class="pb-3 font-label-caps text-label-caps text-on-surface-variant font-bold text-right">Actions</th>
+            <tr class="border-b border-border-subtle">
+              <th class="pb-3 text-xs font-semibold text-tertiary-text uppercase tracking-wide">User</th>
+              <th class="pb-3 text-xs font-semibold text-tertiary-text uppercase tracking-wide">Role</th>
+              <th class="pb-3 text-xs font-semibold text-tertiary-text uppercase tracking-wide">Status</th>
+              <th class="pb-3 text-xs font-semibold text-tertiary-text uppercase tracking-wide">Joined</th>
+              <th class="pb-3 text-xs font-semibold text-tertiary-text uppercase tracking-wide text-right">Actions</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-outline-variant/20" id="users-full-container">
-            <tr><td colspan="5" class="py-8 text-center text-on-surface-variant">Loading users...</td></tr>
+          <tbody class="divide-y divide-border-subtle" id="users-full-container">
+            <tr><td colspan="5" class="py-8 text-center text-secondary-text">Loading users...</td></tr>
           </tbody>
         </table>
       </div>
@@ -348,74 +291,184 @@
 
   <!-- Permissions View -->
   <div id="users-permissions-view" class="users-tab-content hidden">
-    <div class="bg-slate-surface rounded-lg border-t border-tertiary/30 shadow-ambient p-6">
+    <div class="clean-panel p-6">
       <div class="flex justify-between items-center mb-6">
-        <h2 class="font-headline-md text-[20px] text-on-surface">Platform Roles & Permissions</h2>
-        <button class="flex items-center gap-2 px-3 py-1.5 border border-outline-variant/30 rounded hover:bg-surface-container transition-colors text-on-surface font-label-caps text-label-caps">
+        <h2 class="text-xl font-bold text-brand-navy">Platform Roles &amp; Permissions</h2>
+        <button class="flex items-center gap-2 px-3 py-1.5 border border-border-subtle rounded-lg hover:bg-surface-hover transition-colors text-secondary-text text-sm font-medium">
           <span class="material-symbols-outlined text-[16px]">add</span> Add Role
         </button>
       </div>
-      
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="permissions-container">
         <!-- Will be populated by JS -->
-        <p class="text-on-surface-variant">Loading permissions matrix...</p>
+        <p class="text-secondary-text">Loading permissions matrix...</p>
       </div>
     </div>
   </div>
 </div>
 
-<div id="documents" class="tab-content">
-  <header class="mb-12">
-    <h1 class="font-display-lg text-display-lg md:text-display-lg text-on-surface">Documents Vault</h1>
-    <p class="font-body-lg text-body-lg text-on-surface-variant mt-2 max-w-2xl">All documents across the platform — CVs, certificates, agreements, and executive assets.</p>
+<div id="documents" class="tab-content animate-fade-slide">
+  <header class="mb-10">
+    <p class="text-brand-success font-semibold text-xs tracking-wider uppercase mb-2">Resources</p>
+    <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-primary-text">Document Vault</h1>
+    <p class="text-secondary-text mt-3 max-w-xl">All documents across the platform — CVs, certificates, agreements, and executive assets.</p>
   </header>
-  <div class="bg-slate-surface border-t border-tertiary/30 shadow-ambient p-6 rounded-lg" id="all-docs-admin-container">
-    <p class="text-on-surface-variant">Loading documents...</p>
+  <div class="clean-panel p-6" id="all-docs-admin-container">
+    <p class="text-secondary-text">Loading documents...</p>
   </div>
 </div>
 
-<div id="ai-lab" class="tab-content">
-  <header class="mb-12">
-    <h1 class="font-display-lg text-display-lg md:text-display-lg text-on-surface">AI Lab</h1>
-    <p class="font-body-lg text-body-lg text-on-surface-variant mt-2 max-w-2xl">Manage AI Lab environments and sandbox provisioning.</p>
+<div id="ai-lab" class="tab-content animate-fade-slide">
+  <header class="mb-10">
+    <p class="text-brand-success font-semibold text-xs tracking-wider uppercase mb-2">Sandbox</p>
+    <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-primary-text">AI Lab</h1>
+    <p class="text-secondary-text mt-3 max-w-xl">Manage AI Lab environments and sandbox provisioning.</p>
   </header>
-  <div class="bg-slate-surface border-t border-tertiary/30 p-12 text-center shadow-ambient rounded-lg">
-    <span class="material-symbols-outlined text-6xl text-tertiary mb-4">precision_manufacturing</span>
-    <h3 class="text-2xl text-on-surface font-headline-md mb-2">No Active Environments</h3>
-    <p class="text-on-surface-variant font-body-md max-w-md mx-auto">No AI Lab environments have been provisioned yet. Contact the infrastructure team.</p>
+  <div class="clean-panel p-12 text-center">
+    <div class="w-20 h-20 rounded-full bg-brand-success-light text-brand-success flex items-center justify-center mb-6 mx-auto">
+      <span class="material-symbols-outlined text-3xl">precision_manufacturing</span>
+    </div>
+    <h3 class="text-2xl font-bold text-brand-navy mb-3">No Active Environments</h3>
+    <p class="text-secondary-text max-w-md mx-auto">No AI Lab environments have been provisioned yet. Contact the infrastructure team.</p>
   </div>
 </div>
 
-<div id="education" class="tab-content">
-  <header class="mb-12">
-    <h1 class="font-display-lg text-display-lg md:text-display-lg text-on-surface">Education Hub</h1>
-    <p class="font-body-lg text-body-lg text-on-surface-variant mt-2 max-w-2xl">Manage training modules, curricula, and student assignments.</p>
+<div id="education" class="tab-content animate-fade-slide">
+  <header class="mb-10">
+    <p class="text-brand-success font-semibold text-xs tracking-wider uppercase mb-2">Curriculum</p>
+    <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-primary-text">Education Hub</h1>
+    <p class="text-secondary-text mt-3 max-w-xl">Manage training modules, curricula, and student assignments.</p>
   </header>
-  <div class="bg-slate-surface border-t border-tertiary/30 p-12 text-center shadow-ambient rounded-lg">
-    <span class="material-symbols-outlined text-6xl text-tertiary mb-4">school</span>
-    <h3 class="text-2xl text-on-surface font-headline-md mb-2">Curriculum Manager</h3>
-    <p class="text-on-surface-variant font-body-md max-w-md mx-auto">Module management interface coming soon. Training data is available via the database.</p>
+  <div class="clean-panel p-12 text-center">
+    <div class="w-20 h-20 rounded-full bg-brand-success-light text-brand-success flex items-center justify-center mb-6 mx-auto">
+      <span class="material-symbols-outlined text-3xl">school</span>
+    </div>
+    <h3 class="text-2xl font-bold text-brand-navy mb-3">Curriculum Manager</h3>
+    <p class="text-secondary-text max-w-md mx-auto">Module management interface coming soon. Training data is available via the database.</p>
   </div>
 </div>
 
-<div id="settings" class="tab-content">
-  <header class="mb-12">
-    <h1 class="font-display-lg text-display-lg md:text-display-lg text-on-surface">System Settings</h1>
-    <p class="font-body-lg text-body-lg text-on-surface-variant mt-2 max-w-2xl">Manage your admin profile and platform configuration.</p>
+<div id="job-search" class="tab-content">
+  <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+    <div>
+      <h1 class="font-display-lg text-display-lg md:text-display-lg text-on-surface">Job Search</h1>
+      <p class="font-body-lg text-body-lg text-on-surface-variant mt-2 max-w-2xl">Manage applications and network contacts.</p>
+    </div>
+    <div class="flex items-center gap-4">
+      <button id="quickAddBtn" class="bg-brand-navy text-white text-sm font-semibold px-4 py-2.5 rounded-lg hover:bg-slate-800 transition-colors">Quick Add</button>
+    </div>
   </header>
-  <div class="bg-surface-container-low border border-outline-variant/20 p-6 rounded-lg max-w-2xl">
+  
+  <!-- Sub-navigation -->
+  <div class="flex gap-4 border-b border-border-subtle mb-8 pb-2">
+    <button class="job-nav text-brand-success border-b-2 border-brand-success text-xs font-semibold uppercase tracking-wide px-2 pb-2" data-subtarget="job-dashboard">Dashboard</button>
+    <button class="job-nav text-tertiary-text hover:text-primary-text text-xs font-semibold uppercase tracking-wide px-2 pb-2 transition-colors" data-subtarget="job-kanban">Kanban</button>
+    <button class="job-nav text-tertiary-text hover:text-primary-text text-xs font-semibold uppercase tracking-wide px-2 pb-2 transition-colors" data-subtarget="job-table">Table View</button>
+    <button class="job-nav text-tertiary-text hover:text-primary-text text-xs font-semibold uppercase tracking-wide px-2 pb-2 transition-colors" data-subtarget="job-contacts">Contacts</button>
+  </div>
+  
+  <!-- Sub-tabs Content -->
+  <div id="job-dashboard" class="job-tab-content block">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8" id="job-metrics-container">
+      <!-- Populated by JS -->
+    </div>
+    <div class="clean-panel p-6 mb-8">
+      <h3 class="text-xl font-bold text-brand-navy mb-4">Pipeline Funnel</h3>
+      <div id="job-funnel-container" class="flex justify-between items-end h-32 gap-2">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="clean-panel p-6">
+        <h3 class="text-xl font-bold text-brand-navy mb-4">This Week's Next Actions</h3>
+        <div id="job-next-actions-container" class="space-y-3">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+      <div class="clean-panel p-6">
+        <h3 class="text-xl font-bold text-brand-success mb-4">Follow-ups Due</h3>
+        <div id="job-followups-container" class="space-y-3">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="job-kanban" class="job-tab-content hidden h-full overflow-x-auto">
+    <div class="flex gap-4 min-w-max pb-4" id="kanban-board">
+        <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <div id="job-table" class="job-tab-content hidden">
+     <div class="flex justify-between mb-4">
+        <div class="flex gap-4">
+           <!-- Filters go here if needed -->
+        </div>
+        <button id="exportCsvBtn" class="border border-border-subtle text-secondary-text text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-surface-hover transition-colors">Export CSV</button>
+     </div>
+     <div class="overflow-x-auto clean-panel">
+        <table class="w-full text-left border-collapse">
+           <thead class="bg-slate-50 text-tertiary-text text-xs font-semibold uppercase tracking-wide">
+              <tr>
+                 <th class="p-4 border-b border-border-subtle">Company</th>
+                 <th class="p-4 border-b border-border-subtle">Role</th>
+                 <th class="p-4 border-b border-border-subtle">Status</th>
+                 <th class="p-4 border-b border-border-subtle">Next Action Date</th>
+                 <th class="p-4 border-b border-border-subtle">Next Action</th>
+                 <th class="p-4 border-b border-border-subtle">Actions</th>
+              </tr>
+           </thead>
+           <tbody id="job-table-body" class="text-sm text-primary-text divide-y divide-border-subtle">
+              <!-- Populated by JS -->
+           </tbody>
+        </table>
+     </div>
+  </div>
+
+  <div id="job-contacts" class="job-tab-content hidden">
+     <div class="overflow-x-auto clean-panel">
+        <table class="w-full text-left border-collapse">
+           <thead class="bg-slate-50 text-tertiary-text text-xs font-semibold uppercase tracking-wide">
+              <tr>
+                 <th class="p-4 border-b border-border-subtle">Name</th>
+                 <th class="p-4 border-b border-border-subtle">Company</th>
+                 <th class="p-4 border-b border-border-subtle">Type</th>
+                 <th class="p-4 border-b border-border-subtle">Last Contact</th>
+                 <th class="p-4 border-b border-border-subtle">Status</th>
+              </tr>
+           </thead>
+           <tbody id="contacts-table-body" class="text-sm text-primary-text divide-y divide-border-subtle">
+              <!-- Populated by JS -->
+           </tbody>
+        </table>
+     </div>
+  </div>
+</div>
+
+<div id="settings" class="tab-content animate-fade-slide">
+  <header class="mb-10">
+    <p class="text-brand-success font-semibold text-xs tracking-wider uppercase mb-2">Account</p>
+    <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-primary-text">System Settings</h1>
+    <p class="text-secondary-text mt-3 max-w-xl">Manage your admin profile and platform configuration.</p>
+  </header>
+  <div class="clean-panel p-8 max-w-2xl">
     <div class="space-y-6">
       <div>
-        <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">Full Name</label>
-        <input type="text" id="settings-name" class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface" disabled />
+        <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Full Name</label>
+        <input type="text" id="settings-name" class="w-full bg-slate-100 border border-border-subtle rounded-lg px-4 py-3 text-secondary-text cursor-not-allowed" disabled />
       </div>
       <div>
-        <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">Email Address</label>
-        <input type="email" id="settings-email" class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface" disabled />
+        <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Email Address</label>
+        <input type="email" id="settings-email" class="w-full bg-slate-100 border border-border-subtle rounded-lg px-4 py-3 text-secondary-text cursor-not-allowed" disabled />
       </div>
       <div>
-        <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">Role</label>
-        <input type="text" id="settings-role" class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface capitalize" disabled />
+        <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Role</label>
+        <input type="text" id="settings-role" class="w-full bg-slate-100 border border-border-subtle rounded-lg px-4 py-3 text-secondary-text capitalize cursor-not-allowed" disabled />
+      </div>
+      <div class="pt-4 border-t border-border-subtle flex gap-3">
+        <button class="bg-red-50 text-red-600 hover:bg-red-100 px-5 py-2.5 rounded-lg font-medium text-sm transition-colors flex items-center gap-2" data-action="logout">
+          <span class="material-symbols-outlined text-[18px]">logout</span> Sign Out
+        </button>
       </div>
     </div>
   </div>
@@ -424,74 +477,71 @@
 
 <!-- Modals Container -->
 <div id="adminModals" class="fixed inset-0 z-[100] hidden">
-  <div class="absolute inset-0 bg-ink-black/80 backdrop-blur-sm" id="modalBackdrop"></div>
+  <div class="absolute inset-0 bg-brand-navy/50 backdrop-blur-sm" id="modalBackdrop"></div>
   
   <div class="absolute inset-0 flex items-center justify-center p-4">
     <!-- User Form Modal (Create/Edit) -->
-    <div id="userModal" class="bg-surface-container-low border border-outline-variant/30 rounded-lg shadow-ambient w-full max-w-md hidden flex-col">
-      <div class="p-6 border-b border-outline-variant/30 flex justify-between items-center">
-        <h2 id="userModalTitle" class="font-headline-md text-xl text-on-surface">Create User</h2>
-        <button type="button" class="close-modal text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined">close</span></button>
+    <div id="userModal" class="clean-panel w-full max-w-md hidden flex-col overflow-hidden">
+      <div class="p-6 border-b border-border-subtle flex justify-between items-center bg-slate-50">
+        <h2 id="userModalTitle" class="text-xl font-bold text-brand-navy">Create User</h2>
+        <button type="button" class="close-modal w-8 h-8 rounded-full bg-white border border-border-subtle flex items-center justify-center text-secondary-text hover:bg-slate-100 hover:text-brand-navy transition-colors"><span class="material-symbols-outlined text-[20px]">close</span></button>
       </div>
       <form id="userForm" class="p-6 space-y-4">
         <input type="hidden" id="userId" />
         <div>
-          <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">Email Address</label>
-          <input type="email" id="userEmail" required class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all" />
+          <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Email Address</label>
+          <input type="email" id="userEmail" required class="w-full bg-slate-50 border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-4 py-3 text-primary-text transition-colors outline-none" />
         </div>
         <div id="passwordFieldGroup">
-          <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">Password</label>
-          <input type="password" id="userPassword" class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all" />
+          <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Password</label>
+          <input type="password" id="userPassword" class="w-full bg-slate-50 border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-4 py-3 text-primary-text transition-colors outline-none" />
         </div>
         <div>
-          <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">Full Name</label>
-          <input type="text" id="userName" required class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all" />
+          <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Full Name</label>
+          <input type="text" id="userName" required class="w-full bg-slate-50 border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-4 py-3 text-primary-text transition-colors outline-none" />
         </div>
         <div>
-          <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">Role</label>
-          <select id="userRole" required class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all">
+          <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Role</label>
+          <select id="userRole" required class="w-full bg-slate-50 border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-4 py-3 text-primary-text transition-colors outline-none">
             <option value="student">Student</option>
             <option value="customer">Customer</option>
             <option value="recruiter">Recruiter</option>
             <option value="admin">Admin</option>
           </select>
         </div>
-        <p id="userFormError" class="text-error text-sm hidden"></p>
+        <p id="userFormError" class="text-red-500 text-sm hidden"></p>
         <div class="pt-4 flex justify-end gap-3">
-          <button type="button" class="close-modal px-4 py-2 border border-outline-variant/30 rounded text-on-surface hover:bg-surface-container transition-colors">Cancel</button>
-          <button type="submit" id="userSubmitBtn" class="px-4 py-2 bg-secondary text-ink-black rounded font-bold hover:bg-secondary-fixed transition-colors">Save</button>
+          <button type="button" class="close-modal px-4 py-2 border border-border-subtle rounded-lg text-secondary-text hover:bg-surface-hover transition-colors text-sm">Cancel</button>
+          <button type="submit" id="userSubmitBtn" class="px-4 py-2 bg-brand-navy text-white rounded-lg font-semibold text-sm hover:bg-slate-800 transition-colors">Save</button>
         </div>
       </form>
     </div>
 
     <!-- Reset Password Modal -->
-    <div id="resetPasswordModal" class="bg-surface-container-low border border-outline-variant/30 rounded-lg shadow-ambient w-full max-w-md hidden flex-col">
-      <div class="p-6 border-b border-outline-variant/30 flex justify-between items-center">
-        <h2 class="font-headline-md text-xl text-on-surface">Reset Password</h2>
-        <button type="button" class="close-modal text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined">close</span></button>
+    <div id="resetPasswordModal" class="clean-panel w-full max-w-md hidden flex-col overflow-hidden">
+      <div class="p-6 border-b border-border-subtle flex justify-between items-center bg-slate-50">
+        <h2 class="text-xl font-bold text-brand-navy">Reset Password</h2>
+        <button type="button" class="close-modal w-8 h-8 rounded-full bg-white border border-border-subtle flex items-center justify-center text-secondary-text hover:bg-slate-100 transition-colors"><span class="material-symbols-outlined text-[20px]">close</span></button>
       </div>
       <div class="p-6 space-y-6">
         <input type="hidden" id="resetUserId" />
         <input type="hidden" id="resetUserEmail" />
-        <p class="text-on-surface-variant text-sm">You can send a password recovery email or manually set a new password.</p>
-        
+        <p class="text-secondary-text text-sm">You can send a password recovery email or manually set a new password.</p>
         <div class="space-y-3">
-          <button id="sendResetEmailBtn" class="w-full flex justify-center items-center gap-2 px-4 py-3 border border-outline-variant/30 rounded text-on-surface hover:bg-surface-container transition-colors">
+          <button id="sendResetEmailBtn" class="w-full flex justify-center items-center gap-2 px-4 py-3 border border-border-subtle rounded-lg text-primary-text hover:bg-surface-hover transition-colors text-sm font-medium">
             <span class="material-symbols-outlined text-[18px]">mail</span> Send Recovery Email
           </button>
-          
           <div class="flex items-center gap-4 my-4">
-            <div class="flex-1 h-px bg-outline-variant/30"></div>
-            <span class="text-on-surface-variant text-sm font-label-caps">OR</span>
-            <div class="flex-1 h-px bg-outline-variant/30"></div>
+            <div class="flex-1 h-px bg-border-subtle"></div>
+            <span class="text-tertiary-text text-sm font-semibold uppercase tracking-wide">OR</span>
+            <div class="flex-1 h-px bg-border-subtle"></div>
           </div>
-
           <form id="manualResetForm" class="space-y-4">
             <div>
-              <label class="block text-label-caps font-label-caps text-on-surface-variant mb-2">New Password</label>
-              <input type="password" id="manualNewPassword" required class="w-full bg-surface border border-outline-variant/30 rounded p-3 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all" />
+              <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">New Password</label>
+              <input type="password" id="manualNewPassword" required class="w-full bg-slate-50 border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-4 py-3 text-primary-text transition-colors outline-none" />
             </div>
-            <button type="submit" id="manualResetBtn" class="w-full flex justify-center items-center gap-2 px-4 py-3 bg-error text-on-error rounded font-bold hover:bg-error/80 transition-colors">
+            <button type="submit" id="manualResetBtn" class="w-full flex justify-center items-center gap-2 px-4 py-3 bg-red-50 text-red-600 rounded-lg font-semibold text-sm hover:bg-red-100 transition-colors">
               <span class="material-symbols-outlined text-[18px]">key</span> Set New Password
             </button>
           </form>
@@ -501,32 +551,365 @@
     </div>
 
     <!-- Confirm Disable Modal -->
-    <div id="confirmDisableModal" class="bg-surface-container-low border border-outline-variant/30 rounded-lg shadow-ambient w-full max-w-sm hidden flex-col">
+    <div id="confirmDisableModal" class="clean-panel w-full max-w-sm hidden flex-col overflow-hidden">
       <div class="p-6 space-y-4 text-center">
-        <span class="material-symbols-outlined text-4xl text-error mb-2">warning</span>
-        <h2 class="font-headline-md text-xl text-on-surface" id="disableTitle">Disable User?</h2>
-        <p class="text-on-surface-variant text-sm" id="disableText">Are you sure you want to disable this user? They will no longer be able to log in.</p>
+        <span class="material-symbols-outlined text-4xl text-red-500 mb-2">warning</span>
+        <h2 class="text-xl font-bold text-brand-navy" id="disableTitle">Disable User?</h2>
+        <p class="text-secondary-text text-sm" id="disableText">Are you sure you want to disable this user? They will no longer be able to log in.</p>
         <input type="hidden" id="disableUserId" />
         <input type="hidden" id="disableState" />
-        <p id="disableError" class="text-error text-sm hidden"></p>
+        <p id="disableError" class="text-red-500 text-sm hidden"></p>
         <div class="pt-4 flex justify-center gap-3">
-          <button type="button" class="close-modal px-4 py-2 border border-outline-variant/30 rounded text-on-surface hover:bg-surface-container transition-colors">Cancel</button>
-          <button type="button" id="confirmDisableBtn" class="px-4 py-2 bg-error text-on-error rounded font-bold hover:bg-error/80 transition-colors">Confirm</button>
+          <button type="button" class="close-modal px-4 py-2 border border-border-subtle rounded-lg text-secondary-text hover:bg-surface-hover transition-colors text-sm">Cancel</button>
+          <button type="button" id="confirmDisableBtn" class="px-4 py-2 bg-red-50 text-red-600 rounded-lg font-semibold text-sm hover:bg-red-100 transition-colors">Confirm</button>
         </div>
       </div>
     </div>
 
     <!-- Confirm Email Modal -->
-    <div id="confirmEmailModal" class="bg-surface-container-low border border-outline-variant/30 rounded-lg shadow-ambient w-full max-w-sm hidden flex-col">
+    <div id="confirmEmailModal" class="clean-panel w-full max-w-sm hidden flex-col overflow-hidden">
       <div class="p-6 space-y-4 text-center">
-        <span class="material-symbols-outlined text-4xl text-secondary mb-2">mark_email_read</span>
-        <h2 class="font-headline-md text-xl text-on-surface">Confirm Email?</h2>
-        <p class="text-on-surface-variant text-sm">Are you sure you want to manually confirm this user's email address?</p>
+        <span class="material-symbols-outlined text-4xl text-brand-success mb-2">mark_email_read</span>
+        <h2 class="text-xl font-bold text-brand-navy">Confirm Email?</h2>
+        <p class="text-secondary-text text-sm">Are you sure you want to manually confirm this user's email address?</p>
         <input type="hidden" id="confirmEmailUserId" />
-        <p id="confirmEmailError" class="text-error text-sm hidden"></p>
+        <p id="confirmEmailError" class="text-red-500 text-sm hidden"></p>
         <div class="pt-4 flex justify-center gap-3">
-          <button type="button" class="close-modal px-4 py-2 border border-outline-variant/30 rounded text-on-surface hover:bg-surface-container transition-colors">Cancel</button>
-          <button type="button" id="confirmEmailBtn" class="px-4 py-2 bg-secondary text-on-secondary rounded font-bold hover:bg-secondary/80 transition-colors">Confirm</button>
+          <button type="button" class="close-modal px-4 py-2 border border-border-subtle rounded-lg text-secondary-text hover:bg-surface-hover transition-colors text-sm">Cancel</button>
+          <button type="button" id="confirmEmailBtn" class="px-4 py-2 bg-brand-success text-white rounded-lg font-semibold text-sm hover:bg-emerald-600 transition-colors">Confirm</button>
+        </div>
+      </div>
+    </div>
+    <!-- Quick Add Job Modal -->
+    <div id="quickAddJobModal" class="clean-panel w-full max-w-md hidden flex-col overflow-hidden">
+      <div class="p-6 border-b border-border-subtle flex justify-between items-center bg-slate-50">
+        <h2 class="text-xl font-bold text-brand-navy">Quick Add Job</h2>
+        <button type="button" class="close-modal w-8 h-8 rounded-full bg-white border border-border-subtle flex items-center justify-center text-secondary-text hover:bg-slate-100 hover:text-brand-navy transition-colors"><span class="material-symbols-outlined text-[20px]">close</span></button>
+      </div>
+      <div class="p-6">
+        <form id="quickAddJobForm" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Company *</label>
+            <input type="text" id="qa-company" required class="w-full bg-slate-50 border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-4 py-3 text-primary-text transition-colors outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Role Title *</label>
+            <input type="text" id="qa-role" required class="w-full bg-slate-50 border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-4 py-3 text-primary-text transition-colors outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Status</label>
+            <select id="qa-status" class="w-full bg-slate-50 border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-4 py-3 text-primary-text transition-colors outline-none">
+              <option value="Target">Target</option>
+              <option value="Applied">Applied</option>
+              <option value="Outreach Sent">Outreach Sent</option>
+              <option value="Recruiter Screen">Recruiter Screen</option>
+              <option value="Interview">Interview</option>
+              <option value="Final Round">Final Round</option>
+              <option value="Offer">Offer</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Priority</label>
+            <select id="qa-priority" class="w-full bg-slate-50 border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-4 py-3 text-primary-text transition-colors outline-none">
+              <option value="Riyadh">Riyadh</option>
+              <option value="GCC">GCC</option>
+              <option value="International">International</option>
+            </select>
+          </div>
+          <div class="pt-4 flex justify-end gap-3">
+            <button type="button" class="close-modal px-4 py-2 border border-border-subtle rounded-lg text-secondary-text hover:bg-surface-hover transition-colors text-sm">Cancel</button>
+            <button type="submit" class="px-4 py-2 bg-brand-navy text-white rounded-lg font-semibold text-sm hover:bg-slate-800 transition-colors">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Application Detail Modal -->
+    <div id="applicationDetailModal" class="clean-panel w-full max-w-4xl max-h-[90vh] hidden flex-col overflow-hidden">
+      <div class="p-6 border-b border-border-subtle flex justify-between items-start bg-slate-50">
+        <div>
+          <h2 class="text-2xl font-bold text-brand-navy" id="app-detail-company">Company</h2>
+          <p class="text-secondary-text text-lg mt-1" id="app-detail-role">Role Title</p>
+        </div>
+        <button type="button" class="close-modal w-8 h-8 rounded-full bg-white border border-border-subtle flex items-center justify-center text-secondary-text hover:bg-slate-100 hover:text-brand-navy transition-colors"><span class="material-symbols-outlined text-[20px]">close</span></button>
+      </div>
+      <div class="p-6 overflow-y-auto flex-1 bg-white">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="md:col-span-2 space-y-6">
+            <!-- Form Details -->
+            <form id="appDetailForm" class="bg-slate-50 p-5 rounded-xl border border-border-subtle grid grid-cols-2 gap-4">
+              <input type="hidden" id="app-detail-id" />
+              <div class="col-span-2 sm:col-span-1">
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Company</label>
+                <input type="text" id="edit-app-company" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none" />
+              </div>
+              <div class="col-span-2 sm:col-span-1">
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Role Title</label>
+                <input type="text" id="edit-app-role" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Status</label>
+                <select id="edit-app-status" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none">
+                    <option value="Target">Target</option>
+                    <option value="Applied">Applied</option>
+                    <option value="Outreach Sent">Outreach Sent</option>
+                    <option value="Recruiter Screen">Recruiter Screen</option>
+                    <option value="Interview">Interview</option>
+                    <option value="Final Round">Final Round</option>
+                    <option value="Offer">Offer</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="No Response">No Response</option>
+                    <option value="Withdrawn">Withdrawn</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Priority</label>
+                <select id="edit-app-priority" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none">
+                    <option value="Riyadh">Riyadh</option>
+                    <option value="GCC">GCC</option>
+                    <option value="International">International</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Location</label>
+                <input type="text" id="edit-app-location" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">CV Version</label>
+                <select id="edit-app-cv" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none">
+                    <option value="VP/Director">VP/Director</option>
+                    <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Source Type</label>
+                <select id="edit-app-source" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none">
+                    <option value=""></option>
+                    <option value="Company Portal">Company Portal</option>
+                    <option value="LinkedIn">LinkedIn</option>
+                    <option value="Recruiter/Search Firm">Recruiter/Search Firm</option>
+                    <option value="Referral">Referral</option>
+                    <option value="Direct Contact">Direct Contact</option>
+                    <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Source Detail</label>
+                <input type="text" id="edit-app-source-detail" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none" />
+              </div>
+              <div class="col-span-2">
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Job URL</label>
+                <div class="flex gap-2">
+                    <input type="text" id="edit-app-url" class="flex-1 bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none" />
+                    <a id="app-detail-url-btn" href="#" target="_blank" class="bg-brand-success-light px-3 py-2 rounded-lg flex items-center justify-center text-brand-success hover:bg-emerald-200 transition-colors"><span class="material-symbols-outlined text-[20px]">open_in_new</span></a>
+                </div>
+              </div>
+              <div class="col-span-2">
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Next Action</label>
+                <input type="text" id="edit-app-next-action" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Next Action Date</label>
+                <input type="date" id="edit-app-next-action-date" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Date Applied</label>
+                <input type="date" id="edit-app-date-applied" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none" />
+              </div>
+              <div class="col-span-2">
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Notes</label>
+                <textarea id="edit-app-notes" rows="3" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none"></textarea>
+              </div>
+              <div class="col-span-2 flex justify-end">
+                  <button type="submit" class="px-4 py-2 bg-brand-success text-white rounded-lg font-semibold text-sm hover:bg-emerald-600 transition-colors">Save Details</button>
+              </div>
+            </form>
+
+            <!-- Activity Log / Interactions -->
+            <div class="bg-slate-50 p-5 rounded-xl border border-border-subtle">
+                <h3 class="text-lg font-bold text-brand-navy mb-4">Activity Log</h3>
+                <form id="appAddInteractionForm" class="flex flex-wrap gap-2 mb-4 items-start">
+                    <select id="app-int-channel" required class="bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2 text-sm text-primary-text w-32 outline-none">
+                        <option value="">Channel</option>
+                        <option value="Email">Email</option>
+                        <option value="Phone Call">Phone Call</option>
+                        <option value="LinkedIn Message">LinkedIn Msg</option>
+                        <option value="LinkedIn InMail">LinkedIn InMail</option>
+                        <option value="WhatsApp">WhatsApp</option>
+                        <option value="In Person">In Person</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <select id="app-int-dir" class="bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2 text-sm text-primary-text w-28 outline-none">
+                        <option value="Outbound">Outbound</option>
+                        <option value="Inbound">Inbound</option>
+                    </select>
+                    <input type="text" id="app-int-summary" placeholder="Summary..." required class="flex-1 bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2 text-sm text-primary-text outline-none min-w-[150px]" />
+                    <button type="submit" class="bg-brand-navy text-white px-4 py-2 rounded-lg text-sm font-semibold shrink-0 hover:bg-slate-800 transition-colors">Log</button>
+                </form>
+                <div id="app-interactions-list" class="space-y-3">
+                    <!-- Loaded via JS -->
+                </div>
+            </div>
+          </div>
+          
+          <div class="md:col-span-1 space-y-6">
+            <!-- Linked Contacts -->
+            <div class="bg-slate-50 p-5 rounded-xl border border-border-subtle">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-brand-navy">Linked Contacts</h3>
+                    <button id="appAddContactBtn" class="text-brand-success hover:text-emerald-700 text-sm font-semibold flex items-center gap-1 transition-colors"><span class="material-symbols-outlined text-[16px]">add</span> Add</button>
+                </div>
+                <div id="app-linked-contacts" class="space-y-2">
+                    <!-- Loaded via JS -->
+                </div>
+                
+                <!-- Hidden Add Contact Form -->
+                <div id="appAddContactArea" class="hidden mt-4 pt-4 border-t border-border-subtle">
+                    <form id="appLinkContactForm" class="space-y-2">
+                        <select id="app-existing-contact" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2 text-sm text-primary-text mb-2 outline-none">
+                            <option value="">Select Existing...</option>
+                        </select>
+                        <button type="submit" class="w-full bg-brand-success text-white py-1.5 rounded-lg text-sm font-medium hover:bg-emerald-600 transition-colors">Link Selected</button>
+                    </form>
+                    <div class="text-center my-3 text-tertiary-text font-semibold uppercase tracking-wide text-xs">OR</div>
+                    <button type="button" id="appCreateContactBtn" class="w-full border border-border-subtle py-1.5 rounded-lg text-sm text-primary-text font-medium hover:bg-surface-hover transition-colors">Create New Contact</button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Detail Modal -->
+    <div id="contactDetailModal" class="clean-panel w-full max-w-4xl max-h-[90vh] hidden flex-col overflow-hidden">
+      <div class="p-6 border-b border-border-subtle flex justify-between items-start bg-slate-50">
+        <div>
+          <h2 class="text-2xl font-bold text-brand-navy" id="contact-detail-name">Contact Name</h2>
+          <p class="text-secondary-text text-lg mt-1" id="contact-detail-role">Role at Company</p>
+        </div>
+        <button type="button" class="close-modal w-8 h-8 rounded-full bg-white border border-border-subtle flex items-center justify-center text-secondary-text hover:bg-slate-100 hover:text-brand-navy transition-colors"><span class="material-symbols-outlined text-[20px]">close</span></button>
+      </div>
+      <div class="p-6 overflow-y-auto flex-1 bg-white">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="md:col-span-2 space-y-6">
+            <form id="contactDetailForm" class="bg-slate-50 p-5 rounded-xl border border-border-subtle grid grid-cols-2 gap-4">
+              <input type="hidden" id="contact-detail-id" />
+              <div>
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Name *</label>
+                <input type="text" id="edit-contact-name" required class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Relationship Type</label>
+                <select id="edit-contact-type" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none">
+                    <option value="Hiring Manager">Hiring Manager</option>
+                    <option value="Recruiter">Recruiter</option>
+                    <option value="Executive Search">Executive Search</option>
+                    <option value="Internal Referral">Internal Referral</option>
+                    <option value="Peer/Network">Peer/Network</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Role Title</label>
+                <input type="text" id="edit-contact-role" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Company</label>
+                <input type="text" id="edit-contact-company" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Email</label>
+                <input type="email" id="edit-contact-email" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Phone</label>
+                <input type="text" id="edit-contact-phone" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">Preferred Channel</label>
+                <select id="edit-contact-channel" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none">
+                    <option value=""></option>
+                    <option value="Email">Email</option>
+                    <option value="Phone">Phone</option>
+                    <option value="LinkedIn Message">LinkedIn Message</option>
+                    <option value="LinkedIn InMail">LinkedIn InMail</option>
+                    <option value="WhatsApp">WhatsApp</option>
+                    <option value="In Person">In Person</option>
+                    <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-tertiary-text uppercase tracking-wide mb-1">LinkedIn URL</label>
+                <input type="text" id="edit-contact-linkedin" class="w-full bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2.5 text-sm text-primary-text transition-colors outline-none" />
+              </div>
+              <div class="col-span-2 flex justify-end">
+                  <button type="submit" class="px-4 py-2 bg-brand-success text-white rounded-lg font-semibold text-sm hover:bg-emerald-600 transition-colors">Save Details</button>
+              </div>
+            </form>
+            
+            <div class="bg-slate-50 p-5 rounded-xl border border-border-subtle">
+                <h3 class="text-lg font-bold text-brand-navy mb-4">Interactions Log</h3>
+                <form id="contactAddInteractionForm" class="flex flex-wrap gap-2 mb-4 items-end">
+                    <div class="flex gap-2 w-full sm:w-auto">
+                        <select id="contact-int-channel" required class="bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2 text-sm text-primary-text w-32 outline-none">
+                            <option value="">Channel</option>
+                            <option value="Email">Email</option>
+                            <option value="Phone Call">Phone Call</option>
+                            <option value="LinkedIn Message">LinkedIn Msg</option>
+                            <option value="LinkedIn InMail">LinkedIn InMail</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="In Person">In Person</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <select id="contact-int-dir" class="bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2 text-sm text-primary-text w-28 outline-none">
+                            <option value="Outbound">Outbound</option>
+                            <option value="Inbound">Inbound</option>
+                        </select>
+                    </div>
+                    <input type="text" id="contact-int-summary" placeholder="Summary..." required class="flex-1 min-w-[200px] bg-white border border-border-subtle focus:border-brand-success focus:ring-1 focus:ring-brand-success rounded-lg px-3 py-2 text-sm text-primary-text outline-none" />
+                    
+                    <div class="flex gap-2 items-center bg-white border border-border-subtle px-3 py-2 rounded-lg">
+                        <label class="text-sm font-medium text-primary-text flex items-center gap-2 cursor-pointer"><input type="checkbox" id="contact-int-fu" class="rounded text-brand-success focus:ring-brand-success"> Follow-up</label>
+                        <input type="date" id="contact-int-fudate" class="bg-transparent border-none p-0 text-sm text-primary-text outline-none focus:ring-0" />
+                    </div>
+                    
+                    <button type="submit" class="bg-brand-navy text-white px-4 py-2 rounded-lg text-sm font-semibold shrink-0 hover:bg-slate-800 transition-colors">Log</button>
+                </form>
+                <div id="contact-interactions-list" class="space-y-3">
+                    <!-- Loaded via JS -->
+                </div>
+            </div>
+          </div>
+          
+          <div class="md:col-span-1 space-y-6">
+            <div class="bg-slate-50 p-5 rounded-xl border border-border-subtle">
+                <h3 class="text-lg font-bold text-brand-navy mb-4">Linked Applications</h3>
+                <div id="contact-linked-apps" class="space-y-2">
+                    <!-- Loaded via JS -->
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Company Rollup Modal -->
+    <div id="companyRollupModal" class="clean-panel w-full max-w-3xl max-h-[90vh] hidden flex-col overflow-hidden">
+      <div class="p-6 border-b border-border-subtle flex justify-between items-start bg-slate-50">
+        <h2 class="text-2xl font-bold text-brand-navy" id="rollup-company-name">Company Name</h2>
+        <button type="button" class="close-modal w-8 h-8 rounded-full bg-white border border-border-subtle flex items-center justify-center text-secondary-text hover:bg-slate-100 hover:text-brand-navy transition-colors"><span class="material-symbols-outlined text-[20px]">close</span></button>
+      </div>
+      <div class="p-6 overflow-y-auto flex-1 bg-white space-y-8">
+        <div>
+            <h3 class="text-lg font-bold text-brand-navy mb-4 border-b border-border-subtle pb-2">Applications</h3>
+            <div id="rollup-apps" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- JS -->
+            </div>
+        </div>
+        <div>
+            <h3 class="text-lg font-bold text-brand-navy mb-4 border-b border-border-subtle pb-2">Contacts</h3>
+            <div id="rollup-contacts" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- JS -->
+            </div>
         </div>
       </div>
     </div>
@@ -534,4 +917,5 @@
 </div>
 
 <script src="admin.js"></script>
+<script src="job-search.js"></script>
 </body></html>
